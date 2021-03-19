@@ -6,25 +6,36 @@ Our team consists of Alexey Petrusevich, Benjamin Ockert, Austin Kim, and Iain M
 
 ## The Idea
 
-The project we propose for this assignment is something we have titled "Spotify Party". When public health protocols allow, a user can host an in-person party with their friends and act as the "DJ" by using our app. When the host starts a party, they will be able to see their 10 most recent Spotify playlists and choose which one will be the playlist for their party. The attendees at the party will then be able to vote for which songs from that playlist they want to hear next. They will also have the ability to request specific songs be played that may otherwise not be on the host's playlist.  
+The project we propose for this assignment is something we have titled "Spotify Party". When public health protocols allow, a user can host an in-person party with their friends and act as the "DJ" by using our app. When the host starts a party, they will be able to see their 10 most recent Spotify playlists and choose which one will be the playlist for their party. The attendees at the party will then be able to vote for which songs from that playlist they want to hear next. They will also have the ability to request specific songs be played that may otherwise not be on the host's playlist. For voting, rounds will consist of 5 songs, from which the top 3 will be chosen and added to the queue. This is so attendees don't have to be on their devices during every song. 
 
-This idea for this app came to us based on what we wish the DJ at a prom or wedding could do. Some DJs don't accept requests or any type of guest input at parties and instead play from their pre-determined list of songs. Others are open to requests but then have the difficult decision of determining if the requested song is something that everyone on the dance floor would like, or if it is a song that only the requester would like. Our app takes care of this dilemma and allows guests at a party to provide input to the DJ on what they want the next songs to be. 
+This idea for this app came to us based on what we wish the DJ at a prom or wedding could do. Some DJs don't accept requests or any type of guest input at parties and instead play from their pre-determined list of songs. Others are open to requests but then have the difficult decision of determining if the requested song is something that everyone on the dance floor would like, or if it is a song that only the requester would like. Our app takes care of this dilemma and allows guests at a party to provide input to the DJ on what they think of the current song what they want the next songs to be. 
 
-At a minimum, our application will communicate directly with Spotify, so the host can plug any device with the Spotify app and their account into a speaker and our app will control playback. However, based on the outcomes of our experiments, we are planning to embed Spotify's playback engine directly into the browser of the party host, such that 
+At a minimum, our application will communicate directly with Spotify, so the host can plug any device with the Spotify app and their account into a speaker and our app will control playback. However, based on the outcomes of our experiments, we are hoping to embed Spotify's playback engine directly into the browser of the party host, such that the DJ can directly control playback through Spotify's embedded playback UI. 
+
+Finally, we plan to style our app in two different ways. Since attendees of a party likely don't have their laptops with them, we will style the party attendee UI to support viewing through a mobile browser. On the other hand, the view of the DJ/host will be designed for a laptop browser, with the idea that they will be on their laptop managing the rounds of voting and requests during the party session. 
 
 ### API
 
-We will be using Spotify's Web API for this project. This provides us the endpoints for everything we are planning to do, including user account authorization of our app, pulling user data such as profile information and user playlists with their corresponding tracks, and controlling the playback on their accounts, allowing us to play, pause, skip, and modify the queue
+We will be using Spotify's Web API for this project. This provides us the endpoints for everything we are planning to do, including user account authorization of our app, pulling user data such as profile information and user playlists with their corresponding tracks, and controlling the playback on their accounts, allowing us to play, pause, skip, and modify the queue. 
 
+For the authorization flow, Spotify has a number of useful scopes that we are able to post with the authorization code request in order to take certain actions on behalf of the user, if they authorize our app. In particular, the following scopes will be useful:
 
+- ```user-read-private``` allows us to view user's account details; this will be used to pull data such as username and email during the authorization process; we can also use this scope for searching for a track on Spotify when a user requests a specific song
+- ```playlist-read-private``` allows us to read the track information of a users playlists, public and private; we will use this to display the initial list of playlists to start a party session with, and then also display the tracks of the playlist during live voting
+- ```user-modify-playback-state``` allows us to take actions on the user's playback state; we will use this to add the top-voted songs to the queue as well as skip to the next track if the votes suggest we should do so
+- ```user-read-currently-playing``` allows us to see what track is currently playing on the user's account; we may use this to verify that actions such as skipping tracks are successful, and we will use it to display the current song being played across the views of all users
 
 ### Realtime Behavior
 
+While using the app, users will be able to interact with the "DJ" in realtime through voting and requesting songs. When the host starts a round of voting, the songs in that round will appear in the views of the attendee. For each song, they will have an upvote and a downvote button as well as an upote and a downvote count. When they vote on a song, the count will be updated in realtime across the browsers of all users in the session. For requesting songs, when an attendee requests a song title, the request will show up immediately in the view of the DJ/host, who will then be able to take action. The current song being played will also show up across all views, and will be updated automatically when a song is skipped or a song ends and a new song begins.
+
 ### Persistent State
 
-In addition to storing users, we will be storing event history. Attendees of a party session will be able to look back on their past events and see what songs were played, in what order they were played, and how many votes each song had. This will be useful to all users if and when they want to make a playlist for their own hosted party. 
+In addition to storing users, we will be storing event history. Attendees of a party session will be able to look back on their past events and see what songs were played, in what order they were played, and how many votes each song had. This will be useful to all users if and when they want to make a playlist for their own hosted party. We will also be storing user actions, specifically voting and what genre of songs a user either upvoted or downvoted. This will be used for one of the neat things we plan to do:
 
 ### Something "Neat"
+
+For something neat, we plan to provide detailed user statistics based on their responses to songs during party sessions. Using the above menitoned persistent state, we plan to provide a list of a user's top genres and top artists. This will require implementing an algorithm that analyzes the genres and artists of songs that they requested, upvoted, and downvoted. Another neat thing we are experimenting with is playback directly through the browser rather than controlling playback through the Spotify app on a different device that the user is logged in to. 
 
 ## Experiments
 
@@ -43,55 +54,50 @@ In addition to storing users, we will be storing event history. Attendees of a p
 
 ### Intended Users
 
-### User Stories 
+We intend for our app to be used by college students who host social events in their dorms and/or apartments when it is safe to do so. Our app will add a collaborative element to the music selection of each party and will ensure that everyone at the party has a say in what music will be played, whether for dancing or just for casualling sitting around hanging out. Hosts will benefit from not having the pressure of choosing the music for the entire night, and attendees will have the benefit of being able to listen and/or dance to their favorite songs. 
 
-
-
-
-
-
-
-
-
-
-
-Idea: Live voting on music at a party through Spotify
-
-API: Spotify API
-Realtime: Voting
-State: History of sessions; users can look back on past events and see what songs were played; queue 
-Something neat: Playing music directly through the browser
+An additional use case would be for actual DJs. DJs of homecomings, proms, graduation parties, and even weddings, could use this app as a tool to form their music choices throughout the evening. At the beginning of an event, they could load there premade playlist into Spotify and then start an app session with that playlist. They then could announce to the party's guests that at anytime throughout the evening, guests can access the app to provide input on the music they want to hear. If a DJ knows what the next songs they want to play are but they are unsure of the order, they can start a round of voting with the selected songs to determine what order to play them in. Similarly, if the DJ receives a song request from an attendee and isn't sure if other guests would like to hear that song as well, they can add the requested song to a round of voting. Finally, based on voting results from past events they have either hosted or attended, they can be better informed on what songs are widely popular when making the playlists for their next events.
 
 ## User Stories
 
-- User1 creates an account 
-    - username (and password?)
-- User1 creates a "room"
-    - automatically becomes host
-    - Host starts the party
-        - the playlist starts playing shuffled, voting is disabled to start
-        - the host can enable/disable user voting at any time
-        - when voting is enabled, then: 
-    - Experiment: using user's credentials, get the song data from a user's preexisting Spotify playlist
-        - Choose x random songs and send to attendees for a vote
-        - Top y songs get added to the queue
-        - During the yth song, choose another x songs from the playlist and send a new vote
-    - when a new request is made, host can either automatically add the song to the queue or add it to the next round of voting 
-    - host can see current song votes and choose to skip to the next song
-        - Experiment: try and view the current queue, otherwise maintain a table with the initial playlist order and make updates based on user voting so we can display the queue for the host 
-- User 2 creates an account
-    - joins the "room" with a room name and password
-    - can vote for as many songs as they want in an active voting round
-    - can request a specific song to be played/added to the next round of voting
-    - can also vote on the current song being played (love, like, dislike)
-    - can view past parties they've been to
-    - View profile:
-        - basic user info
-        - Based on how they voted, display top genres and artists
-- User 3 creates an account
-    - starts a new room, can occur simultaneously
+Types of users: 
+- host (party organizer and/or DJ)
+- attendees (non-host party guests)
 
+#### Hosts
+Bob is throwing a party and will be acting as the DJ. He wants to make sure everyone gets to hear songs that they like so they have a fun time. 
 
-Experiment 1: pulling playlist data and playing/pausing/skipping through the browser - Ben
-Experiment 2: pulling queue data, updating queue data - Alex
-Experiment 3: playing through the browser with an iframe, etc. - Austin
+- Bob creates an account with a username and a password
+    - When the party starts, Bob creates a new "party room" with a room name
+    - He authenticates the app with Spotify and then selects which one of his Spotify playlists he would like to play to start the event 
+- When the party starts, the playlist starts playing from the beginning 
+- Bob wants input on the next set of songs to be played, so he selects 5 songs from the list to be voted on 
+    - He starts the voting round, which will last for 1 minute
+    - After the round of voting, the top 3 of the 5 songs will automatically be added to the queue 
+    - After those songs are played, if there are no other rounds of voting, the playlist continues playing from where it left off before the voting
+- Later, an attendee sends in a song request
+    - Bob likes the song at knows, from previous events, that it will be a crowd favorite, so he adds the song directly to the queue
+- A second attendee sends in a different song request
+    - Bob doesn't know this song and wants to get guest input, so he adds it to the next round of voting
+- During a song later in the evening, Bob notices that it has several downvotes from attendees
+    - Bob choose to skip to the next song 
+- The event ends and Bob can see a summary of the songs that were played, their artists, how long they were played for, and their total up/down votes
+
+#### Attendees
+
+Alice is attending an event hosted by Bob.
+
+- Alice creates an account with a username and a password
+    - She is given a room name by Bob, which she uses to join the party room
+- When the party states, Alice loves the first song that is being played, so she upvotes the song to give the DJ feedback
+- Later, Bob tells everyone he is going to open a round of voting for the next few songs
+    - Alice upvotes 3 of the 5 songs that she likes, downvotes one of the songs that she does not want to hear, and has no preference on the 5th song
+- Alice then wants to dance to her all time favorite song, so she sends in a song request to Bob with the song title and artist
+- After the party, Alice views her profile
+    - she sees the event she just attended as well as her other past events
+    - she clicks on an event and sees the list of all songs that were played (title and artist) as well as the voting result for each song
+    - back on her main profile page, she sees the top genres and artists that she has been upvoting across her different parties
+- Alice then wants to start her own party
+    - She enters a room name and shares it with her guests
+    - She authenticates the app with her Spotify account and selects a playlist 
+    - *User story continues in the 'Hosts' story*
