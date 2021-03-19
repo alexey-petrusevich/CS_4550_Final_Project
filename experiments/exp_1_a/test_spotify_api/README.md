@@ -1,3 +1,5 @@
+This experiment is based on Nat Tuck's Github Authorization code from lecture
+
 # TestSpotify
 
 To start your Phoenix server:

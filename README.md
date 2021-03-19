@@ -116,17 +116,21 @@ is logged in to.
 
 ## Experiments
 
-### Experiment 1: Testing the Spotify API
-
 We conducted several experiments on the Spotify Web API endpoints.
 
-#### Experiment 1a: Authorization Flow and Retrieving User Data
+### Experiment 1a: Authorization Flow and Retrieving User Data
 
 For this experiment, we created an app with a UI to test the
 authorization flow that a user of our app would go through when
 they start a party room. We tested that we could redirect the user
 to Spotify's authorization page with specific scopes (discussed above)
 and then receive a authorization code through the callback in return.
+
+The authorization url looked something like this:
+
+```https://accounts.spotify.com/authorize?client_id=[client_id]&scope
+=user-modify-playback-state playlist-read-private&redirect_uri=
+http://localhost:4000/callback&response_type=code```
 
 We also tested getting different user data by including the access
 token in the headers of our get requests. Specifically, we tested the
@@ -135,6 +139,7 @@ user's private playlist data (both available playlist names as well
 as the titles and ids within each playlist).
 
 From this experiment, we learned a few things:
+
     - We learned that the Implicit Grant flow for the Spotify Web API
     would not allow us to get the access token in the form we needed.
     That flow gave us the token directly through the callback uri, but
@@ -148,14 +153,14 @@ From this experiment, we learned a few things:
     playlist and then including the ID in the request to the playlist
     endpoint for getting playlist track data
 
----
-#### Experiment 1b: Controlling Playback and Queue - Alex
+### Experiment 1b: Controlling Playback and Queue
 
 #### Adding New Songs to the Queue
 
-Working with queues is performed in the same way as the requests for the rest of Spotify API. The caller must provide
-the URI of the track being added to the queue along with the bearer token (obtained through OAuth 2.0) added as a header to
-the post request sent to Spotify.
+Working with queues is performed in the same way as the requests for
+the rest of Spotify API. The caller must provide the URI of the track
+being added to the queue along with the bearer token (obtained through
+OAuth 2.0) added as a header to the post request sent to Spotify.
 
 #### Track URI
 
@@ -174,7 +179,8 @@ Return value of the call is JSON with 204 code.
 
 #### Device ID
 
-Device ID can be added as another parameter. If not supplied, the active device is targeted by the call.
+Device ID can be added as another parameter. If not supplied, the
+active device is targeted by the call.
 
 #### Endpoint URL
 
@@ -195,14 +201,16 @@ https://developer.spotify.com/console/
 
 #### Experiment
 
-The main goal of running this experiment is to test whether Spotify API is working as documented
-on Spotify Developers website.
+The main goal of running this experiment is to test whether Spotify
+API is working as documented on Spotify Developers website.
 
-In order to test this API, a new test file was added that conducts three actions:
+In order to test this API, a new test file was added that conducts
+three actions:
 
 1. Add a new track to the queue
 2. Skip to the next track
-3. Get the track URI of the track currently playing, and check if it is the same as the one added to the queue in step 1
+3. Get the track URI of the track currently playing, and check if it
+is the same as the one added to the queue in step 1
 
 The test can be run by invoking while in the root project directory:
 
@@ -221,19 +229,36 @@ test "Add New Track To Queue" do
 end
 ```
 
-The test successfully passes - the URI of the new track is the same as URI of the track passed.
-This can also be confirmed by having Spotify running - the test changes the track to the one specified in the code.
-Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes the queue of the player (desktop app).
+The test successfully passes - the URI of the new track is the same as
+URI of the track passed. This can also be confirmed by having Spotify
+running - the test changes the track to the one specified in the code.
+Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes
+the queue of the player (desktop app).
 
----
-
-### Experiment 2: Music Playback Through Browser Test - Austin
+### Experiment 2: Music Playback Through Browser IFrame
 
 #### Reason for test
-For a typical host user flow, after signing up, our hosts would most likely initially open up the native spotify app, then use our web-app to control playback and queues. However, we looked into the possibility of using an embedded iframe hosting Spotify's Web Player, to allow music playback through the browser itself, eliminating the need for the native spotify app. Even if it were to work, we were not sure this would have been the best flow, but we thought it would be interesting to test out regardless.
+For a typical host user flow, after signing up, our hosts would most
+likely initially open up the native spotify app, then use our web-app
+to control playback and queues. However, we looked into the
+possibility of using an embedded iframe hosting Spotify's Web Player,
+to allow music playback through the browser itself, eliminating the
+need for the native spotify app. Even if it were to work, we were not
+sure this would have been the best flow, but we thought it would be
+interesting to test out regardless.
 
-#### The process
-We began by working through the authorization steps (with help from Spotify's Authorization guide) to get the necessary tokens from the user for Spotify's play and pause api calls. We tested out each access call using Postman, then brought them into our app to test out those REST calls in elixir, using HTTPoison. We set up the callback uri to a new subpage temporarily created in our Event app, since that was already deployed an live. Doing so allowed us to retreive the user's code needed to get an access token, the token being needed to make any user-specific api calls. Our test makes sure that once the user's code was secured, we could actually pause and play on our spotify native app. *This test succeeded.* 
+#### The Process
+We began by working through the authorization steps (with help from
+Spotify's Authorization guide) to get the necessary tokens from the
+user for Spotify's play and pause api calls. We tested out each access
+call using Postman, then brought them into our app to test out those
+REST calls in elixir, using HTTPoison. We set up the callback uri to a
+new subpage temporarily created in our Event app, since that was
+already deployed an live. Doing so allowed us to retreive the user's
+code needed to get an access token, the token being needed to make any
+user-specific api calls. Our test makes sure that once the user's code
+was secured, we could actually pause and play on our spotify native
+app. *This test succeeded.*
 
 Test Source Code:
 ```
@@ -243,23 +268,44 @@ test "Generate Token and Play" do
 end
 ```
 
-For the sake of this test, the Device ID was taken from spotify's developer console for the call `GET https://api.spotify.com/v1/me/player/device`
+For the sake of this test, the Device ID was taken from spotify's
+developer console for the call
+`GET https://api.spotify.com/v1/me/player/device`
 
-The following endpoints were used for the authorization call, pause call, and play call respectively:
-- https://accounts.spotify.com/api/token
-- https://api.spotify.com/v1/me/player/pause
-- https://api.spotify.com/v1/me/player/play
+The following endpoints were used for the authorization call, pause
+call, and play call respectively: -
+https://accounts.spotify.com/api/token -
+https://api.spotify.com/v1/me/player/pause -
+https://api.spotify.com/v1/me/player/play
 
-In hindsight, we should have added the iframe to our index file before even testing play/pause calls, but we tried it out after setting that up, and found that embedding the entire web player was *not possible*. The web console revealed the following error: `"Refused to load https://open.spotify.com/ because it does not appear in the frame-ancestors directive of the Content Security Policy."` meaning that the actual web app was blocked for iframe use by Spotify. Spotify does allow other widgets to be embedded such as Album/Song Player or Artist Follow widgets, but these have no correlation to a user's account playback, so those were not usable.
+In hindsight, we should have added the iframe to our index file before
+even testing play/pause calls, but we tried it out after setting that
+up, and found that embedding the entire web player was *not possible*.
+The web console revealed the following error: `"Refused to load
+https://open.spotify.com/ because it does not appear in the
+frame-ancestors directive of the Content Security Policy."` meaning
+that the actual web app was blocked for iframe use by Spotify. Spotify
+does allow other widgets to be embedded such as Album/Song Player or
+Artist Follow widgets, but these have no correlation to a user's
+account playback, so those were not usable.
 
-#### Conclusion: 
-From this experiment we were successfully able to get the necessary access tokens, refresh tokens, and user authorization codes necessary to perform Pause and Play actions, *but* we were unable to load in an iFrame of Spotify's Web Player to allow for in-browser playback. We also found that the access tokens will expire after one attempt of using it, so for our actual app we will need to add a way to continuously get new access tokens through spotifys refresh token system. This was partially implemented for our test, but ultimately was not completed as we had trouble getting around storing and manipulating a user's refresh_token globally. 
+#### Conclusion:
+From this experiment we were successfully able to get the necessary
+access tokens, refresh tokens, and user authorization codes necessary
+to perform Pause and Play actions, *but* we were unable to load in an
+iFrame of Spotify's Web Player to allow for in-browser playback. We
+also found that the access tokens will expire after one attempt of
+using it, so for our actual app we will need to add a way to
+continuously get new access tokens through spotifys refresh token
+system. This was partially implemented for our test, but ultimately
+was not completed as we had trouble getting around storing and
+manipulating a user's refresh_token globally.
 
 ```
 def generate_new_token_from_refresh do
     endpoint = "https://accounts.spotify.com/api/token"
     body = {
-      :form, [grant_type: "refresh_token", 
+      :form, [grant_type: "refresh_token",
               refresh_token: @refresh_token]
     }
     headers = [
@@ -271,8 +317,6 @@ def generate_new_token_from_refresh do
     data = Jason.decode!(resp.body)
 end
 ```
-
----
 
 ## Users
 
@@ -373,6 +417,3 @@ the next few songs
     - She authenticates the app with her Spotify account and selects
     a playlist
     - *User story continues in the 'Hosts' story*
-
-
-
