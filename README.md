@@ -148,18 +148,16 @@ From this experiment, we learned a few things:
     playlist and then including the ID in the request to the playlist
     endpoint for getting playlist track data
 
+---
 #### Experiment 1b: Controlling Playback and Queue - Alex
 
-
----
-
-# Adding New Songs to the Queue
+#### Adding New Songs to the Queue
 
 Working with queues is performed in the same way as the requests for the rest of Spotify API. The caller must provide
 the URI of the track being added to the queue along with the bearer token (obtained through OAuth 2.0) added as a header to
 the post request sent to Spotify.
 
-# Track URI
+#### Track URI
 
 Each track on Spotify follows the same format:
 
@@ -227,6 +225,7 @@ The test successfully passes - the URI of the new track is the same as URI of th
 This can also be confirmed by having Spotify running - the test changes the track to the one specified in the code.
 Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes the queue of the player (desktop app).
 
+---
 
 ### Experiment 2: Music Playback Through Browser Test - Austin=
 
