@@ -60,21 +60,21 @@ take certain actions on behalf of the user, if they authorize our app.
 In particular, the following scopes will be useful:
 
 - ```user-read-private``` allows us to view user's account details;
-- this will be used to pull data such as username and email during the
-- authorization process; we can also use this scope for searching for
-- a track on Spotify when a user requests a specific song
-- ```playlist-read-private``` allows us to read the track information
-- of a users playlists, public and private; we will use this to
-- display the initial list of playlists to start a party session with,
-- and then also display the tracks of the playlist during live voting
+this will be used to pull data such as username and email during the
+authorization process; we can also use this scope for searching for
+a track on Spotify when a user requests a specific song
+- ```playlist-read-private``` allows us to read the track information,
+display the initial list of playlists to start a party session with,
+and then also display the tracks of the playlist during live voting
 - ```user-modify-playback-state``` allows us to take actions on the
-- user's playback state; we will use this to add the top-voted songs
-- to the queue as well as skip to the next track if the votes suggest
-- we should do so ```user-read-currently-playing``` allows us to see
-- what track is currently playing on the user's account; we may use
-- this to verify that actions such as skipping tracks are successful,
-- and we will use it to display the current song being played across
-- the views of all users
+user's playback state; we will use this to add the top-voted songs
+to the queue as well as skip to the next track if the votes suggest
+we should do so
+- ```user-read-currently-playing``` allows us to see
+what track is currently playing on the user's account; we may use
+this to verify that actions such as skipping tracks are successful,
+and we will use it to display the current song being played across
+the views of all users
 
 ### Realtime Behavior
 
@@ -118,9 +118,11 @@ is logged in to.
 
 ### Experiment 1: Testing the Spotify API
 
-#### Experiment 1a: Authorization Flow and Retrieving User Data - Ben
+We conducted several experiments on the Spotify Web API endpoints
 
-#### Experiment 1b: Controlling Playback - Alex
+#### Experiment 1a: Authorization Flow and Retrieving User Data
+
+#### Experiment 1b: Controlling Playback and Queue - Alex
 
 ### Experiment 2: In-browser Playback - Austin
 
@@ -159,51 +161,66 @@ making the playlists for their next events.
 Types of users: - host (party organizer and/or DJ) - attendees
 (non-host party guests)
 
-#### Hosts Bob is throwing a party and will be acting as the DJ. He
-#### wants to make sure everyone gets to hear songs that they like so
-#### they have a fun time.
+#### Hosts
 
-- Bob creates an account with a username and a password - When the
-- party starts, Bob creates a new "party room" with a room name - He
-- authenticates the app with Spotify and then selects which one of his
-- Spotify playlists he would like to play to start the event When the
-- party starts, the playlist starts playing from the beginning Bob
-- wants input on the next set of songs to be played, so he selects 5
-- songs from the list to be voted on - He starts the voting round,
-- which will last for 1 minute - After the round of voting, the top 3
-- of the 5 songs will automatically be added to the queue - After
-- those songs are played, if there are no other rounds of voting, the
-- playlist continues playing from where it left off before the voting
-- Later, an attendee sends in a song request - Bob likes the song at
-- knows, from previous events, that it will be a crowd favorite, so he
-- adds the song directly to the queue A second attendee sends in a
-- different song request - Bob doesn't know this song and wants to get
-- guest input, so he adds it to the next round of voting During a song
-- later in the evening, Bob notices that it has several down-votes
-- from attendees - Bob choose to skip to the next song The event ends
-- and Bob can see a summary of the songs that were played, their
-- artists, how long they were played for, and their total up/down
-- votes
+Bob is throwing a party and will be acting as the DJ. He wants to make
+sure everyone gets to hear songs that they like so they have a fun
+time.
+
+- Bob creates an account with a username and a password
+    - Bob creates a new "party room" with a room name
+    - He authenticates the app with Spotify and then selects which one
+    of his Spotify playlists he would like to play to start the event
+- When the party starts, the playlist starts playing from the
+beginning
+    - Bob wants input on the next set of songs to be played, so he
+    selects 5 songs from the list to be voted on
+    - He starts the voting round, which will last for 1 minute
+    - After the round of voting, the top 3 of the 5 songs will
+    automatically be added to the queue
+    - After those songs are played, if there are no other rounds of
+    voting, the playlist continues playing from where it left off
+    before the voting
+- Later, an attendee sends in a song request
+    - Bob likes the song and knows, from previous events, that it will
+    be a crowd favorite, so he adds the song directly to the queue
+- A second attendee sends in a different song request
+    - Bob doesn't know this song and wants to get guest input, so he
+    adds it to the next round of voting
+- During a song later in the evening, Bob notices that it has several
+down-votes from attendees
+    - Bob chooses to skip to the next song
+- The event ends and Bob can see a summary of the songs that were
+played, their artists, how long they were played for, and their total
+up/down votes
 
 #### Attendees
 
 Alice is attending an event hosted by Bob.
 
-- Alice creates an account with a username and a password - She is
-- given a room name by Bob, which she uses to join the party room When
-- the party states, Alice loves the first song that is being played,
-- so she up-votes the song to give the DJ feedback Later, Bob tells
-- everyone he is going to open a round of voting for the next few
-- songs - Alice up-votes 3 of the 5 songs that she likes, down-votes
-- one of the songs that she does not want to hear, and has no
-- preference on the 5th song Alice then wants to dance to her all time
-- favorite song, so she sends in a song request to Bob with the song
-- title and artist After the party, Alice views her profile - she sees
-- the event she just attended as well as her other past events - she
-- clicks on an event and sees the list of all songs that were played
-- (title and artist) as well as the voting result for each song - back
-- on her main profile page, she sees the top genres and artists that
-- she has been up-voting across her different parties Alice then wants
-- to start her own party - She enters a room name and shares it with
-- her guests - She authenticates the app with her Spotify account and
-- selects a playlist - *User story continues in the 'Hosts' story*
+- Alice creates an account with a username and a password
+- She is given a room name by Bob, which she uses to join the party
+room
+- When the party states, Alice loves the first song that is being
+played, so she up-votes the song to give the DJ feedback
+- Later, Bob tells everyone he is going to open a round of voting for
+the next few songs
+    - Alice up-votes 3 of the 5 songs that she likes, down-votes one
+    of the songs that she does not want to hear, and has no preference
+    on the 5th song
+- Alice then wants to dance to her all time favorite song
+    - She sends in a song request to Bob with the song title and
+    artist
+- After the party, Alice views her profile
+    - she sees the event she just attended as well as her other past
+    events
+    - she clicks on an event and sees the list of all songs that were
+    played (title and artist) as well as the voting result for each
+    song
+    - back on her main profile page, she sees the top genres and
+    artists that she has been up-voting across her different parties
+- Alice then wants to start her own party
+    - She enters a room name and shares it with her guests
+    - She authenticates the app with her Spotify account and selects
+    a playlist
+    - *User story continues in the 'Hosts' story*
