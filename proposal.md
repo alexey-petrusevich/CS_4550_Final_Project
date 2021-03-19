@@ -10,9 +10,11 @@ The project we propose for this assignment is something we have titled "Spotify 
 
 This idea for this app came to us based on what we wish the DJ at a prom or wedding could do. Some DJs don't accept requests or any type of guest input at parties and instead play from their pre-determined list of songs. Others are open to requests but then have the difficult decision of determining if the requested song is something that everyone on the dance floor would like, or if it is a song that only the requester would like. Our app takes care of this dilemma and allows guests at a party to provide input to the DJ on what they want the next songs to be. 
 
+At a minimum, our application will communicate directly with Spotify, so the host can plug any device with the Spotify app and their account into a speaker and our app will control playback. However, based on the outcomes of our experiments, we are planning to embed Spotify's playback engine directly into the browser of the party host, such that 
+
 ### API
 
-
+We will be using Spotify's Web API for this project. This provides us the endpoints for everything we are planning to do, including user account authorization of our app, pulling user data such as profile information and user playlists with their corresponding tracks, and controlling the playback on their accounts, allowing us to play, pause, skip, and modify the queue
 
 
 
