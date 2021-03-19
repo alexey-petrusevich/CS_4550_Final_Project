@@ -118,9 +118,35 @@ is logged in to.
 
 ### Experiment 1: Testing the Spotify API
 
-We conducted several experiments on the Spotify Web API endpoints
+We conducted several experiments on the Spotify Web API endpoints.
 
 #### Experiment 1a: Authorization Flow and Retrieving User Data
+
+For this experiment, we created an app with a UI to test the
+authorization flow that a user of our app would go through when
+they start a party room. We tested that we could redirect the user
+to Spotify's authorization page with specific scopes (discussed above)
+and then receive a authorization code through the callback in return.
+
+We also tested getting different user data by including the access
+token in the headers of our get requests. Specifically, we tested the
+endpoints for getting user profile data (username and email) and
+user's private playlist data (both available playlist names as well
+as the titles and ids within each playlist).
+
+From this experiment, we learned a few things:
+    - We learned that the Implicit Grant flow for the Spotify Web API
+    would not allow us to get the access token in the form we needed.
+    That flow gave us the token directly through the callback uri, but
+    after a # (i.e. ```/callback/#access_token=...```), so it could
+    not be sent to the server. This led us to using the Authorization
+    Code flow, which does send the server a code which we can then
+    exchange for the access token.
+    - Second, we learned that songs, artists, playlists, and users all
+    have unique IDs which are used in the request urls to target
+    each resource. We tested extracting the ID for each available
+    playlist and then including the ID in the request to the playlist
+    endpoint for getting playlist track data
 
 #### Experiment 1b: Controlling Playback and Queue - Alex
 
@@ -158,8 +184,9 @@ making the playlists for their next events.
 
 ## User Stories
 
-Types of users: - host (party organizer and/or DJ) - attendees
-(non-host party guests)
+Types of users:
+- host (party organizer and/or DJ)
+- attendees (non-host party guests)
 
 #### Hosts
 
