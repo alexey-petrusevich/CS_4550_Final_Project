@@ -1,7 +1,7 @@
 defmodule SpotifyAPITest do
 
   def get_oauth_token do
-    "BQB4QLYhKD-_v3Aj_jZ2gtdLggeBhQiIioQm0YnuaXPMxfZDKd8DeLEbNwhZvz9Nsg_NC96O2_QhJoBXeqmx4ZUzeNIMcZUG1r3u1tn49-NuBeQfvEr5MFKcUgMChtVTMRru0COMZiw-hWyZI9NAy7v6mxO6avwWkirfgaWelLnWdkoY"
+  	# paste access token from authorization flow here  
   end
 
   # authenticates the registered app user and receives a token for making requests
