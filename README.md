@@ -172,16 +172,16 @@ Track URI has to be added as a query parameter with the key “uri”:
 
 Return value of the call is JSON with 204 code.
 
-# Device ID
+#### Device ID
 
 Device ID can be added as another parameter. If not supplied, the active device is targeted by the call.
 
-# Endpoint URL
+#### Endpoint URL
 
 Endpoint URL:
 https://api.spotify.com/v1/me/player/queue
 
-# Other Queue Actions
+#### Other Queue Actions
 
 More documentation about using this and relevant API calls:
 
@@ -193,7 +193,7 @@ https://developer.spotify.com/console/post-queue/
 
 https://developer.spotify.com/console/
 
-# Experiment
+#### Experiment
 
 The main goal of running this experiment is to test whether Spotify API is working as documented
 on Spotify Developers website.
@@ -227,7 +227,7 @@ Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes the queue o
 
 ---
 
-### Experiment 2: Music Playback Through Browser Test - Austin=
+### Experiment 2: Music Playback Through Browser Test - Austin
 
 #### Reason for test
 For a typical host user flow, after signing up, our hosts would most likely initially open up the native spotify app, then use our web-app to control playback and queues. However, we looked into the possibility of using an embedded iframe hosting Spotify's Web Player, to allow music playback through the browser itself, eliminating the need for the native spotify app. Even if it were to work, we were not sure this would have been the best flow, but we thought it would be interesting to test out regardless.
