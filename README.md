@@ -228,7 +228,52 @@ This can also be confirmed by having Spotify running - the test changes the trac
 Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes the queue of the player (desktop app).
 
 
-### Experiment 2: In-browser Playback - Austin
+### Experiment 2: Music Playback Through Browser Test - Austin=
+
+#### Reason for test
+For a typical host user flow, after signing up, our hosts would most likely initially open up the native spotify app, then use our web-app to control playback and queues. However, we looked into the possibility of using an embedded iframe hosting Spotify's Web Player, to allow music playback through the browser itself, eliminating the need for the native spotify app. Even if it were to work, we were not sure this would have been the best flow, but we thought it would be interesting to test out regardless.
+
+#### The process
+We began by working through the authorization steps (with help from Spotify's Authorization guide) to get the necessary tokens from the user for Spotify's play and pause api calls. We tested out each access call using Postman, then brought them into our app to test out those REST calls in elixir, using HTTPoison. We set up the callback uri to a new subpage temporarily created in our Event app, since that was already deployed an live. Doing so allowed us to retreive the user's code needed to get an access token, the token being needed to make any user-specific api calls. Our test makes sure that once the user's code was secured, we could actually pause and play on our spotify native app. *This test succeeded.* 
+
+Test Source Code:
+```
+test "Generate Token and Play" do
+    token = SpotifyParty.generate_token("AQDFDz7PWAMw1NBGTyTc3DwD0ncQ5GkJW7YS3CBY7j_wTVCgUP1aLW3enumL2Bu06tlY9Y0Ro4kq0W5M2vIdj7K9dfX4kTdeK1FVp43RDB-5ikwDYDM085njguvoo5j6ZjWumOouW560-E2q8e5U952oJV8bjUTUe_BsT71_QeKByXfFXGZbktqY-Ef8VrIG25cA1Addrv2UepzaKd9XpCxrMn0-1OQ1uVL3kbMxbOOIr6Ix-EiETvt1iSD02A")
+    SpotifyParty.pause_with_token(token, "b5f07eff3e2ea8f148a6ddd6cfe15ea3ee517516")
+end
+```
+
+For the sake of this test, the Device ID was taken from spotify's developer console for the call `GET https://api.spotify.com/v1/me/player/device`
+
+The following endpoints were used for the authorization call, pause call, and play call respectively:
+- https://accounts.spotify.com/api/token
+- https://api.spotify.com/v1/me/player/pause
+- https://api.spotify.com/v1/me/player/play
+
+In hindsight, we should have added the iframe to our index file before even testing play/pause calls, but we tried it out after setting that up, and found that embedding the entire web player was *not possible*. The web console revealed the following error: `"Refused to load https://open.spotify.com/ because it does not appear in the frame-ancestors directive of the Content Security Policy."` meaning that the actual web app was blocked for iframe use by Spotify. Spotify does allow other widgets to be embedded such as Album/Song Player or Artist Follow widgets, but these have no correlation to a user's account playback, so those were not usable.
+
+#### Conclusion: 
+From this experiment we were successfully able to get the necessary access tokens, refresh tokens, and user authorization codes necessary to perform Pause and Play actions, *but* we were unable to load in an iFrame of Spotify's Web Player to allow for in-browser playback. We also found that the access tokens will expire after one attempt of using it, so for our actual app we will need to add a way to continuously get new access tokens through spotifys refresh token system. This was partially implemented for our test, but ultimately was not completed as we had trouble getting around storing and manipulating a user's refresh_token globally. 
+
+```
+def generate_new_token_from_refresh do
+    endpoint = "https://accounts.spotify.com/api/token"
+    body = {
+      :form, [grant_type: "refresh_token", 
+              refresh_token: @refresh_token]
+    }
+    headers = [
+      {"Accept", "application/json"},
+      {"Content-Type", "application/x-www-form-urlencoded"},
+      {"Authorization", "Basic MDgzYzdhZGY0ZmE0NDg0NmJkYmY3YTU5NzJlOGFiMWI6NGNiNjZkNGZmZmY4NGE2ODk4YjEzYTZkNGI1ZjYxNjY="}
+    ]
+    resp = HTTPoison.post!(endpoint, body, headers, [])
+    data = Jason.decode!(resp.body)
+end
+```
+
+---
 
 ## Users
 
