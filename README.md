@@ -139,19 +139,20 @@ as the titles and ids within each playlist).
 
 From this experiment, we learned a few things:
 
-    - We learned that the Implicit Grant flow for the Spotify Web API
-    would not allow us to get the access token in the form we needed.
-    That flow gave us the token directly through the callback uri, but
-    after a # (i.e. ```/callback/#access_token=...```), so it could
-    not be sent to the server. This led us to using the Authorization
-    Code flow, which does send the server a code which we can then
-    exchange for the access token.
-    - Second, we learned that songs, artists, playlists, and users all
-    have unique IDs which are used in the request urls to target
-    each resource. We tested extracting the ID for each available
-    playlist and then including the ID in the request to the playlist
-    endpoint for getting playlist track data
+- We learned that the Implicit Grant flow for the Spotify Web API
+would not allow us to get the access token in the form we needed.
+That flow gave us the token directly through the callback uri, but
+after a # (i.e. ```/callback/#access_token=...```), so it could
+not be sent to the server. This led us to using the Authorization
+Code flow, which does send the server a code which we can then
+exchange for the access token.
+- Second, we learned that songs, artists, playlists, and users all
+have unique IDs which are used in the request urls to target
+each resource. We tested extracting the ID for each available
+playlist and then including the ID in the request to the playlist
+endpoint for getting playlist track data
 
+---
 ### Experiment 1b: Controlling Playback and Queue
 
 #### Adding New Songs to the Queue
@@ -234,6 +235,7 @@ running - the test changes the track to the one specified in the code.
 Likewise, adding calling `SpotifyParty.add_track_to_queue()` changes
 the queue of the player (desktop app).
 
+---
 ### Experiment 2: Music Playback Through Browser IFrame
 
 #### Reason for test
@@ -317,6 +319,7 @@ def generate_new_token_from_refresh do
 end
 ```
 
+---
 ## Users
 
 ### Intended Users
