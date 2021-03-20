@@ -128,10 +128,9 @@ and then receive a authorization code through the callback in return.
 
 The authorization url looked something like this:
 
-```https://accounts.spotify.com/authorize?client_id=[client_id]&scope
-=user-modify-playback-state playlist-read-private&redirect_uri=
-http://localhost:4000/callback&response_type=code```
-
+```
+https://accounts.spotify.com/authorize?client_id=[client_id]&scope=user-modify-playback-state playlist-read-private&redirect_uri=http://localhost:4000/callback&response_type=code
+```
 We also tested getting different user data by including the access
 token in the headers of our get requests. Specifically, we tested the
 endpoints for getting user profile data (username and email) and
