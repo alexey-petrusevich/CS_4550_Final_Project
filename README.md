@@ -262,6 +262,7 @@ was secured, we could actually pause and play on our spotify native
 app. *This test succeeded.*
 
 Test Source Code:
+
 ```
 test "Generate Token and Play" do
     token = SpotifyParty.generate_token("AQDFDz7PWAMw1NBGTyTc3DwD0ncQ5GkJW7YS3CBY7j_wTVCgUP1aLW3enumL2Bu06tlY9Y0Ro4kq0W5M2vIdj7K9dfX4kTdeK1FVp43RDB-5ikwDYDM085njguvoo5j6ZjWumOouW560-E2q8e5U952oJV8bjUTUe_BsT71_QeKByXfFXGZbktqY-Ef8VrIG25cA1Addrv2UepzaKd9XpCxrMn0-1OQ1uVL3kbMxbOOIr6Ix-EiETvt1iSD02A")
@@ -270,14 +271,13 @@ end
 ```
 
 For the sake of this test, the Device ID was taken from spotify's
-developer console for the call
-`GET https://api.spotify.com/v1/me/player/device`
+developer console for the call `GET https://api.spotify.com/v1/me/player/device`
 
 The following endpoints were used for the authorization call, pause
-call, and play call respectively: -
-https://accounts.spotify.com/api/token -
-https://api.spotify.com/v1/me/player/pause -
-https://api.spotify.com/v1/me/player/play
+call, and play call respectively:
+- https://accounts.spotify.com/api/token
+- https://api.spotify.com/v1/me/player/pause
+- https://api.spotify.com/v1/me/player/play
 
 In hindsight, we should have added the iframe to our index file before
 even testing play/pause calls, but we tried it out after setting that
