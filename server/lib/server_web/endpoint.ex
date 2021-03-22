@@ -7,7 +7,7 @@ defmodule ServerWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_server_key",
-    signing_salt: "cDZs+SVb"
+    signing_salt: "rxqfi3a2"
   ]
 
   socket "/socket", ServerWeb.UserSocket,
