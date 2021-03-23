@@ -13,16 +13,16 @@ defmodule ServerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ServerWeb do
-    pipe_through :browser
+  scope "/api/v1", ServerWeb do
+    pipe_through :api
 
-    get "/", PageController, :index
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/parties", PartyController, except: [:new, :edit]
+    resources "/songs", SongController, except: [:new, :edit]
+    resources "/votes", VoteController, except: [:new, :edit]
+    resources "/requests", RequestController, except: [:new, :edit]
+
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", ServerWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
