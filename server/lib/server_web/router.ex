@@ -21,6 +21,7 @@ defmodule ServerWeb.Router do
     resources "/songs", SongController, except: [:new, :edit]
     resources "/votes", VoteController, except: [:new, :edit]
     resources "/requests", RequestController, except: [:new, :edit]
+    resources "/session", SessionController, only: [:create]
 
   end
 

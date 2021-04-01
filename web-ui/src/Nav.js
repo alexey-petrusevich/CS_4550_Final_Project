@@ -9,12 +9,12 @@ import store from './store';
 function LoginForm() {
     const [name, setName] = useState("");
     const [pass, setPass] = useState("");
-  
+
     function on_submit(ev) {
       ev.preventDefault();
       api_login(name, pass);
     }
-  
+
     return (
       <Form onSubmit={on_submit} inline>
         <Form.Control name="name"
@@ -31,14 +31,16 @@ function LoginForm() {
       </Form>
     );
   }
-  
+
 let SessionInfo = connect()(({session, dispatch}) => {
+    //handles logging out by clearing the session
     function logout() {
         dispatch({type: 'session/clear'});
     }
+
     return (
         <p>
-        Logged in as {session.name} &nbsp;
+        Logged in as {session.username} &nbsp;
         <Button onClick={logout}>Logout</Button>
         </p>
     );
@@ -47,15 +49,28 @@ let SessionInfo = connect()(({session, dispatch}) => {
 function LOI({session}) {
     if (session) {
         return <SessionInfo session={session} />;
-    }   
+    }
     else {
         return <LoginForm />;
     }
 }
-  
+
 const LoginOrInfo = connect(({session}) => ({session}))(LOI);
 
-export default function AppNav() {
+function AppNav({error}) {
+  let error_banner = null;
+
+  //displays any errors returned by the server
+  if (error) {
+    error_banner = (
+      <Row>
+        <Col>
+          <Alert variant="danger">{error}</Alert>
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <div>
       <Row>
@@ -68,6 +83,9 @@ export default function AppNav() {
           <LoginOrInfo />
         </Col>
       </Row>
+      {error_banner}
     </div>
   );
 }
+
+export default connect(({error}) => ({error}))(AppNav);

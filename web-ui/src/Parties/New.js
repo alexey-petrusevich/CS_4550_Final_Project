@@ -1,7 +1,7 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
-import { useState } from 'react'
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { create_event, fetch_events } from '../api';
+import { create_party, get_parties } from '../api';
 
 export default function PartiesNew() {
   let history = useHistory();
@@ -12,13 +12,14 @@ export default function PartiesNew() {
     console.log(ev);
     console.log(party);
 
-    create_event(party).then((resp) => {
+    create_party(party).then((resp) => {
       if (resp["errors"]) {
         console.log("errors", resp.errors);
       }
       else {
-        history.push("/");
-        fetch_events();
+        get_parties();
+        //new_party = get_new_party(); TODO get this
+        //history.push("/parties" + new_party.id);
       }
     });
   }
@@ -38,12 +39,12 @@ export default function PartiesNew() {
   return (
     <Row>
       <Col>
-        <h2>New Party</h2>
+        <h2>Start A New Party</h2>
         <Form onSubmit={submit}>
           <Form.Group>
             <Form.Label>Party Name</Form.Label>
             <Form.Control as="textarea"
-                          rows={4}
+                          rows={1}
                           onChange={updateName}
                           value={party.roomname} />
           </Form.Group>
