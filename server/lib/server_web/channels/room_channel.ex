@@ -7,8 +7,8 @@ defmodule ServerWeb.RoomChannel do
   alias Multibulls.GameServer -> lib/multibulls/multibulls_server.ex
   """
 
-  alias Server.Game
-  alias Server.GameServer
+  alias Server.Game       # lib/server/server.ex
+  alias Server.GameServer # lib/server/server_gameserver.ex
 
   @impl true
   def join("room:" <> lobbyname, payload, socket) do
