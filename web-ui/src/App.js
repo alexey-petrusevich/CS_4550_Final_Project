@@ -19,8 +19,8 @@ function App() {
         <Route path="/parties/new" exact>
           <PartiesNew />
         </Route>
-        <Route path="/parties/:partyId?">
-          <PartiesSingle />
+        <Route path="/parties/:id">
+          <ShowParty />
         </Route>
       </Switch>
     </Container>

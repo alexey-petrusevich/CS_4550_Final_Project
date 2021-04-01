@@ -1,14 +1,11 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import SpotifyAuth from "../OAuth/Auth";
 
 //import NewRequest from "../Requests/New";
 
-//--------------------------SPOTIFY AUTH FLOW-------------------------
-//authenticates the host's Spotify account
-function authenticate() {
-  console.log("auth");
-}
+
 
 //determines if the account has been successfully linked yet
 function SLON({session}) {
@@ -18,11 +15,7 @@ function SLON({session}) {
   }
   else {
       return (
-        <Form onSubmit={authenticate}>
-          <Button variant="primary" type="submit">
-            Link With Spotify
-          </Button>
-        </Form>
+        <SpotifyAuth />
       );
   }
 }
@@ -37,16 +30,17 @@ function ShowParty({parties}) {
   const location = useLocation();
   let party_number = location.pathname.split("/")[2];
   let party = parties[party_number - 1];
-  localStorage.setItem("party_id", party.id);
+  //localStorage.setItem("party_id", party.id);
 
   //determines the role of this user
-  let username = localStorage.getItem("session").username;
+  //let username = localStorage.getItem("session").username;
   if (true) {
     return (
       <Row>
         <Col>
-          <h2>{party.roomname}</h2>
+          <h2>{party.name}</h2>
           <p><b>Description: </b>{party.description}</p>
+          <p><b>Attendee access code: </b>{party.roomcode}</p>
           <p><i>You are the host</i></p>
           <SpotifyLinkedOrNot />
 
@@ -69,7 +63,7 @@ function ShowParty({parties}) {
     return (
       <Row>
         <Col>
-          <h2>{party.roomname}</h2>
+          <h2>{party.name}</h2>
           <p><b>Description: </b>{party.description}</p>
           <p><i>You are an attendee</i></p>
 

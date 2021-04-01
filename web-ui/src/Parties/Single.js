@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import store from '../store';
-import { create_party, fetch_parties } from '../api';
+import { create_party, create_parties } from '../api';
 
 //how do we handle making and holding queued songs?
 

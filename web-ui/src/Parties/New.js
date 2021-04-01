@@ -2,6 +2,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { create_party, get_parties } from '../api';
+import SpotifyAuth from "../OAuth/Auth";
 
 export default function PartiesNew() {
   let history = useHistory();

@@ -59,4 +59,5 @@ export function api_login(username, password) {
 
 export function load_defaults() {
     get_users();
+    get_parties();
 }

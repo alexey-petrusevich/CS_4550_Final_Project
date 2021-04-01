@@ -22,3 +22,5 @@ iain = Repo.insert!(%User{username: "Iain", password_hash: pass_hash})
 austin = Repo.insert!(%User{username: "Austin", password_hash: pass_hash})
 alex = Repo.insert!(%User{username: "Alex", password_hash: pass_hash})
 benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash})
+
+party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "trevor", description: "Celebrate Trevor's birthday", host_id: benjamin.id})

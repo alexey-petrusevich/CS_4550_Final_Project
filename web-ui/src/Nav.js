@@ -76,7 +76,7 @@ function AppNav({error}) {
       <Row>
         <Col>
           <Nav variant="pills">
-            <Link to="/parties">Parties</Link>
+            <Link to="/parties/1">Parties</Link>
           </Nav>
         </Col>
         <Col>

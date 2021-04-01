@@ -11,8 +11,10 @@ defmodule ServerWeb.PartyView do
   end
 
   def render("party.json", %{party: party}) do
+    #TODO preload host
     %{id: party.id,
-      roomname: party.roomname,
+      name: party.name,
+      roomcode: party.roomcode,
       description: party.description}
   end
 end
