@@ -1,5 +1,13 @@
 import { createStore, combineReducers } from 'redux';
 
+export function get_user_id() {
+  let session = localStorage.getItem("session");
+  if (!session) {
+    return null;
+  }
+  session = JSON.parse(session);
+  return session.user_id;
+}
 
 //--------------------------SESSION--------------------------
 function save_session(sess) {

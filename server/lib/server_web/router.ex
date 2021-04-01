@@ -22,6 +22,7 @@ defmodule ServerWeb.Router do
     resources "/votes", VoteController, except: [:new, :edit]
     resources "/requests", RequestController, except: [:new, :edit]
     resources "/session", SessionController, only: [:create]
+    resources "/auth", AuthController, only: [:create]
 
   end
 

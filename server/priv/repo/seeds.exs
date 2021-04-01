@@ -15,6 +15,7 @@ alias Server.Users.User
 alias Server.Parties.Party
 alias Server.Votes.Vote
 alias Server.Requests.Request
+alias Server.AuthTokens.AuthToken
 
 pass_hash = Argon2.hash_pwd_salt("password")
 
@@ -24,3 +25,5 @@ alex = Repo.insert!(%User{username: "Alex", password_hash: pass_hash})
 benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash})
 
 party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "trevor", description: "Celebrate Trevor's birthday", host_id: benjamin.id})
+
+token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})

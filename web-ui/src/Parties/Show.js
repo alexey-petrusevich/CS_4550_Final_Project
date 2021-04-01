@@ -5,23 +5,6 @@ import SpotifyAuth from "../OAuth/Auth";
 
 //import NewRequest from "../Requests/New";
 
-
-
-//determines if the account has been successfully linked yet
-function SLON({session}) {
-  //auth token will be part of
-  if (session.auth_token) {
-    return <p><i>Spotify account linked</i></p>;
-  }
-  else {
-      return (
-        <SpotifyAuth />
-      );
-  }
-}
-
-const SpotifyLinkedOrNot = connect(
-  ({session}) => ({session}))(SLON);
 //------------------------------------------------------------------
 
 function ShowParty({parties}) {
@@ -42,7 +25,7 @@ function ShowParty({parties}) {
           <p><b>Description: </b>{party.description}</p>
           <p><b>Attendee access code: </b>{party.roomcode}</p>
           <p><i>You are the host</i></p>
-          <SpotifyLinkedOrNot />
+          <SpotifyAuth />
 
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
