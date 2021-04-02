@@ -72,10 +72,18 @@ export function api_track_search(query, api_token) {
     });
 }
 
+/*
+- Playback controls - API calls
+- Retrieving/posting info to API - server-side calls
+
+
+ */
+
 
 // loads all playlists for authorized user (host)
 export function api_list_playlists(user_id, api_token) {
     let headers = makeHeader(api_token);
+    // TODO: replaced with calling serverside instead
     api_get("/users/" + user_id + "/playlists", headers).then((data) => {
         dispatchToStore("playlist/list_all", data);
     });
@@ -105,3 +113,4 @@ export function load_defaults() {
     fetch_users();
     fetch_parties(); // TODO: may not need this??
 }
+
