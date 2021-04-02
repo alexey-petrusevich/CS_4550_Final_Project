@@ -4,17 +4,18 @@ import { Switch, Route } from 'react-router-dom';
 import "./App.scss";
 
 import Nav from "./Nav";
+import Landing from "./Landing";
 import PartiesSingle from "./Parties/Single";
 import PartiesNew from "./Parties/New";
 import ShowParty from "./Parties/Show";
 
 function App() {
   return (
-    <Container>
+    <Container className="app-background">
       <Nav />
       <Switch>
         <Route path="/" exact>
-
+          <Landing />
         </Route>
         <Route path="/parties/new" exact>
           <PartiesNew />

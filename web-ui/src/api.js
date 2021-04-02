@@ -36,12 +36,6 @@ export function get_users() {
     }));
 }
 
-//------------------------AUTH----------------------------
-export function set_auth(auth) {
-  return api_post("/auth", {auth});
-}
-
-
 //------------------------LOGIN----------------------------
 export function api_login(username, password) {
     api_post("/session", {username, password}).then((data) => {

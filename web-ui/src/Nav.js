@@ -1,5 +1,5 @@
 import { Nav, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useState } from 'react';
 import { api_login } from './api';
@@ -16,33 +16,41 @@ function LoginForm() {
     }
 
     return (
-      <Form onSubmit={on_submit} inline>
-        <Form.Control name="name"
-                      type="text"
-                      onChange={(ev) => setName(ev.target.value)}
-                      value={name} />
-        <Form.Control name="password"
-                      type="password"
-                      onChange={(ev) => setPass(ev.target.value)}
-                      value={pass} />
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
+      <Col className="login" lg={7}>
+        <Form onSubmit={on_submit} inline>
+          <Form.Control name="name"
+                        type="text"
+                        onChange={(ev) => setName(ev.target.value)}
+                        value={name} />
+          <Form.Control name="password"
+                        type="password"
+                        onChange={(ev) => setPass(ev.target.value)}
+                        value={pass} />
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
+      </Col>
     );
   }
 
 let SessionInfo = connect()(({session, dispatch}) => {
+    const history = useHistory();
+
     //handles logging out by clearing the session
-    function logout() {
+    function logout(ev) {
+        ev.preventDefault();
         dispatch({type: 'session/clear'});
+        history.push("/");
     }
 
     return (
+      <Col className="login" md={{ span: 4, offset: 4 }}>
         <p>
         Logged in as {session.username} &nbsp;
-        <Button onClick={logout}>Logout</Button>
+        <Button className="logout" onClick={logout}>Logout</Button>
         </p>
+      </Col>
     );
 });
 
@@ -72,16 +80,14 @@ function AppNav({error}) {
   }
 
   return (
-    <div>
+    <div className="nav-bar">
       <Row>
         <Col>
           <Nav variant="pills">
             <Link to="/parties/1">Parties</Link>
           </Nav>
         </Col>
-        <Col>
-          <LoginOrInfo />
-        </Col>
+        <LoginOrInfo />
       </Row>
       {error_banner}
     </div>

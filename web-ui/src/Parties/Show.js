@@ -1,13 +1,22 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { get_parties } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 
 //import NewRequest from "../Requests/New";
 
 //------------------------------------------------------------------
 
-function ShowParty({parties}) {
+function ShowParty({parties, session}) {
+
+  console.log("parties", parties)
+
+  if (parties.length === 0) {
+    console.log("no parties");
+    parties = get_parties()
+  }
+  console.log(parties)
 
   //determines what party to display based on the path
   const location = useLocation();
@@ -16,8 +25,9 @@ function ShowParty({parties}) {
   //localStorage.setItem("party_id", party.id);
 
   //determines the role of this user
-  //let username = localStorage.getItem("session").username;
-  if (true) {
+  let username = session.username
+  let hostname = party.host.username;
+  if (username === hostname) {
     return (
       <Row>
         <Col>
