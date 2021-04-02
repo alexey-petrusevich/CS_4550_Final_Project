@@ -2,6 +2,8 @@ defmodule ServerWeb.PartyView do
   use ServerWeb, :view
   alias ServerWeb.PartyView
 
+  alias ServerWeb.UserView
+
   def render("index.json", %{parties: parties}) do
     %{data: render_many(parties, PartyView, "party.json")}
   end
@@ -11,8 +13,11 @@ defmodule ServerWeb.PartyView do
   end
 
   def render("party.json", %{party: party}) do
+    #TODO preload host
     %{id: party.id,
-      roomname: party.roomname,
-      description: party.description}
+      name: party.name,
+      roomcode: party.roomcode,
+      description: party.description,
+      host: render_one(party.host, UserView, "user.json")}
   end
 end

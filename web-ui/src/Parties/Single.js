@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import store from '../store';
-import { create_party, fetch_parties } from '../api';
+import { create_party, create_parties } from '../api';
 
 //how do we handle making and holding queued songs?
 
 function PartiesSingle({parties, votes, requests, session}) {
-    
+
     let path_name = window.location.pathname;
     let partyId = path_name.substring(path_name.lastIndexOf("/") + 1);
     let currParty = parties.filter( (party) => partyId === party.id.toString());
@@ -18,7 +18,7 @@ function PartiesSingle({parties, votes, requests, session}) {
     // const invs = votes;
     let partyVotes = votes.filter( (vote) => partyId === vote.user.id.toString());
     console.log(partyVotes);
-    
+
     return (
         <div>
             <h1>Show Party #{currParty.id}</h1>
@@ -27,7 +27,7 @@ function PartiesSingle({parties, votes, requests, session}) {
                 <li><strong>Desc: </strong>{currParty.description}</li>
                 <li>
                     <strong>Created By:</strong>
-                    {currParty.host.name}
+                    {currParty.host}
                 </li>
             </ul>
 

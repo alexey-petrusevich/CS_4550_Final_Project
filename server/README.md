@@ -1,3 +1,15 @@
+# Auth Flow
+- new DB table ```authtokens``` for storing access tokens
+   - ```:token``` and ```:user_id``` field
+
+- ```Link with Spotify``` button on the party host view
+- Opens a new window with the Spotify Auth page; user can approve scope
+    - request is sent with the requesting user's id (host id) as state
+- On return, callback is [server_domain]/ap1/v1/auth/callback
+    - server receives the auth code and the user id
+    - exchanges auth code for an access token
+    - creates or updates DD table ```authtokens``` with new access_token for user_id
+
 # Server
 
 To start your Phoenix server:

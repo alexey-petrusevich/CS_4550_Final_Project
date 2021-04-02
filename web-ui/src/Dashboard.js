@@ -1,7 +1,7 @@
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import UserStats from "./UserStats";
+
 
 function PartyInfo({party}) {
   // var event_path = "/parties/" + party.id
@@ -27,7 +27,7 @@ function Dashboard({parties, session}) {
   let pastParties = parties.filter( (party) => session && session.user_id === party.user_id);
 
   let party_cards = pastParties.map((party) => (
-    <Event party={party} key={party.id} />
+    <PartyInfo party={party} key={party.id} />
   ));
 
   let new_party_link = null;
@@ -47,7 +47,7 @@ function Dashboard({parties, session}) {
       </div>
       <div>
           <h3>User Stats</h3>
-          <UserStats />
+
       </div>
     </div>
   );
