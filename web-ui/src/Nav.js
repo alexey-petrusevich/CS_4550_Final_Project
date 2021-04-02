@@ -7,12 +7,14 @@ import { Link } from 'react-router-dom';
 import store from './store';
 
 function LoginForm() {
+    const history = useHistory();
     const [name, setName] = useState("");
     const [pass, setPass] = useState("");
 
     function on_submit(ev) {
       ev.preventDefault();
       api_login(name, pass);
+      history.push("/");
     }
 
     return (

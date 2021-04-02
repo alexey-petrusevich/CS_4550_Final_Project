@@ -69,7 +69,25 @@
 .home-buttons {
   margin: 0;
   position: absolute;
-  top: 50%;
+  top: 40%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.landing-start {
+  margin: 0;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.landing-join {
+  margin: 0;
+  position: absolute;
+  top: 48%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -78,4 +96,14 @@
 .welcome {
   text-align: center;
   font-size: 60px;
+}
+
+.error-msg {
+  color: red;
+  margin: 0;
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }

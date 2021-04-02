@@ -55,24 +55,16 @@ export default function PartiesNew() {
         <Form onSubmit={submit}>
           <Form.Group>
             <Form.Label>Party Name</Form.Label>
-            <Form.Control as="textarea"
-                          rows={1}
+            <Form.Control rows={1}
                           onChange={updateName}
-                          value={party.roomname} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Attendee Code</Form.Label>
-            <Form.Control as="textarea"
-                          rows={1}
-                          onChange={updateCode}
-                          value={party.roomcode} />
+                          value={"" || party.roomname} />
           </Form.Group>
           <Form.Group>
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea"
-                          rows={4}
+                          rows={2}
                           onChange={updateDesc}
-                          value={party.description} />
+                          value={"" || party.description} />
           </Form.Group>
           <Button variant="primary" type="submit">
             Create Party
