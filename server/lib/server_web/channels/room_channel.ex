@@ -15,7 +15,7 @@ defmodule ServerWeb.RoomChannel do
     GameServer.start(lobbyname)
     socket = assign(socket, :roomname, lobbyname)
     room = GameServer.peek(lobbyname)
-    {:ok, Game.view(game, ""), socket}
+    {:ok, Game.view(room, ""), socket}
   end
 
   @impl true
