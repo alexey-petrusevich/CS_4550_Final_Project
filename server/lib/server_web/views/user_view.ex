@@ -13,6 +13,6 @@ defmodule ServerWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
-      password: user.password}
+      password_hash: user.password_hash} #TODO remove?
   end
 end

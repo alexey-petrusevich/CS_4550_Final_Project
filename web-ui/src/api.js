@@ -1,19 +1,44 @@
 import store from './store';
 
+//------------------------API----------------------------
 export async function api_get(path) {
     let text = await fetch("http://localhost:4000/api/v1" + path, {});
     let resp = await text.json();
     return resp.data;
 }
 
-export function fetch_users() {
+export async function api_post(path, data) {
+  let req = {method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)};
+  let text = await fetch("http://localhost:4000/api/v1" + path, req);
+  let resp = await text.json();
+  return resp;
+}
+
+//------------------------PARTIES----------------------------
+export function get_parties() {
+    api_get("/parties").then((data) => store.dispatch({
+        type: 'parties/set',
+        data: data,
+    }));
+}
+
+export function create_party(party) {
+  return api_post("/parties", {party});
+}
+
+//------------------------USERS----------------------------
+export function get_users() {
     api_get("/users").then((data) => store.dispatch({
         type: 'users/set',
         data: data,
     }));
 }
-export function api_login(name, password) {
-    api_post("/session", {name, password}).then((data) => {
+
+//------------------------LOGIN----------------------------
+export function api_login(username, password) {
+    api_post("/session", {username, password}).then((data) => {
       console.log("login resp", data);
       if (data.session) {
         let action = {
@@ -33,5 +58,6 @@ export function api_login(name, password) {
   }
 
 export function load_defaults() {
-    fetch_users();
+    get_users();
+    get_parties();
 }
