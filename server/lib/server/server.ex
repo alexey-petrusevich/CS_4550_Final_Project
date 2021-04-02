@@ -1,4 +1,4 @@
-defmodule Server.Game do
+defmodule Server.Game do # Change module name?
   import Enum
 
   # Get a new, blank game object

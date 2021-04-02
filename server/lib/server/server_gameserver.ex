@@ -1,4 +1,4 @@
-defmodule Server.GameServer do
+defmodule Server.GameServer do # Change module name?
   use GenServer
 
   alias Server.Game
