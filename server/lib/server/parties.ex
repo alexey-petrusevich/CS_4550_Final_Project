@@ -19,6 +19,7 @@ defmodule Server.Parties do
   """
   def list_parties do
     Repo.all(Party)
+    |> Repo.preload(:host)
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule Server.Parties do
       ** (Ecto.NoResultsError)
 
   """
-  def get_party!(id), do: Repo.get!(Party, id)
+  def get_party!(id) do
+    Repo.get!(Party, id)
+    |> Repo.preload(:host)
+  end
 
   @doc """
   Creates a party.
