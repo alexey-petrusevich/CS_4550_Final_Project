@@ -2,6 +2,8 @@ defmodule Server.GameServer do # Change module name?
   use GenServer
 
   alias Server.Game
+  alias Server.Parties
+  alias Server.Parties.Party
 
   # public interface
 
@@ -20,7 +22,8 @@ defmodule Server.GameServer do # Change module name?
   end
 
   def start_link(name) do
-    game = Game.new # TODO: Probably change, replace with game instance
+    # game = Game.new # TODO: Probably change, replace with game instance
+    game = Parties.create_party()
     GenServer.start_link(
       __MODULE__,
       game,
