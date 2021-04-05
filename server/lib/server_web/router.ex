@@ -25,6 +25,7 @@ defmodule ServerWeb.Router do
 
     # server uri: http://localhost:4000/api/v1/auth/callback
     get "/auth/callback", AuthController, :callback
+    get "/playback", PlaybackController, :playback
 
   end
 end
