@@ -24,6 +24,8 @@ austin = Repo.insert!(%User{username: "Austin", password_hash: pass_hash})
 alex = Repo.insert!(%User{username: "Alex", password_hash: pass_hash})
 benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash})
 
-party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "trevor", description: "Celebrate Trevor's birthday", host_id: benjamin.id})
+party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id})
+party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 4], host_id: austin.id})
+
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})

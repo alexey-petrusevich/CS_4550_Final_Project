@@ -18,6 +18,7 @@ defmodule ServerWeb.PartyView do
       name: party.name,
       roomcode: party.roomcode,
       description: party.description,
+      attendees: party.attendees,
       host: render_one(party.host, UserView, "user.json")}
   end
 end

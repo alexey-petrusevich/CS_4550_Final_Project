@@ -2,7 +2,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { join_party } from '../api.js';
+import { join_party, get_parties } from '../api.js';
 
 function JoinParty({parties, session}) {
   let history = useHistory();
@@ -14,6 +14,7 @@ function JoinParty({parties, session}) {
       let party = parties.filter( (party) => roomcode === party.roomcode);
       let party_id = party[0].id;
       join_party(party_id, user_id);
+      get_parties();
       history.push("/parties/" + party_id);
     }
   }

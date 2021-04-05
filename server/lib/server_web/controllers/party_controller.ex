@@ -46,14 +46,8 @@ defmodule ServerWeb.PartyController do
   end
 
   def join(conn, %{"party_id" => p_id, "user_id" => u_id}) do
-
     party = Parties.get_party!(p_id)
-    user = Users.get_user!(u_id)
-
-    Parties.update_attendees(party, user)
-
-    #Parties.update_attendees(party_set, user, party)
-
+    Parties.update_attendees(party, u_id)
     conn
     |> send_resp(200, Jason.encode!(%{}))
   end

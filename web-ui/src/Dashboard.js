@@ -27,7 +27,13 @@ function Dashboard({parties, session}) {
 
   let hostedParties = parties.filter( (party) => session && session.user_id === party.host.id);
 
-  let party_cards = hostedParties.map((party) => (
+  let host_cards = hostedParties.map((party) => (
+    <PartyInfo party={party} key={party.id} />
+  ));
+
+  let attendedParties = parties.filter( (party) => session && party.attendees && party.attendees.includes(session.user_id));
+
+  let party_cards = attendedParties.map((party) => (
     <PartyInfo party={party} key={party.id} />
   ));
 
@@ -42,7 +48,7 @@ function Dashboard({parties, session}) {
       <h2>Dashboard</h2>
       <div>
         <h3>Parties You've Hosted { new_party_link }</h3>
-        <Row>{party_cards}</Row>
+        <Row>{host_cards}</Row>
       </div>
       <div className="component-spacing"></div>
       <div>

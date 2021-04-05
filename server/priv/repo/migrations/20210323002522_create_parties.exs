@@ -7,7 +7,7 @@ defmodule Server.Repo.Migrations.CreateParties do
       add :roomcode, :string, null: false
       add :description, :text, null: false
       add :host_id, references(:users, on_delete: :nothing), null: false
-      #add :attendee_id, references(:users, on_delete: :nothing), null: false
+      add :attendees, {:array, :integer}, null: false
 
       timestamps()
     end

@@ -120,22 +120,10 @@ defmodule Server.Parties do
     Party.changeset(party, attrs)
   end
 
-  def update_attendees(%Party{} = party, %User{} = user) do
-    party = party
-    |> Repo.preload(:attendees)
-
-    IO.inspect(party)
-
-    party = party
-    |> Ecto.Changeset.change()
-
-    IO.inspect(party)
-
-    party = party 
-    |> Ecto.Changeset.put_assoc(:attendees, user)
+  # updates the list of attendees of the party
+  def update_attendees(%Party{} = party, user_id) do
+    party
+    |> Ecto.Changeset.change(attendees: [user_id | party.attendees])
     |> Repo.update()
-
-    IO.inspect(party)
-
   end
 end
