@@ -25,7 +25,6 @@ defmodule ServerWeb.PartyController do
 
   def show(conn, %{"id" => id}) do
     party = Parties.get_party!(id)
-    IO.inspect(party)
     render(conn, "show.json", party: party)
   end
 

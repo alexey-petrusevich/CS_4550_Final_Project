@@ -24,11 +24,9 @@ export function get_parties() {
         type: 'parties/set',
         data: data,
     }));
-    console.log("Getting parties from api.js")
 }
 
 export function get_party(id) {
-  console.log("it's being called");
   let path = "/parties/" + id
   return api_get(path);
 }

@@ -11,6 +11,7 @@ export default function PartiesNew() {
 
   function submit(ev) {
     ev.preventDefault();
+    //sets the host_id to the current user
     party.host_id = get_user_id();
     create_party(party).then((resp) => {
       if (resp["errors"]) {
@@ -18,7 +19,7 @@ export default function PartiesNew() {
       }
       else {
         get_parties();
-        history.push("/dashboard");
+        history.push("/parties/" + resp.data.id);
       }
     });
   }

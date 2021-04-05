@@ -21,9 +21,7 @@ function App() {
         <Route path="/parties/new" exact>
           <PartiesNew />
         </Route>
-        <Route path="/parties/:id">
-          <ShowParty />
-        </Route>
+        <Route path="/parties/:id" component={ShowParty} exact />
         <Route path="/users/new" exact>
           <NewUser />
         </Route>

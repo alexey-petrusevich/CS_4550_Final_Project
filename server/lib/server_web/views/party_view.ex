@@ -3,6 +3,7 @@ defmodule ServerWeb.PartyView do
   alias ServerWeb.PartyView
 
   alias ServerWeb.UserView
+  alias ServerWeb.SongView
 
   def render("index.json", %{parties: parties}) do
     %{data: render_many(parties, PartyView, "party.json")}
@@ -19,6 +20,7 @@ defmodule ServerWeb.PartyView do
       roomcode: party.roomcode,
       description: party.description,
       attendees: party.attendees,
+      songs: render_many(party.songs, SongView, "song.json"),
       host: render_one(party.host, UserView, "user.json")}
   end
 end

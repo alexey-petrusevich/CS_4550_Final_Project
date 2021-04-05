@@ -24,6 +24,7 @@ defmodule Server.Parties do
   def list_parties do
     Repo.all(Party)
     |> Repo.preload(:host)
+    |> Repo.preload(:songs)
   end
 
   @doc """
@@ -43,6 +44,7 @@ defmodule Server.Parties do
   def get_party!(id) do
     Repo.get!(Party, id)
     |> Repo.preload(:host)
+    |> Repo.preload(:songs)
   end
 
   @doc """

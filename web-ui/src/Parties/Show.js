@@ -1,16 +1,17 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { get_party } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
+import ShowSongs from "../Songs/Show";
 
 //playback control images
 import play from "../images/play.png";
 import pause from "../images/pause.png";
 import skip from "../images/skip.png";
 
-
+//play, pause, skip playback controls
 function PlaybackControls() {
   return (
     <Row className="playback-controls">
@@ -34,20 +35,16 @@ function PlaybackControls() {
 }
 
 
-function ShowParty({ parties, session }) {
+function ShowParty({session}) {
+  const [party, setParty] = useState({name: "", roomcode: "",
+      description: "", songs: [], host: {username: "N/A"}});
 
-  // if (parties.length === 0) {
-  //   console.log("no parties");
-  //   await get_party("1");
-  // }
-  // console.log("After party data get");
-  //
-  // //determines what party to display based on the path
-  const location = useLocation();
-  let party_number = location.pathname.split("/")[2];
-  let party = parties[party_number - 1];
+  //loads the party with the id given by the route path
+  let { id } = useParams();
+  useEffect(() => {
+    get_party(id).then((p) => setParty(p))
+  },[id]);
 
-  //determines the role of this user
   let username = session.username
   let hostname = party.host.username;
   if (username === hostname) {
@@ -66,6 +63,7 @@ function ShowParty({ parties, session }) {
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
+          <ShowSongs songs={party.songs}/>
           <div className="component-spacing"></div>
           <h3>Voting</h3>
           <p><i>Reults of most recent or current round of voting</i></p>
@@ -103,4 +101,4 @@ function ShowParty({ parties, session }) {
 
 }
 
-export default connect(({parties, session}) => ({parties, session}))(ShowParty);
+export default connect(({session}) => ({session}))(ShowParty);
