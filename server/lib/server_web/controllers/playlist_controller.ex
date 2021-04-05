@@ -1,9 +1,30 @@
 defmodule ServerWeb.PlaylistController do
   use ServerWeb, :controller
+  use Server.AuthTokens
+
+
+  # preload all all track for the given user playlists given user_id
+  def preload_playlist_tracks(conn, %{"user_id" => user_id}) do
+    token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
+    track_uris = get_playlist_tracks(user_id, token)
+    Enum.map(
+      track_uris,
+      fn track_uri ->
+        url = "https://api.spotify.com/v1/me/player/queue"
+        body = Jason.encode!(%{"uri": track_uri})
+        headers = [
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer #{token}}"
+        ]
+        HTTPoison.post!(url, body, headers)
+      end
+    )
+  end
 
 
   # returns song info for at most 5 playlists associated with logged in user
-  def get_playlists(conn, %{"user_id" => user_id, "token" => token}) do
+  def get_playlist_tracks(user_id, token) do
     url = "https://api.spotify.com/v1/me/playlists"
     headers = [
       "Accept": "application/json",
@@ -19,7 +40,6 @@ defmodule ServerWeb.PlaylistController do
     HTTPoison.get!(url, headers, options)
     |> list_songs(token)
   end
-
 
 
   # returns a list of songs given JSON response
@@ -69,58 +89,6 @@ defmodule ServerWeb.PlaylistController do
     end
   end
 
-
-
-
-
-
-
-  def play(conn, %{"user_id" => user_id, "token" => token}) do
-    url = "https://api.spotify.com/v1/me/player/play"
-    body = ""
-    headers = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer #{token}}"
-    ]
-    HTTPoison.put!(url, body, headers)
-  end
-
-
-  def pause(conn, %{"user_id" => user_id, "token" => token}) do
-    url = "https://api.spotify.com/v1/me/player/pause"
-    body = ""
-    headers = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer #{token}}"
-    ]
-    HTTPoison.put!(url, body, headers)
-  end
-
-
-  def skip(conn, %{"user_id" => user_id, "token" => token}) do
-    url = "https://api.spotify.com/v1/me/player/next"
-    body = ""
-    headers = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer #{token}}"
-    ]
-    HTTPoison.post!(url, body, headers)
-  end
-
-
-  def add_to_queue(conn, %{"user_id" => user_id, "token" => token, "track_uri" => track_uri}) do
-    url = "https://api.spotify.com/v1/me/player/queue"
-    body = Jason.encode!(%{"uri": track_uri})
-    headers = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer #{token}}"
-    ]
-    HTTPoison.post!(url, body, headers)
-  end
 
 
 end
