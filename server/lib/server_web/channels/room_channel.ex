@@ -1,14 +1,11 @@
 defmodule ServerWeb.RoomChannel do
   use ServerWeb, :channel
 
-  """
-  TODO:
-  alias Multibulls.Game -> lib/multibulls/multibulls.ex
-  alias Multibulls.GameServer -> lib/multibulls/multibulls_server.ex
-  """
-
   alias Server.Game       # lib/server/server.ex
   alias Server.GameServer # lib/server/server_gameserver.ex
+  alias ServerWeb         # lib/server_web.ex
+
+  # TODO: FIGURE OUT WHAT VIEW TO USE
 
   @impl true
   def join("room:" <> lobbyname, payload, socket) do
@@ -16,7 +13,7 @@ defmodule ServerWeb.RoomChannel do
       GameServer.start(lobbyname)
       socket = assign(socket, :roomname, lobbyname)
       room = GameServer.peek(lobbyname)
-      {:ok, Game.view(game, ""), socket}
+      {:ok, ServerWeb.view, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -26,8 +23,6 @@ defmodule ServerWeb.RoomChannel do
   def handle_in("login", %{"name" => username}, socket) do
     socket = assign(socket, :username, username)
     currgame = GameServer.peek(socket.assigns[:roomname])
-    {:reply, {:ok, Game.view(currgame, username)}, socket}
+    {:reply, {:ok, ServerWeb.view}, socket}
   end
-
-  # TODO: Receive commands from socket.js
 end
