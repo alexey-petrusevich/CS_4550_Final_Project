@@ -11,21 +11,14 @@ export default function PartiesNew() {
 
   function submit(ev) {
     ev.preventDefault();
-    console.log(ev);
-
-
     party.host_id = get_user_id();
-
-    console.log("party", party);
-
     create_party(party).then((resp) => {
       if (resp["errors"]) {
         console.log("errors", resp.errors);
       }
       else {
         get_parties();
-        //redirect to user profile page, with the party listed
-        history.push("/");
+        history.push("/dashboard");
       }
     });
   }

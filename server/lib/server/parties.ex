@@ -8,6 +8,10 @@ defmodule Server.Parties do
 
   alias Server.Parties.Party
 
+  alias Server.Users.User
+
+  import Ecto.Changeset
+
   @doc """
   Returns the list of parties.
 
@@ -54,9 +58,19 @@ defmodule Server.Parties do
 
   """
   def create_party(attrs \\ %{}) do
+    attrs = attrs
+    |> Map.put("roomcode", gen_room_code())
+
     %Party{}
+    |> Repo.preload(:host)
     |> Party.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def gen_room_code() do
+    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    |> Enum.take_random(4)
+    |> Enum.join("")
   end
 
   @doc """
@@ -104,5 +118,24 @@ defmodule Server.Parties do
   """
   def change_party(%Party{} = party, attrs \\ %{}) do
     Party.changeset(party, attrs)
+  end
+
+  def update_attendees(%Party{} = party, %User{} = user) do
+    party = party
+    |> Repo.preload(:attendees)
+
+    IO.inspect(party)
+
+    party = party
+    |> Ecto.Changeset.change()
+
+    IO.inspect(party)
+
+    party = party 
+    |> Ecto.Changeset.put_assoc(:attendees, user)
+    |> Repo.update()
+
+    IO.inspect(party)
+
   end
 end

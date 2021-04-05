@@ -24,10 +24,21 @@ export function get_parties() {
         type: 'parties/set',
         data: data,
     }));
+    console.log("Getting parties from api.js")
+}
+
+export function get_party(id) {
+  console.log("it's being called");
+  let path = "/parties/" + id
+  return api_get(path);
 }
 
 export function create_party(party) {
-    return api_post("/parties", {party});
+  return api_post("/parties", {party});
+}
+
+export function join_party(party_id, user_id) {
+  return api_post("/parties/join", {"party_id": party_id, "user_id": user_id});
 }
 
 //------------------------USERS----------------------------
@@ -36,6 +47,10 @@ export function get_users() {
         type: 'users/set',
         data: data,
     }));
+}
+
+export function create_user(user) {
+    return api_post("/users", {user});
 }
 
 //------------------------LOGIN----------------------------

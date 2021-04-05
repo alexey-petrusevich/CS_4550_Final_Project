@@ -1,14 +1,15 @@
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 
 function PartyInfo({party}) {
   // var event_path = "/parties/" + party.id
   return (
     <Col md="3">
-      <Card>
-        <Card.Title>{party.roomname}</Card.Title>
+      <Card className="party-card">
+        <Card.Title>{party.name}</Card.Title>
         <Card.Text>
           Hosted by {party.host.username}<br />
           {party.description}
@@ -22,32 +23,35 @@ function PartyInfo({party}) {
 }
 
 function Dashboard({parties, session}) {
+  let history = useHistory();
 
-    //How are we archiving parties and letting them be seen on the dashboard
-  let pastParties = parties.filter( (party) => session && session.user_id === party.user_id);
+  let hostedParties = parties.filter( (party) => session && session.user_id === party.host.id);
 
-  let party_cards = pastParties.map((party) => (
+  let party_cards = hostedParties.map((party) => (
     <PartyInfo party={party} key={party.id} />
   ));
 
-  let new_party_link = null;
-  if (session) {
-    new_party_link = (
-      <p><Link to="/parties/new">New Event</Link></p>
-    )
-  }
+  let new_party_link = (
+    <Link to="/parties/new">
+      <Button className="dash-button">New Party</Button>
+    </Link>
+  )
 
   return (
     <div>
       <h2>Dashboard</h2>
       <div>
-        <h3>Parties</h3>
-        { new_party_link }
+        <h3>Parties You've Hosted { new_party_link }</h3>
         <Row>{party_cards}</Row>
       </div>
+      <div className="component-spacing"></div>
+      <div>
+        <h3>Parties You've Attended</h3>
+        <Row>{party_cards}</Row>
+      </div>
+      <div className="component-spacing"></div>
       <div>
           <h3>User Stats</h3>
-
       </div>
     </div>
   );

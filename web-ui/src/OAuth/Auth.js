@@ -23,7 +23,7 @@ function SpotifyAuth() {
         onRequest={() => setMsg("Awaiting authorization from Spotify")}
         onSuccess={() => setMsg("Your party is linked with Spotify")}
         onFailure={() => setMsg("Not linked with Spotify")}/>
-      <p><i>{ msg }</i></p>
+      <p><i className="linked-msg">{ msg }</i></p>
     </div>
   );
 }

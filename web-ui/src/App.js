@@ -5,9 +5,10 @@ import "./App.scss";
 
 import Nav from "./Nav";
 import Landing from "./Landing";
-import PartiesSingle from "./Parties/Single";
 import PartiesNew from "./Parties/New";
 import ShowParty from "./Parties/Show";
+import NewUser from "./Users/New";
+import Dashboard from "./Dashboard";
 
 function App() {
   return (
@@ -22,6 +23,12 @@ function App() {
         </Route>
         <Route path="/parties/:id">
           <ShowParty />
+        </Route>
+        <Route path="/users/new" exact>
+          <NewUser />
+        </Route>
+        <Route path="/dashboard" exact>
+          <Dashboard />
         </Route>
       </Switch>
     </Container>

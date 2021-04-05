@@ -23,6 +23,9 @@ defmodule ServerWeb.Router do
     resources "/requests", RequestController, except: [:new, :edit]
     resources "/session", SessionController, only: [:create]
 
+    # for joining parties (eventually in channel)?
+    post "/parties/join", PartyController, :join
+
     # server uri: http://localhost:4000/api/v1/auth/callback
     get "/auth/callback", AuthController, :callback
 

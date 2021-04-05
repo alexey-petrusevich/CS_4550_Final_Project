@@ -31,7 +31,11 @@ function LoginForm() {
           <Button variant="primary" type="submit">
             Login
           </Button>
+          <Nav variant="pills" className="register">
+            <Link to="/users/new">Register</Link>
+          </Nav>
         </Form>
+
       </Col>
     );
   }
@@ -67,8 +71,9 @@ function LOI({session}) {
 
 const LoginOrInfo = connect(({session}) => ({session}))(LOI);
 
-function AppNav({error}) {
+function AppNav({session, error}) {
   let error_banner = null;
+  let dash_link = null;
 
   //displays any errors returned by the server
   if (error) {
@@ -81,14 +86,21 @@ function AppNav({error}) {
     );
   }
 
+  if (session) {
+    dash_link = (
+      <Link className="nav" to="/dashboard">Dashboard</Link>
+    )
+  }
+
   return (
     <div className="nav-bar">
       <Row>
-        <Col>
-          <Nav variant="pills">
-            <Link to="/parties/1">Parties</Link>
-          </Nav>
-        </Col>
+      <Col>
+        <Nav variant="pills">
+          <Link className="nav" to="/">Home</Link>
+          { dash_link }
+        </Nav>
+      </Col>
         <LoginOrInfo />
       </Row>
       {error_banner}
@@ -96,4 +108,4 @@ function AppNav({error}) {
   );
 }
 
-export default connect(({error}) => ({error}))(AppNav);
+export default connect(({session, error}) => ({session, error}))(AppNav);

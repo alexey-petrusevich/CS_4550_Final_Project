@@ -6,16 +6,15 @@ import { useHistory } from 'react-router-dom';
 import { get_parties } from './api.js';
 
 import PartiesNew from "./Parties/New";
+import JoinParty from "./Parties/Join";
 
 //landing page when users first access our site
-function Landing(session, parties) {
-  console.log("session", session.session);
+function Landing({session, parties}) {
   const history = useHistory();
   const [joinform, setJoinform] = useState(false);
   const [startform, setStartform] = useState(false);
   const [roomcode, setRoomcode] = useState("");
   const [no_session_msg, setMsg] = useState("");
-
 
   // clears forms for when the session is not active
   function clearForms() {
@@ -24,7 +23,7 @@ function Landing(session, parties) {
   }
 
   function joinParty() {
-    if (session.session) {
+    if (session) {
       setStartform(false);
       setJoinform(true);
       setMsg("");
@@ -35,7 +34,7 @@ function Landing(session, parties) {
   }
 
   function startParty() {
-    if (session.session) {
+    if (session) {
       setJoinform(false);
       setStartform(true);
       setMsg("");
@@ -43,22 +42,6 @@ function Landing(session, parties) {
       clearForms();
       setMsg("You must be logged in to do that.");
     }
-  }
-
-  function submit() {
-    if (session.session) {
-
-      get_parties();
-      console.log("parties", parties);
-      let last_party = parties[parties.length - 1];
-      console.log("most recent party", last_party);
-      history.push("/parties/" + last_party.id);
-    } else {
-      clearForms();
-      setMsg("You must be logged in to do that.");
-    }
-
-
   }
 
   return (
@@ -79,14 +62,7 @@ function Landing(session, parties) {
           </div>
           <div className="landing-join">
             {joinform && (
-                <Form onSubmit={submit}>
-                  <Form.Group>
-                    <Form.Control rows={1}
-                                  onChange={(ev) => setRoomcode(ev.target.value)}
-                                  value={roomcode}
-                                  placeholder="Enter a room code"/>
-                  </Form.Group>
-                </Form>
+                <JoinParty />
             )}
           </div>
           <div className="landing-start">
