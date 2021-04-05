@@ -31,25 +31,10 @@ defmodule Server.GameServer do # Change module name?
     )
   end
 
-  """
-  TODO: Contains more functionality e.g.
-  def guess(gamename, username, guessarray) do
-    GenServer.call(reg(gamename), {:guess, gamename, username, guessarray})
-  end
-  """
 
   # implementation
 
   def init(game) do
     {:ok, game}
   end
-
-  """
-  TODO: Contains more implementation e.g.
-  def handle_call({:pass, gamename, username}, _from, game) do
-    game = Game.pass(game, username)
-    BackupAgent.put(gamename, game)
-    {:reply, game, game}
-  end
-  """
 end
