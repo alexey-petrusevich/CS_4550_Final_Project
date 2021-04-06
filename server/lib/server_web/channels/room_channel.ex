@@ -13,16 +13,19 @@ defmodule ServerWeb.RoomChannel do
       GameServer.start(lobbyname)
       socket = assign(socket, :roomname, lobbyname)
       room = GameServer.peek(lobbyname)
-      {:ok, ServerWeb.view, socket}
+      # {:ok, ServerWeb.view, socket} <- Do we need the view here?
+      {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
+  """
   @impl true
   def handle_in("login", %{"name" => username}, socket) do
     socket = assign(socket, :username, username)
     currgame = GameServer.peek(socket.assigns[:roomname])
     {:reply, {:ok, ServerWeb.view}, socket}
   end
+  """
 end

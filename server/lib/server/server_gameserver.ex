@@ -23,10 +23,10 @@ defmodule Server.GameServer do # Change module name?
 
   def start_link(name) do
     # game = Game.new # TODO: Probably change, replace with game instance
-    game = Parties.create_party()
+    party = Parties.create_party() # Create new instance <- Is this necessary
     GenServer.start_link(
       __MODULE__,
-      game,
+      party,
       name: reg(name)
     )
   end
