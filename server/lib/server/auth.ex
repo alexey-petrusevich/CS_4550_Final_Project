@@ -58,7 +58,7 @@ defmodule Server.AuthTokens do
 
     # Spotify API authentication endpoint requirements
     url = "https://accounts.spotify.com/api/token"
-    body = "grant_type=client_credentials&code=#{code}&redirect_uri=http://localhost:3000/callback"
+    body = "grant_type=authorization_code&code=#{code}&redirect_uri=http://localhost:4000/api/v1/auth/callback"
     headers = [
       {"Content-Type", "application/x-www-form-urlencoded"},
       {"Authorization", "Basic #{auth_payload}"}

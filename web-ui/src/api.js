@@ -4,6 +4,7 @@ import store from './store';
 export async function api_get(path) {
     let text = await fetch("http://localhost:4000/api/v1" + path, {});
     let resp = await text.json();
+    console.log(resp.data);
     return resp.data;
 }
 
@@ -71,6 +72,14 @@ export function api_login(username, password) {
     });
 }
 
+//------------------------PLAYLIST----------------------------
+export function get_playlists(host_id) {
+  api_get("/playlist/" + host_id).then((resp) =>
+    console.log(resp)
+  );
+
+}
+
 
 //------------------------PLAYBACK----------------------------
 export function playback(host_id, action) {
@@ -79,7 +88,7 @@ export function playback(host_id, action) {
         action: action
     };
     console.log("Posting playback data", {data});
-    api_post("/playback", {data});
+    api_post("/playback", {action, host_id});
 }
 
 export function queue_track(host_id, action, uri) {
@@ -89,7 +98,7 @@ export function queue_track(host_id, action, uri) {
       track_uri: uri
   };
   console.log("Posting queue track data", {data});
-  api_post("playback", {data});
+  api_post("playback", {action, host_id});
 }
 
 

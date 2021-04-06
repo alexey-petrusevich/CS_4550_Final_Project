@@ -3,9 +3,14 @@ defmodule ServerWeb.PlaybackController do
   alias Server.AuthTokens
 
 
-  def interact(conn, %{"user_id" => user_id, "action" => action}) do
-    token = AuthTokens.get_auth_token_by_user_id(user_id)
-    track_uri = options.track_uri
+  #def interact(conn, %{"user_id" => user_id, "action" => action}) do
+  def interact(conn, %{"data" => data}) do
+    user_id = data["user_id"];
+    action = data["action"];
+    IO.inspect(user_id)
+    IO.inspect(action)
+    token = AuthTokens.get_auth_token_by_user_id(user_id).token
+    IO.inspect(token)
     case action do
       "play" ->
         make_put("https://api.spotify.com/v1/me/player/play", token)
@@ -14,13 +19,16 @@ defmodule ServerWeb.PlaybackController do
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", "", token)
     end
+    conn
+    |> put_resp_header("content-type", "application/json; charset=UTF-8")
+    |> send_resp(:created, Jason.encode!(%{}))
   end
 
 
-  def interact(conn, %{"user_id" => user_id, "action" => action, "track_uri" => track_uri}) do
-    token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
-    make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
-  end
+  # def interact(conn, %{"user_id" => user_id, "track_uri" => track_uri}) do
+  #   token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
+  #   make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
+  # end
 
 
   def make_put(url, token) do
