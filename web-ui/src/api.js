@@ -83,22 +83,11 @@ export function get_playlists(host_id) {
 
 //------------------------PLAYBACK----------------------------
 export function playback(host_id, action) {
-    let data = {
-        user_id: host_id,
-        action: action
-    };
-    console.log("Posting playback data", {data});
     api_post("/playback", {action, host_id});
 }
 
-export function queue_track(host_id, action, uri) {
-  let data = {
-      user_id: host_id,
-      action: action,
-      track_uri: uri
-  };
-  console.log("Posting queue track data", {data});
-  api_post("playback", {action, host_id});
+export function queue_track(host_id, action, track_uri) {
+  api_post("/playback", {action, host_id, track_uri});
 }
 
 

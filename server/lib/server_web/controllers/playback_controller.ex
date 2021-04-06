@@ -4,8 +4,9 @@ defmodule ServerWeb.PlaybackController do
 
 
   #def interact(conn, %{"user_id" => user_id, "action" => action}) do
-  def interact(conn, %{"data" => data}) do
-    user_id = data["user_id"];
+  def interact(conn, data) do
+    IO.inspect(data)
+    user_id = data["host_id"];
     action = data["action"];
     IO.inspect(user_id)
     IO.inspect(action)
@@ -17,10 +18,12 @@ defmodule ServerWeb.PlaybackController do
       "pause" ->
         make_put("https://api.spotify.com/v1/me/player/pause", token)
       "skip" ->
-        make_post("https://api.spotify.com/v1/me/player/next", "", token)
+        make_post("https://api.spotify.com/v1/me/player/next", token)
       "queue" ->
-        track_uri = action = data["track_uri"];
-        make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
+        IO.inspect("Got to queue manipulation");
+        track_uri= data["uri"];
+        IO.inspect(track_uri)
+        make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> track_uri, token)
     end
     # TODO: fix response
     conn
@@ -46,13 +49,13 @@ defmodule ServerWeb.PlaybackController do
   end
 
 
-  def make_post(url, body, token) do
+  def make_post(url, token) do
     headers = [
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer #{token}}"
     ]
-    HTTPoison.post!(url, body, headers)
+    HTTPoison.post!(url, "", headers)
   end
 
 

@@ -30,4 +30,5 @@ party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", descript
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})
 
-song1 = Repo.insert!(%Song{title: "Don't Stop Believing", artist: "Journey", track_uri: "4bHsxqR3GMrXTxEPLuK5ue", party_id: party.id})
+song1 = Repo.insert!(%Song{title: "Don't Stop Believing", artist: "Journey", track_uri: "spotify:track:4bHsxqR3GMrXTxEPLuK5ue", party_id: party.id})
+song1 = Repo.insert!(%Song{title: "Don't Start Now", artist: "Dua Lipa", track_uri: "spotify:track:6WrI0LAC5M1Rw2MnX2ZvEg", party_id: party.id})
