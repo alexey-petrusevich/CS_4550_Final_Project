@@ -4,11 +4,21 @@ defmodule ServerWeb.PlaylistController do
   alias Server.Songs.Song
   alias Server.Songs.Songs
 
+
   # TODO: 1) add validation for access token
   # TODO: 2) double check options with limit = 5
   # TODO: 3) add conn |> send_resp with connection to the caller
   # TODO: 4) don't need to send song id in the database back to the caller
   # TODO: 5) add endpoint for voting: party_id, user_id
+  # TODO: 6) check parameter passing for post and put in playback_controller.ex
+  # TODO: DO NOT add to queue when returning the list of queues
+  # TODO: search given song title and artist
+  # -- user_id, title, artists
+  # -- returns track uri of that song (if found), if not found return error
+  # -- trigger search endpoint using access token
+  # -- return first result, and add song entry with party_id
+  # TODO: voting
+  # -- takes user_id, song_id, value (integer): +1, -1
 
   def enqueue_playlist(conn, %{"user_id" => user_id, "playlist_uri" => playlist_uri}) do
     token = AuthTokens.get_auth_token_by_user_id(user_id)
