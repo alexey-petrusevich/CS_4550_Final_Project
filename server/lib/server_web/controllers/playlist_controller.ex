@@ -44,9 +44,12 @@ defmodule ServerWeb.PlaylistController do
     # here track_id means track_id in the DB
     tracks = append_track_id(tracks)
     # 4) enqueue tracks to the spotify queue
-    track_uris = Enum.map(tracks, fn item ->
-      item.track_uri
-    end)
+    track_uris = Enum.map(
+      tracks,
+      fn item ->
+        item.track_uri
+      end
+    )
     enqueue_playlist(track_uris, token)
   end
 
@@ -119,15 +122,16 @@ defmodule ServerWeb.PlaylistController do
 
   # given a collection of tracks, stores each track in the DB
   # return value are tracks
-  def store_tracks(tracks) do
+  def store_tracks(tracks, party_id) do
     Enum.map(
       tracks,
       fn track ->
         genre = "" # TODO: resolve having no genre in JSON response from spotify
         Server.Songs.create_song(
-          %Song{artist: track.artist, genre: genre, title: track.title, track_uri: track.track_uri}
+          %Song{artist: track.artist, genre: genre, title: track.title, track_uri: track.track_uri, party_id: party_id}
         )
         id = 1 # TODO: get track id from DB??
+        # TODO: possibly query the DB for the song using track_uri ???
         # update track
         %{track | id: id}
       end

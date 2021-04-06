@@ -22,6 +22,8 @@ defmodule ServerWeb.PlaybackController do
     make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
   end
 
+  def
+
 
   def make_put(url, token) do
     body = ""
