@@ -18,7 +18,11 @@ defmodule ServerWeb.PlaybackController do
         make_put("https://api.spotify.com/v1/me/player/pause", token)
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", "", token)
+      "queue" ->
+        track_uri = action = data["track_uri"];
+        make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
     end
+    # TODO: fix response
     conn
     |> put_resp_header("content-type", "application/json; charset=UTF-8")
     |> send_resp(:created, Jason.encode!(%{}))
