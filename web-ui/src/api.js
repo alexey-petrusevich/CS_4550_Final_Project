@@ -49,6 +49,11 @@ export function get_users() {
     }));
 }
 
+export function get_user() {
+    let path = "/users/" + id
+    return api_get(path);
+}
+
 export function create_user(user) {
     return api_post("/users", {user});
 }

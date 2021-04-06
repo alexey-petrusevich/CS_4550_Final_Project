@@ -7,6 +7,7 @@ defmodule Server.Songs.Song do
     field :genre, :string
     field :title, :string
     field :track_uri, :string
+    field :energy, :float
 
     has_many :votes, Server.Votes.Vote
     many_to_many(:parties, Server.Parties.Party, join_through: Server.PartiesSongs)
@@ -17,7 +18,7 @@ defmodule Server.Songs.Song do
   @doc false
   def changeset(song, attrs) do
     song
-    |> cast(attrs, [:track_uri, :title, :artist, :genre])
+    |> cast(attrs, [:track_uri, :title, :artist, :genre, :energy])
     |> validate_required([:track_uri, :title, :artist, :genre])
   end
 end

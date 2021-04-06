@@ -17,7 +17,7 @@ defmodule ServerWeb.UserView do
       impact_score: user.impact_score,
       top_arists: user.top_arists,
       top_genres: user.top_genres,
-      audio_features: user.audio_features}
+      energy: user.energy}
   end
 
   def render("simpleUser.json", %{user: user}) do
