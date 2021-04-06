@@ -29,5 +29,16 @@ defmodule ServerWeb.Router do
     # server uri: http://localhost:4000/api/v1/auth/callback
     get "/auth/callback", AuthController, :callback
 
+    # this endpoint expects post params: user_id, party_id, playlist_uri
+    post "/playlist", PlaylistController, :interact
+
+    # returns a list of playlist URIs for the given user (user_id)
+    get "/playlist/:user_id", PlaylistController, :get_playlist_uris
+
+    # this endpoint has overloaded methods:
+    # - user_id, action
+    # - user_id, action, track_id
+    post "/playback", PlaybackController, :interact
+
   end
 end
