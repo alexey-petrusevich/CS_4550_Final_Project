@@ -1,7 +1,7 @@
 defmodule ServerWeb.PartyView do
   use ServerWeb, :view
   alias ServerWeb.PartyView
-
+  alias ServerWeb.SongView
   alias ServerWeb.UserView
 
   def render("index.json", %{parties: parties}) do

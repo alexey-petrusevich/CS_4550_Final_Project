@@ -17,6 +17,8 @@ function Party({party}) {
   );
 }
 
+const 
+
 function UserStats({parties, session}, user) {
 
   let pastParties = parties.filter( (party) => session && session.user_id === party.user_id);
@@ -29,7 +31,6 @@ function UserStats({parties, session}, user) {
   return (
     <div>
       <h3>Top Listens</h3>
-
       <h3>Top Artists</h3>
       <h3>Top Genres</h3>
       <h3>Top Styles</h3>

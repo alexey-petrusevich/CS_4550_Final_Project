@@ -48,7 +48,28 @@ defmodule Server.Users do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Map.merge(get_user_data(id))
+  end
+
+  def get_user_data(id) do
+    %{top_arists: ["Faye Webster", "Gene Kim", "Lilan"],
+      top_genres: ["RnB", "Classical", "Jazz"],
+      audio_features: %{
+        "danceability": 0.696,
+        "energy": 0.905,
+        "key": 2,
+        "loudness": -2.743,
+        "mode": 1,
+        "speechiness": 0.103,
+        "acousticness": 0.011,
+        "instrumentalness": 0.000905,
+        "liveness": 0.302,
+        "valence": 0.625,
+        "tempo": 114.944}
+      }
+  end
 
   @doc """
   Creates a user.

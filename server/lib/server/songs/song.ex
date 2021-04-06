@@ -9,6 +9,7 @@ defmodule Server.Songs.Song do
     field :track_uri, :string
 
     has_many :votes, Server.Votes.Vote
+    many_to_many(:parties, Server.Parties.Party, join_through: Server.PartiesSongs)
 
     timestamps()
   end
