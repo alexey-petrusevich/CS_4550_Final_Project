@@ -157,9 +157,11 @@
 
 .playback-controls {
   top: 40px;
-  right: 40px;
+  right: 30px;
   position: absolute;
   z-index: 9999;
+  border: .5px solid white;
+  padding: 10px 20px;
 }
 
 .playback-img {
@@ -174,4 +176,18 @@
 .playback-btn:hover {
   background-color: #191414;
   border: none;
+}
+
+.song-card {
+  color: black;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.voting-buttons {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+
 }

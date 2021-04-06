@@ -2,7 +2,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { get_party } from '../api';
+import { get_party, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
 
@@ -12,23 +12,24 @@ import pause from "../images/pause.png";
 import skip from "../images/skip.png";
 
 //play, pause, skip playback controls
-function PlaybackControls() {
+function PlaybackControls({host_id}) {
+  console.log(host_id);
   return (
     <Row className="playback-controls">
       <button className="playback-btn"><img src={play}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => console.log("Play song")} />
+                   onClick={() => playback(host_id, "play")} />
       </button>
       <button className="playback-btn"><img src={pause}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => console.log("Play song")} />
+                   onClick={() => playback(host_id, "pause")} />
       </button>
       <button className="playback-btn"><img src={skip}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => console.log("Play song")} />
+                   onClick={() => playback(host_id, "skip")} />
       </button>
     </Row>
   )
@@ -51,7 +52,7 @@ function ShowParty({session}) {
     return (
       <Row>
         <Col>
-          <PlaybackControls />
+          <PlaybackControls host_id={party.host.id}/>
           <h2>{party.name}</h2>
           <p><b>Description: </b>{party.description}</p>
           <p><b>Attendee access code: </b>{party.roomcode}</p>
@@ -63,15 +64,10 @@ function ShowParty({session}) {
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
-          <ShowSongs songs={party.songs}/>
-          <div className="component-spacing"></div>
-          <h3>Voting</h3>
-          <p><i>Reults of most recent or current round of voting</i></p>
+          <ShowSongs songs={party.songs} user_id={party.host.id}/>
           <div className="component-spacing"></div>
           <h3>Requests</h3>
           <p><i>Attendee requests</i></p>
-
-
         </Col>
       </Row>
     );

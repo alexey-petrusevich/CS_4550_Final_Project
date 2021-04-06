@@ -71,78 +71,24 @@ export function api_login(username, password) {
     });
 }
 
-
-export function fetch_users() {
-    api_get("/users").then((data) => {
-        dispatchToStore("users/set", data);
-    });
-}
-
-
-export function fetch_parties() {
-    api_get("/parties").then((data) => {
-        dispatchToStore("parties/set", data);
-    });
-}
-
-
-function makeHeader(api_token) {
-    return {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": api_token
-    };
-}
-
-
-function dispatchToStore(type, data) {
-    let action = {
-        type: type,
-        data: data
-    };
-    store.dispatch(action);
-}
-
-
-export function api_track_search(query, api_token) {
-    let headers = makeHeader(api_token);
-    api_get("/search/" + query, headers).then((data) => {
-        dispatchToStore("track/search", data.result);
-    });
-}
-
-/*
-- Playback controls - API calls
-- Retrieving/posting info to API - server-side calls
- */
-
-
-// loads all playlists for authorized user (host)
-export function api_list_playlists(user_id, api_token) {
-    let headers = makeHeader(api_token);
-    // TODO: replaced with calling serverside instead
-    api_get("/users/" + user_id + "/playlists", headers).then((data) => {
-        dispatchToStore("playlist/list_all", data);
-    });
-}
-
-
-export function api_preload_playlist(playlist_id, api_token) {
-    let headers = makeHeader(api_token);
-    api_get("/playlists/" + playlist_id, headers).then((data) => {
-        dispatchToStore("playlist/get", data.result);
-    });
-}
-
-
-export function api_queue_track(track_uri, api_token) {
+//------------------------PLAYBACK----------------------------
+export function playback(host_id, action) {
     let data = {
-        uri: track_uri
+        user_id: host_id,
+        action: action
     };
-    let headers = makeHeader(api_token);
-    api_post("/me/player/queue", data, headers).then((data) => {
-        dispatchToStore("track/queue", data.result);
-    });
+    console.log("Posting playback data", {data});
+    api_post("/playback", {data});
+}
+
+export function queue_track(host_id, action, uri) {
+  let data = {
+      user_id: host_id,
+      action: action,
+      track_uri: uri
+  };
+  console.log("Posting queue track data", {data});
+  api_post("playback", {data});
 }
 
 
