@@ -1,9 +1,11 @@
 defmodule ServerWeb.PlaybackController do
   use ServerWeb, :controller
-  use Server.AuthTokens
+  alias Server.AuthTokens
+
 
   def interact(conn, %{"user_id" => user_id, "action" => action}) do
-    token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
+    token = AuthTokens.get_auth_token_by_user_id(user_id)
+    track_uri = options.track_uri
     case action do
       "play" ->
         make_put("https://api.spotify.com/v1/me/player/play", token)
@@ -11,10 +13,15 @@ defmodule ServerWeb.PlaybackController do
         make_put("https://api.spotify.com/v1/me/player/pause", token)
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", "", token)
-      "add_to_queue" ->
-        make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
     end
   end
+
+
+  def interact(conn, %{"user_id" => user_id, "action" => action, "track_uri" => track_uri}) do
+    token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
+    make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
+  end
+
 
   def make_put(url, token) do
     body = ""
@@ -26,6 +33,7 @@ defmodule ServerWeb.PlaybackController do
     HTTPoison.put!(url, body, headers)
   end
 
+
   def make_post(url, body, token) do
     headers = [
       "Accept": "application/json",
@@ -34,5 +42,6 @@ defmodule ServerWeb.PlaybackController do
     ]
     HTTPoison.post!(url, body, headers)
   end
+
 
 end

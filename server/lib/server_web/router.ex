@@ -25,8 +25,12 @@ defmodule ServerWeb.Router do
 
     # server uri: http://localhost:4000/api/v1/auth/callback
     get "/auth/callback", AuthController, :callback
-    get "/playlist", ServerWeb.PlaylistController, :playlist
-    post "/playback", PlaybackController, :playback
+
+    post "/playlist", PlaylistController, :interact
+    # returns a list of playlist URIs for the given user (user_id)
+    get "/playlist/:user_id", PlaylistController, :get_playlist_uris
+
+    post "/playback", PlaybackController, :interact
 
   end
 end
