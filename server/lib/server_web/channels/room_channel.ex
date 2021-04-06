@@ -9,15 +9,10 @@ defmodule ServerWeb.RoomChannel do
 
   @impl true
   def join("room:" <> lobbyname, payload, socket) do
-    if authorized?(payload) do
-      GameServer.start(lobbyname)
-      socket = assign(socket, :roomname, lobbyname)
-      room = GameServer.peek(lobbyname)
-      # {:ok, ServerWeb.view, socket} <- Do we need the view here?
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+    GameServer.start(lobbyname)
+    socket = assign(socket, :roomname, lobbyname)
+    room = GameServer.peek(lobbyname)
+    {:ok, Game.view(room, ""), socket}
   end
 
   """

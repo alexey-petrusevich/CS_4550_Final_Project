@@ -8,6 +8,19 @@ defmodule Server.Users do
 
   alias Server.Users.User
 
+  # authentication for User
+  def authenticate(username, pass) do
+    user = Repo.get_by(User, username: username)
+    if user do
+      case Argon2.check_pass(user, pass) do
+        {:ok, user} -> user
+        _ -> nil
+      end
+    else
+      nil
+    end
+  end
+
   @doc """
   Returns the list of users.
 

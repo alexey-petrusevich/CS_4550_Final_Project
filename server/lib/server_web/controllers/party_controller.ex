@@ -4,6 +4,8 @@ defmodule ServerWeb.PartyController do
   alias Server.Parties
   alias Server.Parties.Party
 
+  alias Server.Users
+
   action_fallback ServerWeb.FallbackController
 
   def index(conn, _params) do
@@ -12,6 +14,7 @@ defmodule ServerWeb.PartyController do
   end
 
   def create(conn, %{"party" => party_params}) do
+    IO.inspect(party_params)
     with {:ok, %Party{} = party} <- Parties.create_party(party_params) do
       conn
       |> put_status(:created)
@@ -39,5 +42,12 @@ defmodule ServerWeb.PartyController do
     with {:ok, %Party{}} <- Parties.delete_party(party) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def join(conn, %{"party_id" => p_id, "user_id" => u_id}) do
+    party = Parties.get_party!(p_id)
+    Parties.update_attendees(party, u_id)
+    conn
+    |> send_resp(200, Jason.encode!(%{}))
   end
 end

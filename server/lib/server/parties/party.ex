@@ -3,11 +3,12 @@ defmodule Server.Parties.Party do
   import Ecto.Changeset
 
   schema "parties" do
+    field :name, :string
     field :description, :string
-    field :roomname, :string
+    field :roomcode, :string
+    field :attendees, {:array, :integer}, default: []
 
     belongs_to :host, Server.Users.User
-    has_many :attendees, Server.Users.User
     has_many :songs, Server.Songs.Song
     has_many :requests, Server.Requests.Request
 
@@ -17,7 +18,7 @@ defmodule Server.Parties.Party do
   @doc false
   def changeset(party, attrs) do
     party
-    |> cast(attrs, [:roomname, :description, :host_id])
-    |> validate_required([:roomname, :host_id])
+    |> cast(attrs, [:name, :roomcode, :description, :host_id, :attendees])
+    |> validate_required([:name, :roomcode, :description, :host_id])
   end
 end

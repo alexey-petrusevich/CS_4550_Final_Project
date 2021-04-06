@@ -8,6 +8,10 @@ defmodule Server.Parties do
 
   alias Server.Parties.Party
 
+  alias Server.Users.User
+
+  import Ecto.Changeset
+
   @doc """
   Returns the list of parties.
 
@@ -19,6 +23,8 @@ defmodule Server.Parties do
   """
   def list_parties do
     Repo.all(Party)
+    |> Repo.preload(:host)
+    |> Repo.preload(:songs)
   end
 
   @doc """
@@ -35,7 +41,11 @@ defmodule Server.Parties do
       ** (Ecto.NoResultsError)
 
   """
-  def get_party!(id), do: Repo.get!(Party, id)
+  def get_party!(id) do
+    Repo.get!(Party, id)
+    |> Repo.preload(:host)
+    |> Repo.preload(:songs)
+  end
 
   @doc """
   Creates a party.
@@ -50,9 +60,19 @@ defmodule Server.Parties do
 
   """
   def create_party(attrs \\ %{}) do
+    attrs = attrs
+    |> Map.put("roomcode", gen_room_code())
+
     %Party{}
+    |> Repo.preload(:host)
     |> Party.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def gen_room_code() do
+    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    |> Enum.take_random(4)
+    |> Enum.join("")
   end
 
   @doc """
@@ -100,5 +120,12 @@ defmodule Server.Parties do
   """
   def change_party(%Party{} = party, attrs \\ %{}) do
     Party.changeset(party, attrs)
+  end
+
+  # updates the list of attendees of the party
+  def update_attendees(%Party{} = party, user_id) do
+    party
+    |> Ecto.Changeset.change(attendees: [user_id | party.attendees])
+    |> Repo.update()
   end
 end

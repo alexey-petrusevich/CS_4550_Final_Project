@@ -22,6 +22,12 @@ config :server, ServerWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+# Configuration of CORS for Same-Origin policy workaround
+config :cors_plug, 
+  origin: ["http://localhost:3000"],
+  max_age: 86400,
+  methods: ["GET", "POST", "PATCH", "DELETE"]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

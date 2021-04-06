@@ -4,11 +4,11 @@ defmodule Server.Songs.Song do
 
   schema "songs" do
     field :artist, :string
-    field :genre, :string
     field :title, :string
     field :track_uri, :string
 
     has_many :votes, Server.Votes.Vote
+    belongs_to :party, Server.Parties.Party
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule Server.Songs.Song do
   @doc false
   def changeset(song, attrs) do
     song
-    |> cast(attrs, [:track_uri, :title, :artist, :genre])
-    |> validate_required([:track_uri, :title, :artist, :genre])
+    |> cast(attrs, [:track_uri, :title, :artist, :party_id])
+    |> validate_required([:track_uri, :title, :artist, :party_id])
   end
 end

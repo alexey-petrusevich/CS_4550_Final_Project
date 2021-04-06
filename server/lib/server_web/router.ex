@@ -21,22 +21,24 @@ defmodule ServerWeb.Router do
     resources "/songs", SongController, except: [:new, :edit]
     resources "/votes", VoteController, except: [:new, :edit]
     resources "/requests", RequestController, except: [:new, :edit]
+    resources "/session", SessionController, only: [:create]
 
-  end
+    # for joining parties (eventually in channel)?
+    post "/parties/join", PartyController, :join
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+    # server uri: http://localhost:4000/api/v1/auth/callback
+    get "/auth/callback", AuthController, :callback
 
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: ServerWeb.Telemetry
-    end
+    # this endpoint expects post params: user_id, party_id, playlist_uri
+    post "/playlist", PlaylistController, :interact
+
+    # returns a list of playlist URIs for the given user (user_id)
+    get "/playlist/:user_id", PlaylistController, :get_playlist_uris
+
+    # this endpoint has overloaded methods:
+    # - user_id, action
+    # - user_id, action, track_id
+    post "/playback", PlaybackController, :interact
+
   end
 end

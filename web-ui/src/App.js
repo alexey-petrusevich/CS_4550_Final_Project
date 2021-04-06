@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap';
+import { Switch, Route } from 'react-router-dom';
+
+import "./App.scss";
+
+import Nav from "./Nav";
+import Landing from "./Landing";
+import PartiesNew from "./Parties/New";
+import ShowParty from "./Parties/Show";
+import NewUser from "./Users/New";
+import Dashboard from "./Dashboard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="app-background">
+      <Nav />
+      <Switch>
+        <Route path="/" exact>
+          <Landing />
+        </Route>
+        <Route path="/parties/new" exact>
+          <PartiesNew />
+        </Route>
+        <Route path="/parties/:id" component={ShowParty} exact />
+        <Route path="/users/new" exact>
+          <NewUser />
+        </Route>
+        <Route path="/dashboard" exact>
+          <Dashboard />
+        </Route>
+      </Switch>
+    </Container>
   );
 }
 
