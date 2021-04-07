@@ -48,5 +48,12 @@ export function set_songs(playlist_uri, party_id, user_id) {
                             party_id: party_id,
                             user_id: user_id})
             .receive("ok", resp => console.log("Set songs for party ", resp));
-  return "successs"; 
+  return "successs";
+}
+
+//-------------------------PARTIES---------------------------------
+export function update_party_active(party_id, is_active) {
+  console.log("Setting party ", party_id, " to be active ", is_active);
+  channel.push("update_active", {party_id: party_id, is_active: is_active})
+    .receive("ok", resp => console.log("Set party active"));
 }

@@ -25,11 +25,11 @@ austin = Repo.insert!(%User{username: "Austin", password_hash: pass_hash, impact
 alex = Repo.insert!(%User{username: "Alex", password_hash: pass_hash, impact_score: 314})
 benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash, impact_score: 25})
 
-party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id, is_active: true})
-party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 4], host_id: austin.id, is_active: true})
+party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id})
+party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 4], host_id: austin.id})
 
-song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "Kingston", artist_uri: "ashsfas", track_uri: "spotify:track:0EDQwboQDmswDRn58wcslg", energy: 0.7, party_id: 1, played: false})
-song2 = Repo.insert!(%Song{artist: "Athletic Progression", genre: "genre2", title: "WHITE CRAYON", artist_uri: "ashsfas", track_uri: "spotify:track:2XXfb3FToGrAOZKGJ1Nwhj", energy: 0.5, party_id: 1, played: true})
+song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "Kingston", artist_uri: "ashsfas", track_uri: "spotify:track:0EDQwboQDmswDRn58wcslg", energy: 0.7, party_id: 2, played: false})
+song2 = Repo.insert!(%Song{artist: "Athletic Progression", genre: "genre2", title: "WHITE CRAYON", artist_uri: "ashsfas", track_uri: "spotify:track:2XXfb3FToGrAOZKGJ1Nwhj", energy: 0.5, party_id: 2, played: true})
 song3 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "faye2", track_uri: "asdf", artist_uri: "ashsfas", energy: 0.5, party_id: 2, played: false})
 song4 = Repo.insert!(%Song{artist: "Artist 3", genre: "genre3", title: "WHITE CRAYON", track_uri: "qwer", artist_uri: "ashsfas", energy: 0.3, party_id: 2, played: true})
 

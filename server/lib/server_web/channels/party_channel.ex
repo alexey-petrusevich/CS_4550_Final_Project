@@ -2,6 +2,7 @@ defmodule ServerWeb.PartyChannel do
   use ServerWeb, :channel
 
   alias Server.Playlists
+  alias Server.Parties
 
   @impl true
   def join("party:" <> roomcode, payload, socket) do
@@ -25,6 +26,14 @@ defmodule ServerWeb.PartyChannel do
   def handle_in("set_songs", payload, socket) do
     IO.inspect(payload)
     Playlists.interact(payload)
+    {:reply, {:ok, 200}, socket}
+  end
+
+  @impl true
+  def handle_in("update_active", %{"party_id" => id, "is_active" => active}, socket) do
+    IO.inspect(id)
+    IO.inspect(active)
+    Parties.update_active(id, active)
     {:reply, {:ok, 200}, socket}
   end
 
