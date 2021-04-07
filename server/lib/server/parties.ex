@@ -24,8 +24,7 @@ defmodule Server.Parties do
   def list_parties do
     repoparty = Repo.all(Party)
     |> Repo.preload(:host)
-    # |> Repo.preload(:songs)
-    from(p in Party, where: p.id == ^party_id, preload: [:songs])
+    |> Repo.preload(:songs)
     IO.inspect(repoparty)
   end
 

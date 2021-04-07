@@ -22,7 +22,6 @@ defmodule ServerWeb.Router do
     resources "/votes", VoteController, except: [:new, :edit]
     resources "/requests", RequestController, except: [:new, :edit]
     resources "/session", SessionController, only: [:create]
-    resources "/partiessongs", PartySongController
 
     # for joining parties (eventually in channel)?
     post "/parties/join", PartyController, :join

@@ -3,7 +3,7 @@ defmodule ServerWeb.UserView do
   alias ServerWeb.UserView
 
   def render("index.json", %{users: users}) do
-    %{data: render_many(users, UserView, "simpleUser.json")}
+    %{data: render_many(users, UserView, "user.json")}
   end
 
   def render("show.json", %{user: user}) do
@@ -15,7 +15,7 @@ defmodule ServerWeb.UserView do
       username: user.username,
       password_hash: user.password_hash,
       impact_score: user.impact_score,
-      top_arists: user.top_arists,
+      top_artists: user.top_artists,
       top_genres: user.top_genres,
       energy: user.energy}
   end
