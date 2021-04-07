@@ -28,3 +28,4 @@ server-*.tar
 /priv/static/
 
 .idea
+server.iml
