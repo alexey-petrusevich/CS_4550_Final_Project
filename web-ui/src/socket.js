@@ -85,7 +85,7 @@ export function channel_join(lobbyname, username) {
         .receive("ok", resp => { console.log("Joined successfully", resp) })
         .receive("error", resp => { console.log("Unable to join", resp) });
 
-    channel.push("login", { name: username })
-        .receive("ok", state_update)
-        .receive("error", resp => { console.log("Unable to login", resp) });
+    // channel.push("login", { name: username })
+    //    .receive("ok", state_update)
+    //    .receive("error", resp => { console.log("Unable to login", resp) });
 }
