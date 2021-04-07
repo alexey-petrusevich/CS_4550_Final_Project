@@ -23,8 +23,9 @@ config :server, ServerWeb.Endpoint,
   watchers: []
 
 # Configuration of CORS for Same-Origin policy workaround
-config :cors_plug, 
-  origin: ["http://198.199.89.228:3000"],
+# TODO update in prod
+config :cors_plug,
+  origin: ["http://localhost:3000"],
   max_age: 86400,
   methods: ["GET", "POST", "PATCH", "DELETE"]
 

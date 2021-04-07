@@ -22,7 +22,6 @@ defmodule ServerWeb.Router do
     resources "/votes", VoteController, except: [:new, :edit]
     resources "/requests", RequestController, except: [:new, :edit]
     resources "/session", SessionController, only: [:create]
-    resources "/partiessongs", PartySongController
 
     # for joining parties (eventually in channel)?
     post "/parties/join", PartyController, :join
@@ -32,7 +31,7 @@ defmodule ServerWeb.Router do
 
     # this endpoint expects post params: user_id, party_id, playlist_uri
     post "/playlist", PlaylistController, :interact
-    
+
     # this endpoint has overloaded methods:
     # - user_id, action
     # - user_id, action, track_id

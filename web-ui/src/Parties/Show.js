@@ -1,11 +1,11 @@
 import { Row, Col, Form, Button, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { get_party, playback } from '../api';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { get_party, get_parties, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
-import { connect_cb, channel_join, get_playlists, set_songs } from "../Channels/socket";
+import { connect_cb, channel_join, get_playlists, set_songs } from "../socket";
 
 //playback control images
 import play from "../images/play.png";
@@ -35,15 +35,19 @@ function PlaybackControls({host_id}) {
   )
 }
 
-function PlaylistControls({host_id, party_id}) {
+function PlaylistControls({host_id, party_id, update}) {
+
   const [state, setState] = useState({playlists: []});
   useEffect(() => {
     connect_cb(setState);
   });
 
   function select_playlists(uri) {
-    console.log("Selected playlist ", uri, " for party ", party_id);
     set_songs(uri, party_id, host_id);
+  }
+
+  function start() {
+    update();
   }
 
   let playlists = state.playlists.map((pl) => (
@@ -60,6 +64,9 @@ function PlaylistControls({host_id, party_id}) {
           { playlists }
         </Dropdown.Menu>
       </Dropdown>
+      <Button variant="primary" onClick={() => start()}>
+        Start Party
+      </Button>
     </div>
   )
 }
@@ -69,7 +76,7 @@ function ShowParty({session}) {
   const [party, setParty] = useState({name: "", roomcode: "",
       description: "", songs: [], host: {username: "N/A"}});
 
-  //loads the party with the id given by the route path, joins the channel
+  //loads the party with the id given by the route path
   let { id } = useParams();
   useEffect(() => {
     get_party(id).then((p) => setParty(p));
@@ -78,8 +85,12 @@ function ShowParty({session}) {
   //join the channel for this party
   channel_join(party.roomcode)
 
+  function update() {
+    get_party(id).then((p) => setParty(p));
+  }
+
+  // gets user's playlists on return from OAuth2
   function on_return() {
-    console.log("returned");
     get_playlists(party.host.id);
   }
 
@@ -95,7 +106,7 @@ function ShowParty({session}) {
           <p><b>Attendee access code: </b>{party.roomcode}</p>
           <p><i>You are the host</i></p>
           <SpotifyAuth callback={on_return}/>
-          <PlaylistControls host_id={party.host.id} party_id={party.id}/>
+          <PlaylistControls host_id={party.host.id} party_id={party.id} update={update}/>
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>

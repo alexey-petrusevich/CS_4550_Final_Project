@@ -1,8 +1,0 @@
-<h1>Show Party song</h1>
-
-<ul>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.party_song_path(@conn, :edit, @party_song) %></span>
-<span><%= link "Back", to: Routes.party_song_path(@conn, :index) %></span>
