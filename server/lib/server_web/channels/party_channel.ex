@@ -21,6 +21,13 @@ defmodule ServerWeb.PartyChannel do
     {:reply, {:ok, %{playlists: playlists}}, socket}
   end
 
+  @impl true
+  def handle_in("set_songs", payload, socket) do
+    IO.inspect(payload)
+    Playlists.interact(payload)
+    {:reply, {:ok, 200}, socket}
+  end
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

@@ -1,11 +1,11 @@
-import { Row, Col, Form, Button,ListGroup } from 'react-bootstrap';
+import { Row, Col, Form, Button, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { get_party, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
-import { connect_cb, channel_join, get_playlists } from "../Channels/socket";
+import { connect_cb, channel_join, get_playlists, set_songs } from "../Channels/socket";
 
 //playback control images
 import play from "../images/play.png";
@@ -35,30 +35,31 @@ function PlaybackControls({host_id}) {
   )
 }
 
-function PlaylistControls({host_id}) {
+function PlaylistControls({host_id, party_id}) {
   const [state, setState] = useState({playlists: []});
   useEffect(() => {
     connect_cb(setState);
   });
 
   function select_playlists(uri) {
-    console.log("Selected playlist ", uri);
+    console.log("Selected playlist ", uri, " for party ", party_id);
+    set_songs(uri, party_id, host_id);
   }
 
   let playlists = state.playlists.map((pl) => (
-    <ListGroup.Item action onClick={() => select_playlists(pl.playlist_uri)}>
+    <Dropdown.Item onSelect={() => select_playlists(pl.playlist_uri)}>
       <p><b>{pl.playlist_title}</b> <i className="tracks">{pl.num_tracks} songs</i></p>
-    </ListGroup.Item>
+    </Dropdown.Item>
   ));
 
   return (
     <div>
-      <h3>Select A Playlist</h3>
-      <i>Choose one of your recent playlists for this party.</i>
-      <ListGroup>
-        { playlists }
-      </ListGroup>
-      <div className="component-spacing"></div>
+      <Dropdown>
+        <Dropdown.Toggle>Choose A Playlist</Dropdown.Toggle>
+        <Dropdown.Menu>
+          { playlists }
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
   )
 }
@@ -94,8 +95,8 @@ function ShowParty({session}) {
           <p><b>Attendee access code: </b>{party.roomcode}</p>
           <p><i>You are the host</i></p>
           <SpotifyAuth callback={on_return}/>
+          <PlaylistControls host_id={party.host.id} party_id={party.id}/>
           <div className="component-spacing"></div>
-          <PlaylistControls host_id={party.host.id}/>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
           <ShowSongs songs={party.songs} user_id={party.host.id}/>

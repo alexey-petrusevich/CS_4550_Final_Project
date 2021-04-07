@@ -26,7 +26,7 @@ export function connect_cb(cb) {
   playlist_cb = cb;
 }
 
-//for updating the playlists through the callback hook
+//for updating the party's playlists through the callback hook
 function update_playlists(pls) {
   if (playlist_cb) {
     state = pls;
@@ -39,4 +39,13 @@ function update_playlists(pls) {
 export function get_playlists(host_id) {
   channel.push("get_playlists", {user_id: host_id})
            .receive("ok", update_playlists);
+}
+
+//------------------------SONGS----------------------------
+export function set_songs(playlist_uri, party_id, user_id) {
+  console.log("Setting songs", playlist_uri, party_id, user_id)
+  channel.push("set_songs", {playlist_uri: playlist_uri,
+                            party_id: party_id,
+                            user_id: user_id})
+            .receive("ok", resp => console.log("Set songs for party ", resp));
 }

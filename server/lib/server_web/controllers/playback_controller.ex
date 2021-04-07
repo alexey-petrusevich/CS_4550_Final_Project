@@ -2,8 +2,6 @@ defmodule ServerWeb.PlaybackController do
   use ServerWeb, :controller
   alias Server.AuthTokens
 
-
-  #def interact(conn, %{"user_id" => user_id, "action" => action}) do
   def interact(conn, data) do
     IO.inspect(data)
     user_id = data["host_id"];
@@ -29,13 +27,6 @@ defmodule ServerWeb.PlaybackController do
     |> send_resp(:created, Jason.encode!(%{}))
   end
 
-
-  # def interact(conn, %{"user_id" => user_id, "track_uri" => track_uri}) do
-  #   token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
-  #   make_post("https://api.spotify.com/v1/me/player/queue", Jason.encode!(%{"uri": track_uri}), token)
-  # end
-
-
   def make_put(url, token) do
     body = ""
     headers = [
@@ -46,7 +37,6 @@ defmodule ServerWeb.PlaybackController do
     HTTPoison.put!(url, body, headers)
   end
 
-
   def make_post(url, token) do
     body = ""
     headers = [
@@ -56,6 +46,5 @@ defmodule ServerWeb.PlaybackController do
     ]
     HTTPoison.post!(url, body, headers)
   end
-
 
 end
