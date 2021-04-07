@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { get_user_id } from '../store'
 import OAuth2Login from 'react-simple-oauth2-login';
 
-function SpotifyAuth() {
+function SpotifyAuth({callback}) {
   let [msg, setMsg] = useState("");
 
   // gets the id of the requesting user as state for the server
@@ -21,7 +21,7 @@ function SpotifyAuth() {
         className="auth-button"
         buttonText="Link with Spotify"
         onRequest={() => setMsg("Awaiting authorization from Spotify")}
-        onSuccess={() => setMsg("Your party is linked with Spotify")}
+        onSuccess={() => callback()}
         onFailure={() => setMsg("Not linked with Spotify")}/>
       <p><i className="linked-msg">{ msg }</i></p>
     </div>
