@@ -20,9 +20,7 @@ defmodule ServerWeb.PlaybackController do
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", token)
       "queue" ->
-        IO.inspect("Got to queue manipulation");
-        track_uri= data["uri"];
-        IO.inspect(track_uri)
+        track_uri = data["track_uri"];
         make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> track_uri, token)
     end
     # TODO: fix response
@@ -50,12 +48,13 @@ defmodule ServerWeb.PlaybackController do
 
 
   def make_post(url, token) do
+    body = ""
     headers = [
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer #{token}}"
     ]
-    HTTPoison.post!(url, "", headers)
+    HTTPoison.post!(url, body, headers)
   end
 
 

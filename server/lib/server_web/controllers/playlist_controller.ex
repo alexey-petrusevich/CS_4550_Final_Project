@@ -16,7 +16,6 @@ defmodule ServerWeb.PlaylistController do
     enqueue_playlist(track_uris, token)
   end
 
-
   def enqueue_playlist(track_uris, token) do
     Enum.map(
       track_uris,
@@ -32,7 +31,6 @@ defmodule ServerWeb.PlaylistController do
       end
     )
   end
-
 
   def interact(conn, %{"user_id" => user_id, "party_id" => party_id, "playlist_uri" => playlist_uri}) do
     token = AuthTokens.get_auth_token_by_user_id(user_id)
@@ -54,62 +52,6 @@ defmodule ServerWeb.PlaylistController do
     )
     enqueue_playlist(track_uris, token)
   end
-
-
-  # returns a list of playlist items containing playlist title and URI
-  def get_playlist_uris(conn, %{"user_id" => user_id}) do
-    IO.inspect("User_id")
-    IO.inspect(user_id)
-    token = AuthTokens.get_auth_token_by_user_id(user_id)
-    IO.inspect("Token")
-    IO.inspect(token)
-    user_playlists = fetch_playlist_uris(token.token)
-
-    conn
-    |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    |> send_resp(:created, Jason.encode!(%{playlists: user_playlists}))
-  end
-
-
-  # returns a list of playlist URIs given spotify access token
-  def fetch_playlist_uris(token) do
-    IO.inspect("got here")
-    IO.inspect(token)
-    url = "https://api.spotify.com/v1/me/playlists?limit=5"
-    headers = [
-      {"Accept", "application/json"},
-      {"Content-Type", "application/json"},
-      {"Authorization", "Bearer #{token}"},
-    ]
-    options = [
-      params: [
-        "limit": 5
-      ]
-    ]
-    # this response contains a collection of playlist URIs
-    HTTPoison.get!(url, headers)
-    |> list_playlist_uris()
-  end
-
-
-  # returns a list of playlist URIs given JSON response
-  # together with playlist URIs returns playlist title
-  # each item represents a map
-  def list_playlist_uris(resp) do
-    IO.inspect("Got to list playlist uris")
-    IO.inspect(resp)
-    data = Jason.decode!(resp.body)
-    playlist_items = Enum.map(
-      data["items"],
-      fn item ->
-        playlist_title = item["name"]
-        playlist_uri = item["uri"]
-        %{playlist_title: playlist_title, playlist_uri: playlist_uri}
-      end
-    )
-    playlist_items
-  end
-
 
   # returns a list of tracks given playlist_uri (and token)
   # title, artist, genre???, uri of each track

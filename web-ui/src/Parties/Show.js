@@ -1,10 +1,11 @@
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import { Row, Col, Form, Button,ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { get_party, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
+import { connect_cb, channel_join, get_playlists } from "../Channels/socket";
 
 //playback control images
 import play from "../images/play.png";
@@ -13,7 +14,6 @@ import skip from "../images/skip.png";
 
 //play, pause, skip playback controls
 function PlaybackControls({host_id}) {
-  console.log(host_id);
   return (
     <Row className="playback-controls">
       <button className="playback-btn"><img src={play}
@@ -35,16 +35,52 @@ function PlaybackControls({host_id}) {
   )
 }
 
+function PlaylistControls({host_id}) {
+  const [state, setState] = useState({playlists: []});
+  useEffect(() => {
+    connect_cb(setState);
+  });
+
+  function select_playlists(uri) {
+    console.log("Selected playlist ", uri);
+  }
+
+  let playlists = state.playlists.map((pl) => (
+    <ListGroup.Item action onClick={() => select_playlists(pl.playlist_uri)}>
+      <p><b>{pl.playlist_title}</b> <i className="tracks">{pl.num_tracks} songs</i></p>
+    </ListGroup.Item>
+  ));
+
+  return (
+    <div>
+      <h3>Select A Playlist</h3>
+      <i>Choose one of your recent playlists for this party.</i>
+      <ListGroup>
+        { playlists }
+      </ListGroup>
+      <div className="component-spacing"></div>
+    </div>
+  )
+}
+
 
 function ShowParty({session}) {
   const [party, setParty] = useState({name: "", roomcode: "",
       description: "", songs: [], host: {username: "N/A"}});
 
-  //loads the party with the id given by the route path
+  //loads the party with the id given by the route path, joins the channel
   let { id } = useParams();
   useEffect(() => {
-    get_party(id).then((p) => setParty(p))
+    get_party(id).then((p) => setParty(p));
   },[id]);
+
+  //join the channel for this party
+  channel_join(party.roomcode)
+
+  function on_return() {
+    console.log("returned");
+    get_playlists(party.host.id);
+  }
 
   let username = session.username
   let hostname = party.host.username;
@@ -57,11 +93,9 @@ function ShowParty({session}) {
           <p><b>Description: </b>{party.description}</p>
           <p><b>Attendee access code: </b>{party.roomcode}</p>
           <p><i>You are the host</i></p>
-          <SpotifyAuth />
+          <SpotifyAuth callback={on_return}/>
           <div className="component-spacing"></div>
-          <h3>Queue</h3>
-          <p><i>List of queued songs</i></p>
-          <div className="component-spacing"></div>
+          <PlaylistControls host_id={party.host.id}/>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
           <ShowSongs songs={party.songs} user_id={party.host.id}/>
