@@ -12,7 +12,7 @@ defmodule ServerWeb.RoomChannel do
     GameServer.start(lobbyname)
     socket = assign(socket, :roomname, lobbyname)
     room = GameServer.peek(lobbyname)
-    {:ok, Game.view(room, ""), socket}
+    {:ok, Game.view(room, ""), socket} # <- TODO Do we need to return the view here?
   end
 
   """
