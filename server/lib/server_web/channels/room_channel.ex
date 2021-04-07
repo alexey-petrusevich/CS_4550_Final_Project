@@ -4,6 +4,8 @@ defmodule ServerWeb.RoomChannel do
   alias Server.Game       # lib/server/server.ex
   alias Server.GameServer # lib/server/server_gameserver.ex
   alias ServerWeb         # lib/server_web.ex
+  alias Server.Parties
+  alias Server.PartyView
 
   # TODO: FIGURE OUT WHAT VIEW TO USE
 
@@ -11,8 +13,8 @@ defmodule ServerWeb.RoomChannel do
   def join("room:" <> lobbyname, payload, socket) do
     GameServer.start(lobbyname)
     socket = assign(socket, :roomname, lobbyname)
-    room = GameServer.peek(lobbyname)
-    {:ok, Game.view(room, ""), socket} # <- TODO Do we need to return the view here?
+    room = Parties.get_party!(lobbyname); # <- TODO Make sure you're getting the right party here. Name vs ID?
+    {:ok, PartyView.render("party.json", room), socket} # <- TODO Do we need to return the view here?
   end
 
   """
