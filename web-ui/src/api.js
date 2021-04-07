@@ -49,7 +49,7 @@ export function get_users() {
     }));
 }
 
-export function get_user() {
+export function get_user(id) {
     let path = "/users/" + id
     return api_get(path);
 }
@@ -57,6 +57,13 @@ export function get_user() {
 export function create_user(user) {
     return api_post("/users", {user});
 }
+
+
+//------------------------SONGS----------------------------
+export function create_song(song) {
+    return api_post("/songs", {song});
+}
+
 
 //------------------------LOGIN----------------------------
 export function api_login(username, password) {

@@ -82,7 +82,14 @@ defmodule Server.Users do
     |> elem(1)
     |> List.flatten
 
-    energy_avg = Enum.sum(energy_vals) / Enum.count(energy_vals) 
+    IO.puts(Enum.sum(energy_vals))
+    IO.puts(Enum.count(energy_vals))
+    
+    energy_avg = 0
+    
+    if Enum.count(energy_vals) != 0 do
+      energy_avg = (Enum.sum(energy_vals) * 1.0) / Enum.count(energy_vals)
+    end
 
     %{top_arists: artists,
       top_genres: genres,
