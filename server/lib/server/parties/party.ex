@@ -7,11 +7,11 @@ defmodule Server.Parties.Party do
     field :description, :string
     field :roomcode, :string
     field :attendees, {:array, :integer}, default: []
-    field :is_active, :boolean 
+    field :is_active, :boolean
 
     belongs_to :host, Server.Users.User
-    has_many :requests, Server.Requests.Request
     has_many :songs, Server.Songs.Song
+    has_many :requests, Server.Requests.Request
 
     timestamps()
   end
@@ -20,6 +20,6 @@ defmodule Server.Parties.Party do
   def changeset(party, attrs) do
     party
     |> cast(attrs, [:name, :roomcode, :description, :host_id, :attendees, :requests, :songs, :is_active])
-    |> validate_required([:name, :roomcode, :description, :host_id, :is_active])
+    |> validate_required([:name, :roomcode, :description, :host_id])
   end
 end

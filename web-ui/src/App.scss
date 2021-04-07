@@ -23,6 +23,26 @@
   margin-right: 20px;
 }
 
+.jumbotron {
+  background-color: #333333;
+  position: relative;
+  height: 325px;
+  max-height: 325px;
+  .header-image {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 95%;
+    width: 65%;
+
+  }
+}
+
+//Link with Spotify inline with host message
+.inline {
+  display: inline;
+}
+
 // nav bar
 .nav-bar {
   border-bottom: .5px solid white;
@@ -40,12 +60,25 @@
   background-color: #1DB954;
   border: none;
   color: white;
-  padding: 5px 22px;
+  padding: 3px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 18px;
+  font-size: 12px;
   border-radius: 20px;
+}
+
+.linked-msg {
+  font-size: 10px;
+  padding: 10px 6px;
+}
+
+.dropdown {
+  padding-top: 10px;
+}
+
+.dropdown-button {
+  font-size: 12px;
 }
 
 .landing-page {
@@ -156,12 +189,14 @@
 }
 
 .playback-controls {
-  top: 40px;
+  padding-right: 50px;
+}
+
+.party-status {
+  top: 20px;
   right: 30px;
   position: absolute;
   z-index: 9999;
-  border: .5px solid white;
-  padding: 10px 20px;
 }
 
 .playback-img {
@@ -169,12 +204,12 @@
 }
 
 .playback-btn {
-  background-color: #191414;
+  background-color: #333333;
   border: none;
 }
 
 .playback-btn:hover {
-  background-color: #191414;
+  background-color: #333333;
   border: none;
 }
 

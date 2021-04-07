@@ -28,10 +28,11 @@ benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash, impact_
 party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id, is_active: false})
 party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 4], host_id: austin.id, is_active: false})
 
-song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "Kingston", track_uri: "0EDQwboQDmswDRn58wcslg", energy: 0.7, party_id: 1})
-song2 = Repo.insert!(%Song{artist: "Athletic Progression", genre: "genre2", title: "WHITE CRAYON", track_uri: "2XXfb3FToGrAOZKGJ1Nwhj", energy: 0.5, party_id: 1})
-song3 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "faye2", track_uri: "asdf", energy: 0.5, party_id: 2})
-song4 = Repo.insert!(%Song{artist: "Artist 3", genre: "genre3", title: "WHITE CRAYON", track_uri: "qwer", energy: 0.3, party_id: 1})
+song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "Kingston", track_uri: "spotify:track:0EDQwboQDmswDRn58wcslg", energy: 0.7, party_id: 2, played: false})
+song2 = Repo.insert!(%Song{artist: "Athletic Progression", genre: "genre2", title: "WHITE CRAYON", track_uri: "spotify:track:2XXfb3FToGrAOZKGJ1Nwhj", energy: 0.5, party_id: 2, played: true})
+song3 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "faye2", track_uri: "asdf", artist_uri: "ashsfas", energy: 0.5, party_id: 2, played: false})
+song4 = Repo.insert!(%Song{artist: "Artist 3", genre: "genre3", title: "WHITE CRAYON", track_uri: "qwer", artist_uri: "ashsfas", energy: 0.3, party_id: 2, played: true})
+
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})
 

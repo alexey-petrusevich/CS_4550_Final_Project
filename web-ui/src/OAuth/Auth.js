@@ -21,8 +21,15 @@ function SpotifyAuth({callback}) {
         className="auth-button"
         buttonText="Link with Spotify"
         onRequest={() => setMsg("Awaiting authorization from Spotify")}
-        onSuccess={() => callback()}
-        onFailure={() => setMsg("Not linked with Spotify")}/>
+        onSuccess={() => {
+          setMsg("Successfully linked with Spotify")
+          callback(true)
+        }}
+        onFailure={() => {
+          setMsg("Error linking your account with Spotify")
+          callback(false)
+        }}/>
+      <br/>
       <p><i className="linked-msg">{ msg }</i></p>
     </div>
   );

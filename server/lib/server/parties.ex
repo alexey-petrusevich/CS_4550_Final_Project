@@ -7,7 +7,6 @@ defmodule Server.Parties do
   alias Server.Repo
 
   alias Server.Parties.Party
-  alias Server.PartiesSongs.PartySong
   alias Server.Users.User
 
   import Ecto.Changeset
@@ -22,10 +21,9 @@ defmodule Server.Parties do
 
   """
   def list_parties do
-    repoparty = Repo.all(Party)
+    Repo.all(Party)
     |> Repo.preload(:host)
     |> Repo.preload(:songs)
-    IO.inspect(repoparty)
   end
 
   @doc """
@@ -128,5 +126,13 @@ defmodule Server.Parties do
     party
     |> Ecto.Changeset.change(attendees: [user_id | party.attendees])
     |> Repo.update()
+  end
+
+  def update_active(party_id, status) do
+    party = get_party!(party_id)
+    |> Ecto.Changeset.change(is_active: status)
+    |> Repo.update()
+
+    IO.inspect(party)
   end
 end

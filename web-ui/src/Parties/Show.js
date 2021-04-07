@@ -1,11 +1,13 @@
-import { Row, Col, Form, Button, Dropdown } from 'react-bootstrap';
+import { Row, Col, Form, Button, Dropdown, Jumbotron, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { get_party, playback } from '../api';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { get_party, get_parties, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
-import { connect_cb, channel_join, get_playlists, set_songs } from "../Channels/socket";
+import { connect_cb, channel_join, get_playlists, set_songs, update_party_active } from "../socket";
+
+import concert from "../images/concert.jpg";
 
 //playback control images
 import play from "../images/play.png";
@@ -35,41 +37,48 @@ function PlaybackControls({host_id}) {
   )
 }
 
+//Playlist selection controls
 function PlaylistControls({host_id, party_id}) {
+  const [playlist, setPlaylist] = useState("Not yet selected")
+
   const [state, setState] = useState({playlists: []});
   useEffect(() => {
     connect_cb(setState);
   });
 
-  function select_playlists(uri) {
-    console.log("Selected playlist ", uri, " for party ", party_id);
-    set_songs(uri, party_id, host_id);
+  //sends the selected playlist through the channel to populate
+  //the party's songs
+  function select_playlist(plist) {
+    setPlaylist(plist.playlist_title);
+    set_songs(plist.playlist_uri, party_id, host_id);
   }
 
   let playlists = state.playlists.map((pl) => (
-    <Dropdown.Item onSelect={() => select_playlists(pl.playlist_uri)}>
+    <Dropdown.Item onSelect={() => select_playlist(pl)}>
       <p><b>{pl.playlist_title}</b> <i className="tracks">{pl.num_tracks} songs</i></p>
     </Dropdown.Item>
   ));
 
   return (
     <div>
-      <Dropdown>
-        <Dropdown.Toggle>Choose A Playlist</Dropdown.Toggle>
+      <Dropdown className="dropdown">
+        <Dropdown.Toggle className="dropdown-button">Choose A Playlist</Dropdown.Toggle>
         <Dropdown.Menu>
           { playlists }
         </Dropdown.Menu>
       </Dropdown>
+      <p className="linked-msg"><b>Selected playlist: </b><i>{playlist}</i></p>
     </div>
   )
 }
 
-
 function ShowParty({session}) {
+  let history = useHistory();
   const [party, setParty] = useState({name: "", roomcode: "",
-      description: "", songs: [], host: {username: "N/A"}});
+      description: "", songs: [], is_active: false, host: {username: "N/A"}});
+  const [authed, setAuthed] = useState(false);
 
-  //loads the party with the id given by the route path, joins the channel
+  //loads the party with the id given by the route path
   let { id } = useParams();
   useEffect(() => {
     get_party(id).then((p) => setParty(p));
@@ -78,9 +87,29 @@ function ShowParty({session}) {
   //join the channel for this party
   channel_join(party.roomcode)
 
-  function on_return() {
-    console.log("returned");
-    get_playlists(party.host.id);
+  // updates the party state
+  function update() {
+    get_party(id).then((p) => setParty(p));
+  }
+
+  // switches a party between inactive and active; or sets it to
+  // active if it is null
+  function toggle_active() {
+    if (party.is_active) {
+      history.push("/dashboard");
+      update_party_active(party.id, false);
+    } else {
+      update_party_active(party.id, true);
+    }
+    update();
+  }
+
+  // gets user's playlists on return from OAuth2
+  function on_return(success) {
+    if (success) {
+      setAuthed(true);
+      get_playlists(party.host.id);
+    }
   }
 
   let username = session.username
@@ -89,14 +118,39 @@ function ShowParty({session}) {
     return (
       <Row>
         <Col>
-          <PlaybackControls host_id={party.host.id}/>
-          <h2>{party.name}</h2>
-          <p><b>Description: </b>{party.description}</p>
-          <p><b>Attendee access code: </b>{party.roomcode}</p>
-          <p><i>You are the host</i></p>
-          <SpotifyAuth callback={on_return}/>
-          <PlaylistControls host_id={party.host.id} party_id={party.id}/>
-          <div className="component-spacing"></div>
+          <Jumbotron className="jumbotron">
+            <Image className="header-image" src={concert} rounded />
+            {party.is_active &&
+              <Button className="party-status" variant="danger" onClick={() =>
+                toggle_active()}>
+                End Party
+              </Button>
+            }
+            <h2>{party.name}</h2>
+            <p><b>Description: </b>{party.description}</p>
+            <p><b>Attendee access code: </b>{party.roomcode}</p>
+            <p><i>You are the host</i></p>
+            {party.is_active == false &&
+              <p><b><i>This party has been ended</i></b></p>
+            }
+            {party.is_active == null &&
+              <div>
+                <SpotifyAuth callback={on_return}/>
+                {authed && party.songs.length == 0 &&
+                  <div>
+                    <PlaylistControls host_id={party.host.id} party_id={party.id}/>
+                    <Button className="party-status" variant="success" onClick={() =>
+                      toggle_active()}>
+                      Start Party
+                    </Button>
+                  </div>
+                }
+              </div>
+            }
+            {party.is_active &&
+              <PlaybackControls host_id={party.host.id}/>
+            }
+          </Jumbotron>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
           <ShowSongs songs={party.songs} user_id={party.host.id}/>
