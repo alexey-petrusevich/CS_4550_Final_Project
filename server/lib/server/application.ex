@@ -15,9 +15,7 @@ defmodule Server.Application do
       {Phoenix.PubSub, name: Server.PubSub},
       # Start the Endpoint (http/https)
       ServerWeb.Endpoint,
-      # Start a worker by calling: Server.Worker.start_link(arg)
-      # {Server.Worker, arg}
-      Server.GameSup
+
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -9,6 +9,7 @@
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
     "node-sass": "^5.0.0",
+    "phoenix": "^1.5.8",
     "react": "^17.0.2",
     "react-async-child": "0.0.1",
     "react-bootstrap": "^1.5.2",
