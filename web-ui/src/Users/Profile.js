@@ -1,8 +1,10 @@
 import { Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import store from '../store';
+import { Link } from 'react-router-dom';
 import { fetch_parties } from '../api';
 import { UserStats } from '../UserStats';
 
@@ -29,18 +31,23 @@ function Party({party}) {
 // -> has many Votes
 // -> has many Friends
 
-function UsersProfile({parties, votes, requests, session}, user) {
-    
-    let path_name = window.location.pathname;
-    let user_id = path_name.substring(path_name.lastIndexOf("/") + 1);
+function UsersProfile({parties, users, session}) {
+
+    const location = useLocation();
+    let user_id = location.pathname.split("/")[2];
+    let user = users[user_id - 1];
+
+    console.log(user_id);
+    // let path_name = window.location.pathname;
+    // let user_id = path_name.substring(path_name.lastIndexOf("/") + 1);
     // get user somehow
-    let currUser = parties.filter( (party) => partyId === party.id.toString());
 
-    console.log("currParty = " + currParty);
+    // let currUser = parties.filter( (party) => partyId === party.id.toString());
+    // console.log("currParty = " + currParty);
 
-    let party_cards = parties.map((party) => (
-        <Party party={party} key={party.id} />
-    ));
+    // let party_cards = parties.map((party) => (
+    //     <Party party={party} key={party.id} />
+    // ));
 
     return (
         <div>
@@ -52,11 +59,11 @@ function UsersProfile({parties, votes, requests, session}, user) {
 
             <h3 style={{ 'paddingTop':'40px' }}>Recent parties</h3>
 
-            <Row style={{ ' width':'150px' }}>{party_cards}</Row>
+            {/* <Row style={{ ' width':'150px' }}>{party_cards}</Row> */}
 
             <div>{ UserStats(user) }</div>
         </div>
     );
 }
 
-export default connect(({parties, votes, requests, session}) => ({parties, votes, requests, session}))(PartiesSingle);
+export default connect(({parties, users, session}) => ({parties, users, session}))(UsersProfile);

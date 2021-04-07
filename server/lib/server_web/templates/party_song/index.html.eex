@@ -1,0 +1,24 @@
+<h1>Listing Partiessongs</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for party_song <- @partiessongs do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.party_song_path(@conn, :show, party_song) %></span>
+        <span><%= link "Edit", to: Routes.party_song_path(@conn, :edit, party_song) %></span>
+        <span><%= link "Delete", to: Routes.party_song_path(@conn, :delete, party_song), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Party song", to: Routes.party_song_path(@conn, :new) %></span>

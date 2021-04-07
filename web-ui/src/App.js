@@ -8,6 +8,7 @@ import Landing from "./Landing";
 import PartiesNew from "./Parties/New";
 import ShowParty from "./Parties/Show";
 import NewUser from "./Users/New";
+import UserProfile from "./Users/Profile";
 import Dashboard from "./Dashboard";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         <Route path="/parties/:id" component={ShowParty} exact />
         <Route path="/users/new" exact>
           <NewUser />
+        </Route>
+        <Route path="/users/:id" exact>
+          <UserProfile />
         </Route>
         <Route path="/dashboard" exact>
           <Dashboard />

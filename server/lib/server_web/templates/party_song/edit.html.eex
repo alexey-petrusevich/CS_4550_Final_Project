@@ -1,0 +1,5 @@
+<h1>Edit Party song</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.party_song_path(@conn, :update, @party_song)) %>
+
+<span><%= link "Back", to: Routes.party_song_path(@conn, :index) %></span>

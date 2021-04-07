@@ -35,7 +35,9 @@ defmodule Server.Songs do
       ** (Ecto.NoResultsError)
 
   """
-  def get_song!(id), do: Repo.get!(Song, id)
+  def get_song!(id) do
+    Repo.get!(Song, id)
+  end
 
   @doc """
   Creates a song.
