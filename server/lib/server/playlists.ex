@@ -108,19 +108,19 @@ defmodule Server.Playlists do
 
   # given a collection of tracks, stores each track in the DB
   # return value are tracks
-  def store_tracks(tracks, party_id) do
-    Enum.map(
-      tracks,
-      fn track ->
-        genre = "" # TODO: resolve having no genre in JSON response from spotify
-        Server.Songs.create_song(
-          %Song{artist: track.artist, title: track.title, track_uri: track.track_uri, request: true, isPlayed: false, party_id: party_id}
-        )
-        id = 1 # TODO: get track id from DB??
-        # TODO: possibly query the DB for the song using track_uri ???
-        # update track
-        %{track | id: id}
-      end
-    )
-  end
+  #def store_tracks(tracks, party_id) do
+  #  Enum.map(
+  #    tracks,
+  #    fn track ->
+  #      genre = "" # TODO: resolve having no genre in JSON response from spotify
+  #      Server.Songs.create_song(
+  #        %Song{artist: track.artist, title: track.title, track_uri: track.track_uri, party_id: party_id}
+  #      )
+  #      id = 1 # TODO: get track id from DB??
+  #      # TODO: possibly query the DB for the song using track_uri ???
+  #      # update track
+  #      %{track | id: id}
+  #    end
+  #  )
+  #end
 end

@@ -24,7 +24,7 @@ config :server, ServerWeb.Endpoint,
 
 # Configuration of CORS for Same-Origin policy workaround
 config :cors_plug, 
-  origin: ["http://localhost:3000"],
+  origin: ["http://198.199.89.228:3000"],
   max_age: 86400,
   methods: ["GET", "POST", "PATCH", "DELETE"]
 

@@ -19,6 +19,7 @@ defmodule Server.Songs do
   """
   def list_songs do
     Repo.all(Song)
+    |> Repo.preload(:parties)
   end
 
   @doc """
@@ -37,6 +38,7 @@ defmodule Server.Songs do
   """
   def get_song!(id) do
     Repo.get!(Song, id)
+    |> Repo.preload(:parties)
   end
 
   @doc """

@@ -7,6 +7,7 @@ defmodule Server.Parties.Party do
     field :description, :string
     field :roomcode, :string
     field :attendees, {:array, :integer}, default: []
+    field :is_active, :boolean 
     # field :songs, {:array, :integer}, default: []
 
     belongs_to :host, Server.Users.User

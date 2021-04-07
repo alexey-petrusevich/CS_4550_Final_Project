@@ -56,6 +56,7 @@ defmodule Server.Users do
   def get_user_data(id) do
     id_int = String.to_integer(id)
 
+    # artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where id in (SELECT song_id from partiessongs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2))", [id_int, [id_int]])
     artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where id in (SELECT song_id from partiessongs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2))", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)

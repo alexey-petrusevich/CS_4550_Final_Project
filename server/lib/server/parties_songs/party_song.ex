@@ -2,7 +2,7 @@ defmodule Server.PartiesSongs.PartySong do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
+  #@primary_key false
   schema "partiessongs" do
     belongs_to :song, Server.Songs.Song
     belongs_to :party, Server.Parties.Party

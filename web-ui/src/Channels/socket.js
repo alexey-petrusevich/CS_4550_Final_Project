@@ -1,7 +1,7 @@
 import { Socket } from "phoenix";
 
 //TODO will need to be updated to just /socket when deploying to prod
-let socket = new Socket("ws://localhost:4000/socket", { params: { token: "" } });
+let socket = new Socket("ws://198.199.89.228:4000/socket", { params: { token: "" } });
 socket.connect();
 
 let channel = null;

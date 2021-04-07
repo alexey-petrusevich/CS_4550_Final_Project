@@ -5,8 +5,14 @@ defmodule Server.Songs.Song do
   schema "songs" do
     field :artist, :string
     field :title, :string
+    field :genre, :string
     field :track_uri, :string
     field :energy, :float
+    field :danceability, :float
+    field :loudness, :float
+    field :valence, :float
+
+    field :played, :boolean
     has_many :votes, Server.Votes.Vote
     belongs_to :party, Server.Parties.Party
     many_to_many(:parties, Server.Parties.Party, join_through: Server.PartiesSongs)
