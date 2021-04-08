@@ -15,6 +15,9 @@ defmodule ServerWeb.SongView do
       track_uri: song.track_uri,
       title: song.title,
       artist: song.artist,
-      party_id: song.party_id}
+      party_id: song.party_id,
+      genre: song.genre,
+      energy: song.energy,
+      played: song.played}
   end
 end

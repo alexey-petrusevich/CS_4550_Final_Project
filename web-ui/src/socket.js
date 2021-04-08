@@ -1,91 +1,65 @@
-// NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "assets/js/app.js".
-
-// To use Phoenix channels, the first step is to import Socket,
-// and connect at the socket path in "lib/web/endpoint.ex".
-//
-// Pass the token on params as below. Or remove it
-// from the params if you are not using authentication.
 import { Socket } from "phoenix";
 
-let socket = new Socket("/socket", { params: { token: window.userToken } });
-
-// When you connect, you'll often need to authenticate the client.
-// For example, imagine you have an authentication plug, `MyAuth`,
-// which authenticates the session and assigns a `:current_user`.
-// If the current user exists you can assign the user's token in
-// the connection for use in the layout.
-//
-// In your "lib/web/router.ex":
-//
-//     pipeline :browser do
-//       ...
-//       plug MyAuth
-//       plug :put_user_token
-//     end
-//
-//     defp put_user_token(conn, _) do
-//       if current_user = conn.assigns[:current_user] do
-//         token = Phoenix.Token.sign(conn, "user socket", current_user.id)
-//         assign(conn, :user_token, token)
-//       else
-//         conn
-//       end
-//     end
-//
-// Now you need to pass this token to JavaScript. You can do so
-// inside a script tag in "lib/web/templates/layout/app.html.eex":
-//
-//     <script>window.userToken = "<%= assigns[:user_token] %>";</script>
-//
-// You will need to verify the user token in the "connect/3" function
-// in "lib/web/channels/user_socket.ex":
-//
-//     def connect(%{"token" => token}, socket, _connect_info) do
-//       # max_age: 1209600 is equivalent to two weeks in seconds
-//       case Phoenix.Token.verify(socket, "user socket", token, max_age: 1209600) do
-//         {:ok, user_id} ->
-//           {:ok, assign(socket, :user, user_id)}
-//         {:error, reason} ->
-//           :error
-//       end
-//     end
-//
-// Finally, connect to the socket:
+//TODO will need to be updated to just /socket when deploying to prod
+let socket = new Socket("ws://localhost:4000/socket", { params: { token: "" } });
 socket.connect();
 
-let state = { // TODO: Enter state parameters
-};
-
-let callback = null;
 let channel = null;
+let playlist_cb = null;
+let state = {playlists: {}};
 
-// The server sent us a new state
-// From Nat's scratch repo https://github.com/NatTuck/scratch-2021-01/blob/master/4550/0216/hangman/assets/js/socket.js
-function state_update(st) {
-    console.log("New state", st);
-    state = st;
-    if (callback) {
-        callback(st);
-    }
+
+export function channel_join(roomcode) {
+  let channelname = "party:" + roomcode;
+  channel = socket.channel(channelname, {});
+  channel.join()
+         .receive("ok", resp => {console.log("Successfully connected to channel", resp)})
+         .receive("error", resp => {console.log("Unable to connect to channel", resp)});
+
+  channel.on("view", update_playlists)
 }
 
-// Called to update the callback to the "setState" method from the main js file
-export function channel_stateupdate(cb) {
-    callback = cb;
-    callback(state);
+//---------------------PLAYLISTS------------------------
+
+//connects the callback funtion with a useState hook
+export function connect_cb(cb) {
+  playlist_cb = cb;
 }
 
-// Called to let a play join a party
-export function channel_join(lobbyname, username) {
-    socket.connect();
-    let channelname = "room:" + lobbyname;
-    channel = socket.channel(channelname, {});
-    channel.join()
-        .receive("ok", resp => { console.log("Joined successfully", resp) })
-        .receive("error", resp => { console.log("Unable to join", resp) });
+//for updating the party's playlists through the callback hook
+function update_playlists(pls) {
+  if (playlist_cb) {
+    state = pls;
+    console.log("state", pls);
+    console.log("state 2", state);
+    playlist_cb(pls);
+  }
+}
 
-    // channel.push("login", { name: username })
-    //    .receive("ok", state_update)
-    //    .receive("error", resp => { console.log("Unable to login", resp) });
+export function get_playlists(host_id) {
+  channel.push("get_playlists", {user_id: host_id})
+           .receive("ok", update_playlists);
+}
+
+//------------------------SONGS----------------------------
+export function set_songs(playlist_uri, party_id, user_id) {
+  console.log("Setting songs", playlist_uri, party_id, user_id)
+  channel.push("set_songs", {playlist_uri: playlist_uri,
+                            party_id: party_id,
+                            user_id: user_id})
+            .receive("ok", resp => console.log("Set songs for party ", resp));
+  return "successs";
+}
+
+export function set_song_played(song_id, callback) {
+  console.log("Setting song ", song_id, " to played status");
+  channel.push("queued_song", {song_id: song_id})
+      .receive("ok", resp => callback());
+}
+
+//-------------------------PARTIES---------------------------------
+export function update_party_active(party_id, is_active) {
+  console.log("Setting party ", party_id, " to be active ", is_active);
+  channel.push("update_active", {party_id: party_id, is_active: is_active})
+    .receive("ok", resp => console.log("Set party active"));
 }

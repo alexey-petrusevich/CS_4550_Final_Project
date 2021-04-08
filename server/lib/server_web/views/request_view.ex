@@ -1,6 +1,9 @@
 defmodule ServerWeb.RequestView do
   use ServerWeb, :view
   alias ServerWeb.RequestView
+  alias ServerWeb.UserView
+
+  alias Server.Repo
 
   def render("index.json", %{requests: requests}) do
     %{data: render_many(requests, RequestView, "request.json")}
@@ -11,8 +14,15 @@ defmodule ServerWeb.RequestView do
   end
 
   def render("request.json", %{request: request}) do
+
+    request = request |> Repo.preload(:user)
+    IO.inspect(request)
+
+    IO.inspect(request)
     %{id: request.id,
       title: request.title,
-      artist: request.artist}
+      artist: request.artist,
+      track_uri: request.track_uri,
+      user: render_one(request.user, UserView, "simpleUser.json")}
   end
 end

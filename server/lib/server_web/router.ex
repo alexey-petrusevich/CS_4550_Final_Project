@@ -31,11 +31,22 @@ defmodule ServerWeb.Router do
 
     # this endpoint expects post params: user_id, party_id, playlist_uri
     post "/playlist", PlaylistController, :interact
-    
+
     # this endpoint has overloaded methods:
     # - user_id, action
     # - user_id, action, track_id
     post "/playback", PlaybackController, :interact
+
+
+    # make API calls for requests
+    # party id, user_id, songs title, artist
+    # put it in requests contorller
+    # update - title and the artists with the result of the call
+    # write track uri
+    post "/requests", RequestController, :create
+
+    # takes in user_id, song_id, value
+    post "/vote", VoteController, :vote
 
   end
 end

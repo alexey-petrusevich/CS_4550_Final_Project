@@ -8,11 +8,11 @@ defmodule Server.Repo.Migrations.CreateParties do
       add :description, :text, null: false
       add :host_id, references(:users, on_delete: :nothing), null: false
       add :attendees, {:array, :integer}, null: false
+      add :is_active, :boolean, null: true
 
       timestamps()
     end
 
     create index(:parties, [:host_id])
-    #create index(:parties, [:attendee_id])
   end
 end
