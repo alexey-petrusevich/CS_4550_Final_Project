@@ -22,8 +22,6 @@ defmodule ServerWeb.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Users.get_user!(id)
-    IO.inspect("INSPECTING USER ->")
-    IO.inspect(user)
     render(conn, "show.json", user: user)
   end
 

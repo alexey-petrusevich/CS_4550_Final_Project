@@ -4,7 +4,6 @@ defmodule Server.Songs.Song do
 
   schema "songs" do
     field :artist, :string
-    field :artist_uri, :string
     field :title, :string
     field :genre, :string
     field :track_uri, :string

@@ -24,7 +24,7 @@ defmodule ServerWeb.PartyView do
       description: party.description,
       attendees: party.attendees,
       songs: render_many(party.songs, SongView, "song.json"),
-      host: render_one(party.host, UserView, "user.json"),
+      host: render_one(party.host, UserView, "simpleUser.json"),
       is_active: party.is_active}
   end
 end
