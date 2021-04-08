@@ -43,7 +43,7 @@ defmodule ServerWeb.Router do
     # put it in requests contorller
     # update - title and the artists with the result of the call
     # write track uri
-    post "/search", RequestController, :search
+    post "/requests", RequestController, :create
 
     # takes in user_id, song_id, value
     post "/vote", VoteController, :vote

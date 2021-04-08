@@ -7,6 +7,12 @@ defmodule ServerWeb.RequestController do
 
   action_fallback ServerWeb.FallbackController
 
+  def index(conn, _params) do
+    requests = Requests.list_requests()
+    render(conn, "index.json", requests: requests)
+  end
+
+
   def search(conn, data) do
     IO.inspect("handling search")
     IO.insect("data")
@@ -33,6 +39,30 @@ defmodule ServerWeb.RequestController do
     tracks = data["items"]
     if (length(tracks) == 0) do
       IO.inspect("track not found, sending error")
+      nil
+    else
+      IO.inspect("track found, creating new request in DB")
+      title = tracks[0]["name"]
+      artist = tracks[0]["artists"][0]["name"]
+      track_uri = tracks[0]["uri"]
+      request = %{
+        title: title,
+        artist: artist,
+        party_id: party_id,
+        user_id: user_id,
+        track_uri: track_uri
+      }
+      Requests.create_request(request)
+    end
+  end
+
+  def create(conn, %{"request" => request_params}) do
+    with {:ok, %Request{} = request} <- search(conn, request_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.request_path(conn, :show, request))
+      |> render("show.json", request: request)
+    else
       conn
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(
@@ -41,23 +71,27 @@ defmodule ServerWeb.RequestController do
              %{error: "Track not found"}
            )
          )
-    else
-    IO.inspect("track found, creating new request in DB")
-      title = tracks[0]["name"]
-      artist = tracks[0]["artists"][0]["name"]
-      request = %{
-        title: title,
-        artist: artist,
-        party_id: party_id,
-        user_id: user_id
-      }
-      Requests.create_request(request)
-      IO.inspect("created DB entry, sending request back the caller")
-      IO.inspect("request")
-      IO.inspect(request)
-      conn
-      |> put_resp_header("content-type", "application/json; charset=UTF-8")
-      |> send_resp(:created, Jason.encode!(request))
+    end
+  end
+
+  def show(conn, %{"id" => id}) do
+    request = Requests.get_request!(id)
+    render(conn, "show.json", request: request)
+  end
+
+  def update(conn, %{"id" => id, "request" => request_params}) do
+    request = Requests.get_request!(id)
+
+    with {:ok, %Request{} = request} <- Requests.update_request(request, request_params) do
+      render(conn, "show.json", request: request)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    request = Requests.get_request!(id)
+
+    with {:ok, %Request{}} <- Requests.delete_request(request) do
+      send_resp(conn, :no_content, "")
     end
   end
 
