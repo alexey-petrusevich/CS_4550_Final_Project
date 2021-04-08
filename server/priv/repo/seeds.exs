@@ -36,5 +36,5 @@ song4 = Repo.insert!(%Song{artist: "Artist 3", genre: "genre3", title: "WHITE CR
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})
 
-#song1 = Repo.insert!(%Song{title: "Don't Stop Believing", artist: "Journey", track_uri: "spotify:track:4bHsxqR3GMrXTxEPLuK5ue", party_id: party.id})
-#song1 = Repo.insert!(%Song{title: "Don't Start Now", artist: "Dua Lipa", track_uri: "spotify:track:6WrI0LAC5M1Rw2MnX2ZvEg", party_id: party.id})
+request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", party_id: party.id, user_id: iain.id})
+request1 = Repo.insert!(%Request{title: "Let It Ben", artist: "The Beatles", party_id: party.id, user_id: iain.id})

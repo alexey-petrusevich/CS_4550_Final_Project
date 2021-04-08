@@ -63,6 +63,19 @@ export function create_song(song) {
     return api_post("/songs", {song});
 }
 
+//------------------------REQUESTS----------------------------
+export function get_requests() {
+    api_get("/requests").then((data) => store.dispatch({
+        type: 'requests/set',
+        data: data,
+    }));
+}
+
+export function create_request(request) {
+  console.log("Making request", request);
+  return api_post("/requests", {request});
+}
+
 
 //------------------------LOGIN----------------------------
 export function api_login(username, password) {
@@ -106,4 +119,5 @@ export function queue_track(host_id, action, track_uri) {
 export function load_defaults() {
     get_users();
     get_parties();
+    get_requests();
 }

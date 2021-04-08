@@ -51,6 +51,12 @@ export function set_songs(playlist_uri, party_id, user_id) {
   return "successs";
 }
 
+export function set_song_played(song_id, callback) {
+  console.log("Setting song ", song_id, " to played status");
+  channel.push("queued_song", {song_id: song_id})
+      .receive("ok", resp => callback());
+}
+
 //-------------------------PARTIES---------------------------------
 export function update_party_active(party_id, is_active) {
   console.log("Setting party ", party_id, " to be active ", is_active);

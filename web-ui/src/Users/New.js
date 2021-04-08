@@ -37,7 +37,7 @@ function NewUser() {
     let data = pick(user, ['name', 'password']);
     create_user(data).then(() => {
       get_users();
-      history.push("/dashboard");
+      history.push("/");
     });
   }
 
@@ -68,7 +68,7 @@ function NewUser() {
           </Form.Group>
           <Button variant="primary"
                   type="submit"
-                  disabled={user.pass_msg !== "" || user.email_msg !== ""}>
+                  disabled={user.pass_msg !== ""}>
             Register
           </Button>
         </Form>

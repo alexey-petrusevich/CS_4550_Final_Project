@@ -5,6 +5,8 @@ import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { get_party, get_parties, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
+import RequestsNew from "../Requests/New";
+import ShowRequests from "../Requests/Show";
 import { connect_cb, channel_join, get_playlists, set_songs, update_party_active } from "../socket";
 
 import concert from "../images/concert.jpg";
@@ -153,10 +155,12 @@ function ShowParty({session}) {
           </Jumbotron>
           <h3>List of Songs</h3>
           <p><i>List of songs to choose from for voting</i></p>
-          <ShowSongs songs={party.songs} user_id={party.host.id}/>
+          <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
           <div className="component-spacing"></div>
           <h3>Requests</h3>
           <p><i>Attendee requests</i></p>
+          <RequestsNew party_id={party.id}/>
+          <ShowRequests requests={requests} party_id={party.id}/>
         </Col>
       </Row>
     );

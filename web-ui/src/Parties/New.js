@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { create_party, get_parties } from '../api';
 import { get_user_id } from '../store'
-import SpotifyAuth from "../OAuth/Auth";
 
 export default function PartiesNew() {
   let history = useHistory();
@@ -30,12 +29,6 @@ export default function PartiesNew() {
     setParty(p1);
   }
 
-  function updateCode(ev) {
-    let p1 = Object.assign({}, party);
-    p1["roomcode"] = ev.target.value;
-    setParty(p1);
-  }
-
   function updateDesc(ev) {
     let p1 = Object.assign({}, party);
     p1["description"] = ev.target.value;
@@ -56,6 +49,7 @@ export default function PartiesNew() {
           <Form.Group>
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea"
+                          maxlength="30"
                           rows={2}
                           onChange={updateDesc}
                           value={"" || party.description} />
