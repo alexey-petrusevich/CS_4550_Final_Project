@@ -39,7 +39,7 @@ defmodule ServerWeb.VoteController do
     song_id = data["song_id"]
     value = data["value"]
     # check if entry already exists
-    vote = Votes.get_vote_by_song_id!(song_id)
+    vote = Votes.get_vote_by_song_id(song_id)
     if (vote) do
       vote = %{vote | value: value}
       Votes.update_vote(vote)
@@ -49,6 +49,7 @@ defmodule ServerWeb.VoteController do
         song_id: song_id,
         value: value
       }
+      IO.inspect("creating vote")
       Votes.create_vote(newVote)
     end
   end

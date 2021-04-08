@@ -106,8 +106,11 @@ defmodule Server.Songs do
     Song.changeset(song, attrs)
   end
 
+
   # updates a song with status of played
   def update_played(song_id) do
+
+    # TODO: move getting playylibilty, etc. here
     song = get_song!(song_id)
     IO.inspect(song)
     song = song

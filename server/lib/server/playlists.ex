@@ -91,6 +91,12 @@ defmodule Server.Playlists do
                      |> Enum.at(0)
                      |> Map.get("uri")
 
+
+        # TODO: add genre, and other things only when the track is added to the queue???
+        # TODO: set genre, dancebility, etc. with default values
+        # TODO: move requesting actual stats only when the song gets added to the queue
+
+
         genre = get_track_genre(artist_uri, token);
         {energy, danceability, loudness, valence} = get_track_stats(track_uri, token)
         %{
