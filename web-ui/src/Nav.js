@@ -53,7 +53,7 @@ let SessionInfo = connect()(({session, dispatch}) => {
     return (
       <Col className="login" md={{ span: 4, offset: 4 }}>
         <p>
-        Logged in as {session.username} &nbsp;
+        Logged in as <Link to={{pathname: `/users/` + session.user_id}}>{session.username}</Link> &nbsp;
         <Button className="logout" onClick={logout}>Logout</Button>
         </p>
       </Col>

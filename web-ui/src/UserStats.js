@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 
 export function UserStats(user) {
 
+  
   const user_genres = user.top_genres;
 
   // const RadarSongGenres = () => (
@@ -65,14 +66,18 @@ export function UserStats(user) {
   //       ]}
   //   />
   // )
+  console.log("user's artists: " + user.top_artists);
 
   return (
     <div>
+      <h2>{user.username}</h2>
       <h3>Top Artists</h3>
+      <p>{user.top_artists[0]}</p>
       <h3>Top Genres</h3>
+      <p>{user.top_genres[0]}</p>
       <h3>Top Styles</h3>
-      <p></p>
       <h3>Impact Score</h3>
+      <p>{user.impact_score}</p>
     </div>
   );
 }

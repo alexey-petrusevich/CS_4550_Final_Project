@@ -5,23 +5,23 @@ import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import store from '../store';
 import { Link } from 'react-router-dom';
-import { fetch_parties } from '../api';
+import { get_user } from '../api';
 import { UserStats } from '../UserStats';
 
-function Party({party}) {
-    return (
-      <Col md="3">
-        <Card>
-            <Card.Title>
-                <Link to={{pathname: `/party/` + party.id}}>{party.roomname}</Link>
-            </Card.Title>
-            <Card.Text>
-                Hosted by: {party.host}
-            </Card.Text>
-        </Card>
-      </Col>
-    );
-}
+// function Party({party}) {
+//     return (
+//       <Col md="3">
+//         <Card>
+//             <Card.Title>
+//                 <Link to={{pathname: `/party/` + party.id}}>{party.roomname}</Link>
+//             </Card.Title>
+//             <Card.Text>
+//                 Hosted by: {party.host}
+//             </Card.Text>
+//         </Card>
+//       </Col>
+//     );
+// }
 
 // USERS SCHEMA
 // password : str
@@ -33,11 +33,14 @@ function Party({party}) {
 
 function UsersProfile({parties, users, session}) {
 
+    console.log("in UsersProfile");
     const location = useLocation();
     let user_id = location.pathname.split("/")[2];
     let user = users[user_id - 1];
+    // let user = get_user(user_id);
 
-    console.log(user_id);
+    console.log("User ID = " + user_id);
+    console.log("user: " + JSON.stringify(user));
     // let path_name = window.location.pathname;
     // let user_id = path_name.substring(path_name.lastIndexOf("/") + 1);
     // get user somehow
@@ -53,8 +56,8 @@ function UsersProfile({parties, users, session}) {
         <div>
             <h1>{user.username}</h1>
             <ul>
-                <li><strong>{user.friends.length} Friends</strong></li>
-                <li><strong>{user.parties.length} Parties</strong></li>
+                {/* <li><strong>{user.friends.length} Friends</strong></li> */}
+                {/* <li><strong>{user.parties.length} Parties</strong></li> */}
             </ul>
 
             <h3 style={{ 'paddingTop':'40px' }}>Recent parties</h3>
