@@ -6,8 +6,10 @@ export PORT=4801
 
 echo "Stopping old copy of app, if any..."
 
+# Replace with proper directory
 _build/prod/rel/practice/bin/practice stop || true
 
 echo "Starting app..."
 
+# Replace with proper directory
 _build/prod/rel/practice/bin/practice start
