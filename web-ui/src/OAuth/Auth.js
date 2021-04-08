@@ -7,6 +7,7 @@ function SpotifyAuth({callback}) {
   let [msg, setMsg] = useState("");
 
   // gets the id of the requesting user as state for the server
+  // TODO get rid of
   let id = get_user_id()
 
   return (
