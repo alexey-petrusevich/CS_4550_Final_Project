@@ -37,6 +37,10 @@ defmodule Server.Votes do
   """
   def get_vote!(id), do: Repo.get!(Vote, id)
 
+  def get_vote_by_song_id!(song_id) do
+    Repo.get_by!(Vote, song_id: song_id)
+  end
+
   @doc """
   Creates a vote.
 

@@ -6,38 +6,30 @@ defmodule ServerWeb.VoteController do
 
   action_fallback ServerWeb.FallbackController
 
-  def index(conn, _params) do
-    votes = Votes.list_votes()
-    render(conn, "index.json", votes: votes)
+
+  # updates (creates) a vote for the given song
+  def vote(conn, data) do
+#    # user_id, song_id, value
+#    user_id = data["user_id"]
+#    song_id = data["song_id"]
+#    value = data["value"]
+#    # check if entry already exists
+#    vote = Votes.get_vote_by_song_id!(song_id)
+#    if (vote) do
+#      vote["value"] = vote["value"] + value
+#      Votes.update_vote(vote)
+#      conn
+#      |> send_resp(:no_content, "")
+#    else
+#      newVote = %{
+#        user_id: user_id,
+#        song_id: song_id,
+#        value: value
+#      }
+#      Votes.create_vote(newVote)
+#      conn
+#      |> send_resp(:no_content, "")
+#    end
   end
 
-  def create(conn, %{"vote" => vote_params}) do
-    with {:ok, %Vote{} = vote} <- Votes.create_vote(vote_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.vote_path(conn, :show, vote))
-      |> render("show.json", vote: vote)
-    end
-  end
-
-  def show(conn, %{"id" => id}) do
-    vote = Votes.get_vote!(id)
-    render(conn, "show.json", vote: vote)
-  end
-
-  def update(conn, %{"id" => id, "vote" => vote_params}) do
-    vote = Votes.get_vote!(id)
-
-    with {:ok, %Vote{} = vote} <- Votes.update_vote(vote, vote_params) do
-      render(conn, "show.json", vote: vote)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    vote = Votes.get_vote!(id)
-
-    with {:ok, %Vote{}} <- Votes.delete_vote(vote) do
-      send_resp(conn, :no_content, "")
-    end
-  end
 end

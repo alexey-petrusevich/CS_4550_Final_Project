@@ -48,9 +48,34 @@ export function get_users() {
     }));
 }
 
+export function get_user(id) {
+    let path = "/users/" + id
+    return api_get(path);
+}
+
 export function create_user(user) {
     return api_post("/users", {user});
 }
+
+
+//------------------------SONGS----------------------------
+export function create_song(song) {
+    return api_post("/songs", {song});
+}
+
+//------------------------REQUESTS----------------------------
+export function get_requests() {
+    api_get("/requests").then((data) => store.dispatch({
+        type: 'requests/set',
+        data: data,
+    }));
+}
+
+export function create_request(request) {
+  console.log("Making request", request);
+  return api_post("/requests", {request});
+}
+
 
 //------------------------LOGIN----------------------------
 export function api_login(username, password) {

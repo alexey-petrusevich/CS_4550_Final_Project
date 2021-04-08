@@ -1,9 +1,12 @@
 defmodule ServerWeb.PartyView do
   use ServerWeb, :view
   alias ServerWeb.PartyView
-
+  alias ServerWeb.SongView
   alias ServerWeb.UserView
   alias ServerWeb.SongView
+  alias ServerWeb.RequestView
+
+  alias Server.Repo
 
   def render("index.json", %{parties: parties}) do
     %{data: render_many(parties, PartyView, "party.json")}
@@ -14,13 +17,17 @@ defmodule ServerWeb.PartyView do
   end
 
   def render("party.json", %{party: party}) do
-    #TODO preload host
+    party = party
+    |> Repo.preload(:songs)
+    |> Repo.preload(:requests)
     %{id: party.id,
       name: party.name,
       roomcode: party.roomcode,
       description: party.description,
       attendees: party.attendees,
+      requests: render_many(party.requests, RequestView, "request.json"),
       songs: render_many(party.songs, SongView, "song.json"),
-      host: render_one(party.host, UserView, "user.json")}
+      host: render_one(party.host, UserView, "simpleUser.json"),
+      is_active: party.is_active}
   end
 end

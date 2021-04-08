@@ -32,6 +32,7 @@ defmodule Server.Users do
   """
   def list_users do
     Repo.all(User)
+    |> Enum.map(fn x -> Map.merge(x, get_user_data(to_string(x.id))) end)
   end
 
   @doc """
@@ -48,7 +49,55 @@ defmodule Server.Users do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Map.merge(get_user_data(id))
+  end
+
+  def get_user_data(id) do
+    id_int = String.to_integer(id)
+
+    IO.inspect(Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]]))
+    # artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where id in (SELECT song_id from partiessongs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2))", [id_int, [id_int]])
+    artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+    |> Enum.frequencies
+    |> Map.to_list
+    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+    |> Enum.map(fn x -> elem(x, 0) end)
+
+    genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+    |> Enum.frequencies
+    |> Map.to_list
+    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+    |> Enum.map(fn x -> elem(x, 0) end)
+
+    energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+
+    IO.puts(Enum.sum(energy_vals))
+    IO.puts(Enum.count(energy_vals))
+    
+    energy_avg = 0
+    
+    if Enum.count(energy_vals) != 0 do
+      energy_avg = (Enum.sum(energy_vals) * 1.0) / Enum.count(energy_vals)
+    end
+
+    %{top_artists: artists,
+      top_genres: genres,
+      energy: energy_avg}
+  end
 
   @doc """
   Creates a user.
