@@ -8,8 +8,14 @@
 }
 
 .alert {
-  position: relative;
-  top: 20px;
+  position: fixed;
+  top: 40px;
+  z-index: 9999;
+  left: 0;
+  margin: auto;
+  right: 0;
+  top: 2em;
+  width: 50%;
 }
 
 // login/logout form

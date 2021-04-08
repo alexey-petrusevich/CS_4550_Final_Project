@@ -1,7 +1,7 @@
 import { Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { create_request, get_requests } from '../api';
+import { create_request, get_parties } from '../api';
 import { get_user_id } from '../store'
 
 export default function RequestsNew({party_id}) {
@@ -13,16 +13,17 @@ export default function RequestsNew({party_id}) {
     //sets the user_id of the request to the current user
     request.user_id = get_user_id();
     request.party_id = party_id;
-    create_request(request).then((resp) => {
-      if (resp["errors"]) {
-        console.log("errors", resp.errors);
-      }
-      else {
-        console.log("Request response ", resp);
-        // get_requests();
-        // history.push("/parties/" + resp.data.id);
-      }
-    });
+    create_request(request);
+    // .then((resp) => {
+    //   if (resp["errors"]) {
+    //     console.log("errors", resp.errors);
+    //   }
+    //   else {
+    //     console.log("Request response ", resp);
+    //     get_parties();
+    //     history.push("/parties/" + party_id);
+    //   }
+    // });
   }
 
   function updateTitle(ev) {

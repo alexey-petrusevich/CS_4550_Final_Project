@@ -74,6 +74,10 @@ function PlaylistControls({host_id, party_id}) {
   )
 }
 
+function PartyBody({is_host, is_active}) {
+  return null;
+}
+
 function ShowParty({session}) {
   let history = useHistory();
   const [party, setParty] = useState({name: "", roomcode: "",
@@ -114,6 +118,22 @@ function ShowParty({session}) {
     }
   }
 
+  let party_body = null;
+
+  if (party.is_active) {
+    party_body = (
+      <div>
+        <h3>List of Songs</h3>
+        <p><i>List of songs to choose from for voting</i></p>
+        <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
+        <div className="component-spacing"></div>
+        <h3>Requests</h3>
+        <p><i>Attendee requests</i></p>
+        <ShowRequests requests={party.requests} party_id={party.id}/>
+      </div>
+    )
+  }
+
   let username = session.username
   let hostname = party.host.username;
   if (username === hostname) {
@@ -133,7 +153,7 @@ function ShowParty({session}) {
             <p><b>Attendee access code: </b>{party.roomcode}</p>
             <p><i>You are the host</i></p>
             {party.is_active == false &&
-              <p><b><i>This party has been ended</i></b></p>
+              <p><b><i>This party has ended</i></b></p>
             }
             {party.is_active == null &&
               <div>
@@ -153,14 +173,7 @@ function ShowParty({session}) {
               <PlaybackControls host_id={party.host.id}/>
             }
           </Jumbotron>
-          <h3>List of Songs</h3>
-          <p><i>List of songs to choose from for voting</i></p>
-          <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
-          <div className="component-spacing"></div>
-          <h3>Requests</h3>
-          <p><i>Attendee requests</i></p>
-          <RequestsNew party_id={party.id}/>
-          <ShowRequests requests={party.requests} party_id={party.id}/>
+          <PartyBody is_host={true} is_active={party.is_active} />
         </Col>
       </Row>
     );
@@ -170,23 +183,27 @@ function ShowParty({session}) {
     return (
       <Row>
         <Col>
-          <h2>{party.name}</h2>
-          <p><b>Description: </b>{party.description}</p>
-          <p><i>You are an attendee</i></p>
+          <Jumbotron className="jumbotron">
+            <Image className="header-image" src={concert} rounded />
+            <h2>{party.name}</h2>
+            <p><b>Description: </b>{party.description}</p>
+            <p><i>You are an attendee</i></p>
+            {party.is_active == false &&
+              <p><b><i>This party has ended</i></b></p>
+            }
+          </Jumbotron>
+          <h3>List of Songs</h3>
+          <p><i>List of songs to choose from for voting</i></p>
+          <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
           <div className="component-spacing"></div>
-          <h3>Currently Playing</h3>
-          <p><i>Give feedback on the current playing song</i></p>
-          <div className="component-spacing"></div>
-          <h3>Voting</h3>
-          <p><i>Cast your votes for the next few songs to be played</i></p>
-          <div className="component-spacing"></div>
-          <h3>Request a Song</h3>
-          <p><i>Request a new song by specifying a title and artist</i></p>
+          <h3>Requests</h3>
+          <p><i>Request A Song</i></p>
+          <RequestsNew party_id={party.id}/>
+          <PartyBody is_host={false} is_active={party.is_active} />
         </Col>
       </Row>
     );
   }
-
 
 }
 

@@ -67,10 +67,13 @@ defmodule ServerWeb.RequestController do
     IO.inspect("Request params")
     IO.inspect(request_params)
     with {:ok, %Request{} = request} <- search(conn, request_params) do
+      success_msg = request.title <> " by " <> request.artist <> " was successfully requested."
+      IO.inspect(success_msg)
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.request_path(conn, :show, request))
-      |> render("show.json", request: request)
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(:created, Jason.encode!(%{success: success_msg}))
+    end
+
     # else
     #   conn
     #   |> put_resp_header("content-type", "application/json; charset=UTF-8")
@@ -80,7 +83,6 @@ defmodule ServerWeb.RequestController do
     #          %{error: "Track not found"}
     #        )
     #      )
-    end
   end
 
   def show(conn, %{"id" => id}) do

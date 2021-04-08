@@ -92,13 +92,29 @@ function requests(state = [], action) {
   }
 }
 
-//--------------------------ERRORS--------------------------
+//--------------------------ALERTS--------------------------
 //error handlers for server responses
 function error(state = null, action) {
     switch(action.type) {
       case 'session/set':
         return null;
+      case 'clear/set':
+        return null;
       case 'error/set':
+        return action.data;
+      default:
+        return state;
+    }
+}
+
+//success handles from server responses
+function success(state = null, action) {
+    switch(action.type) {
+      case 'clear/set':
+        return null;
+      case 'session/clear':
+        return null;
+      case 'success/set':
         return action.data;
       default:
         return state;
@@ -108,7 +124,7 @@ function error(state = null, action) {
 function root_reducer(state, action) {
     console.log("root_reducer", state, action);
     let reducer = combineReducers({
-         users, parties, error, session
+         users, parties, error, success, session
     });
     let state1 = reducer(state, action);
     console.log("state1", state1);

@@ -73,7 +73,16 @@ export function get_requests() {
 
 export function create_request(request) {
   console.log("Making request", request);
-  return api_post("/requests", {request});
+  api_post("/requests", {request}).then((resp) => {
+    console.log("Request response", resp);
+    if (resp.success) {
+      let action = {
+        type: 'success/set',
+        data: resp.success,
+      }
+      store.dispatch(action);
+    }
+  });
 }
 
 
