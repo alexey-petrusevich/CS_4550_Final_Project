@@ -45,5 +45,8 @@ defmodule ServerWeb.Router do
     # write track uri
     post "/search", RequestController, :search
 
+    # takes in user_id, song_id, value
+    post "/vote", VoteController, :vote
+
   end
 end

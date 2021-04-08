@@ -3,42 +3,15 @@ defmodule ServerWeb.RequestController do
 
   alias Server.Requests
   alias Server.Requests.Request
+  alias Server.AuthTokens
 
   action_fallback ServerWeb.FallbackController
 
-  def index(conn, _params) do
-    requests = Requests.list_requests()
-    render(conn, "index.json", requests: requests)
-  end
-
-
-  # returns public token with no scope
-  def get_public_token() do
-    # TODO: replace with getting from the environment
-    #client_id = "get from env"
-    #client_secret = "get from env"
-    client_id = "b6c7bd84e4724169b21570019ea15078"
-    client_secret = "d3acd431a7a44f739e3a4b2b184bb4fd"
-    auth_payload = Base.encode64("#{client_id}:#{client_secret}")
-    url = "https://accounts.spotify.com/api/token"
-    body = "grant_type=client_credentials"
-    headers = [
-      {"Content-Type", "application/x-www-form-urlencoded"},
-      {"Authorization", "Basic #{auth_payload}"}
-    ]
-    # sends the post request, decodes response data, and returns the auth token
-    resp = HTTPoison.post!(url, body, headers)
-    data = Jason.decode!(resp.body)
-    data["access_token"] # returns public access token with no scope
-  end
-
-
-  # TODO: implement search for a song
   def search(conn, data) do
     IO.inspect("handling search")
     IO.insect("data")
     IO.inspect(data)
-    token = get_public_token()
+    token = AuthTokens.get_public_token()
     IO.inspect("token")
     IO.inspect(token)
     query = data["query"]
@@ -88,34 +61,4 @@ defmodule ServerWeb.RequestController do
     end
   end
 
-
-  def create(conn, %{"request" => request_params}) do
-    with {:ok, %Request{} = request} <- Requests.create_request(request_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.request_path(conn, :show, request))
-      |> render("show.json", request: request)
-    end
-  end
-
-  def show(conn, %{"id" => id}) do
-    request = Requests.get_request!(id)
-    render(conn, "show.json", request: request)
-  end
-
-  def update(conn, %{"id" => id, "request" => request_params}) do
-    request = Requests.get_request!(id)
-
-    with {:ok, %Request{} = request} <- Requests.update_request(request, request_params) do
-      render(conn, "show.json", request: request)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    request = Requests.get_request!(id)
-
-    with {:ok, %Request{}} <- Requests.delete_request(request) do
-      send_resp(conn, :no_content, "")
-    end
-  end
 end
