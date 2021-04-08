@@ -3,16 +3,23 @@ server {
     listen [::]:80;
 
     # TODO: This should be your server name.
-    server_name ADDSERVERNAME;
+    server_name spotifyparty.morrisonineu.org;
 
     location / {
-        proxy_pass http://localhost:4801;
+        proxy_pass http://localhost:4810;
     }
 
     location /socket {
-        proxy_pass http://localhost:4801;
+        proxy_pass http://localhost:4810;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";	 	 
     }
+
+    location /api {
+            proxy_pass http://localhost:4810;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        } 
 }

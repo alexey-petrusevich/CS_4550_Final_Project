@@ -11,7 +11,7 @@ use Mix.Config
 # before starting your production server.
 # TODO: REPLACE WITH PROPER URL
 config :server, ServerWeb.Endpoint,
-  url: [host: "URL", port: 4801],
+  url: [host: "URL", port: 4810],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
