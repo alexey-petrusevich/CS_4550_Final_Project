@@ -17,7 +17,11 @@ defmodule ServerWeb.UserView do
       impact_score: user.impact_score,
       top_artists: user.top_artists,
       top_genres: user.top_genres,
-      energy: user.energy}
+      energy: user.energy,
+      danceability: user.danceability,
+      loudness: user.loudness,
+      valence: user.valence,
+    }
   end
 
   def render("simpleUser.json", %{user: user}) do
@@ -25,6 +29,6 @@ defmodule ServerWeb.UserView do
       username: user.username,
       password_hash: user.password_hash,
       impact_score: user.impact_score}
-  end
+    end
 
 end

@@ -9,9 +9,9 @@ defmodule Server.Repo.Migrations.CreateSongs do
       add :party_id, references(:parties, on_delete: :nothing), null: false
       add :genre, :string, null: false
       add :energy, :float, null: false, default: 0
-      add :danceability, :float
-      add :loudness, :float
-      add :valence, :float
+      add :danceability, :float, default: 0
+      add :loudness, :float, default: 0
+      add :valence, :float, default: 0
       add :played, :boolean
 
       timestamps()

@@ -6,30 +6,40 @@ import { useHistory } from 'react-router-dom';
 import store from '../store';
 import { Link } from 'react-router-dom';
 import { get_user } from '../api';
-import { UserStats } from '../UserStats';
+import UserStats from '../UserStats';
 
-// function Party({party}) {
-//     return (
-//       <Col md="3">
-//         <Card>
-//             <Card.Title>
-//                 <Link to={{pathname: `/party/` + party.id}}>{party.roomname}</Link>
-//             </Card.Title>
-//             <Card.Text>
-//                 Hosted by: {party.host}
-//             </Card.Text>
-//         </Card>
-//       </Col>
-//     );
-// }
+function ArrayLength(array) {
+    return array.length;
+}
 
-// USERS SCHEMA
-// password : str
-// username : str
-// -> has many Parties
-// -> has many Requests
-// -> has many Votes
-// -> has many Friends
+function Party({party}) {
+    return (
+      <Col md="3">
+        <Card>
+            <Card.Title>
+                <Link to={{pathname: `/parties/` + party.id}}>{party.name}</Link>
+            </Card.Title>
+            <Card.Text>
+                Hosted by: {party.host.username}
+                Attendees: { ArrayLength(party.attendees) }
+            </Card.Text>
+        </Card>
+      </Col>
+    );
+}
+
+// SONGS SCHEMA ------------------------------------------------------------
+// field :artist, :string
+// field :title, :string
+// field :genre, :string
+// field :track_uri, :string
+// field :energy, :float
+// field :danceability, :float
+// field :loudness, :float
+// field :valence, :float
+// field :played, :boolean
+// has_many :votes, Server.Votes.Vote
+// belongs_to :party, Server.Parties.Party
 
 function UsersProfile({parties, users, session}) {
 
@@ -37,10 +47,10 @@ function UsersProfile({parties, users, session}) {
     const location = useLocation();
     let user_id = location.pathname.split("/")[2];
     let user = users[user_id - 1];
-    // let user = get_user(user_id);
 
     console.log("User ID = " + user_id);
     console.log("user: " + JSON.stringify(user));
+
     // let path_name = window.location.pathname;
     // let user_id = path_name.substring(path_name.lastIndexOf("/") + 1);
     // get user somehow
@@ -48,25 +58,44 @@ function UsersProfile({parties, users, session}) {
     // let currUser = parties.filter( (party) => partyId === party.id.toString());
     // console.log("currParty = " + currParty);
 
-    // let party_cards = parties.map((party) => (
-    //     <Party party={party} key={party.id} />
-    // ));
+    let attendedParties = parties.filter( (party) => session && party.attendees && (party.attendees.includes(session.user_id) || party.host.id == session.user_id));
 
-    return (
-        <div>
-            <h1>{user.username}</h1>
-            <ul>
-                {/* <li><strong>{user.friends.length} Friends</strong></li> */}
-                {/* <li><strong>{user.parties.length} Parties</strong></li> */}
-            </ul>
+    let party_cards = attendedParties.map((party) => (
+        <Party party={party} key={party.id} />
+    ));
 
-            <h3 style={{ 'paddingTop':'40px' }}>Recent parties</h3>
+    let session_name = session.username;
+    let profile_name = user.username;
 
-            {/* <Row style={{ ' width':'150px' }}>{party_cards}</Row> */}
+    if (session_name === profile_name) {
+        return (
+            <div>
+                <ul>
+                    {/* <li><strong>{user.friends.length} Friends</strong></li> */}
+                    {/* <li><strong>{user.parties.length} Parties</strong></li> */}
+                </ul>
 
-            <div>{ UserStats(user) }</div>
-        </div>
-    );
+                <h3 style={{ 'paddingTop':'40px' }}>Recent Parties</h3>
+                <Row style={{ ' width':'150px' }}>{party_cards}</Row>
+
+                <div>{ UserStats(user) }</div>
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                <ul>
+                    {/* <li><strong>{user.friends.length} Friends</strong></li> */}
+                    {/* <li><strong>{user.parties.length} Parties</strong></li> */}
+                </ul>
+
+                <h3 style={{ 'paddingTop':'40px' }}>Recent parties</h3>
+                <Row style={{ ' width':'150px' }}>{party_cards}</Row>
+
+                <div>{ UserStats(user) }</div>
+            </div>
+        );
+    }
 }
 
 export default connect(({parties, users, session}) => ({parties, users, session}))(UsersProfile);

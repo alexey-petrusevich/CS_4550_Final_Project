@@ -19,6 +19,17 @@ export async function api_post(path, data) {
     return resp;
 }
 
+export async function api_put(path, data) {
+    let req = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    let text = await fetch("http://198.199.89.228:4000/api/v1" + path, req);
+    let resp = await text.json();
+    return resp;
+}
+
 //------------------------PARTIES----------------------------
 export function get_parties() {
     api_get("/parties").then((data) => store.dispatch({
@@ -57,6 +68,9 @@ export function create_user(user) {
     return api_post("/users", {user});
 }
 
+export function update_user(id) {
+    return api_put("/users/" + id)
+}
 
 //------------------------SONGS----------------------------
 export function create_song(song) {
