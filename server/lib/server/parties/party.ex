@@ -19,7 +19,7 @@ defmodule Server.Parties.Party do
   @doc false
   def changeset(party, attrs) do
     party
-    |> cast(attrs, [:name, :roomcode, :description, :host_id, :attendees, :requests, :songs, :is_active])
+    |> cast(attrs, [:name, :roomcode, :description, :host_id, :attendees, :is_active])
     |> validate_required([:name, :roomcode, :description, :host_id])
   end
 end

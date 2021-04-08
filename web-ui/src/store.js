@@ -61,16 +61,6 @@ function users(state = [], action) {
     }
 }
 
-function user_form(state = {}, action) {
-    switch (action.type) {
-    case 'user_form/set':
-        return action.data;
-    default:
-        return state
-    }
-}
-
-
 //--------------------------PARTIES--------------------------
 function parties(state = [], action) {
     switch (action.type) {
@@ -92,6 +82,15 @@ function votes(state = [], action) {
   }
 }
 
+//--------------------------REQUESTS--------------------------
+function requests(state = [], action) {
+    switch (action.type) {
+      case 'requests/set':
+        return action.data;
+      default:
+        return state;
+  }
+}
 
 //--------------------------ERRORS--------------------------
 //error handlers for server responses
@@ -109,7 +108,7 @@ function error(state = null, action) {
 function root_reducer(state, action) {
     console.log("root_reducer", state, action);
     let reducer = combineReducers({
-         users, parties, votes, error, session
+         users, parties, requests, votes, error, session
     });
     let state1 = reducer(state, action);
     console.log("state1", state1);

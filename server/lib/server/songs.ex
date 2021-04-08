@@ -105,4 +105,16 @@ defmodule Server.Songs do
   def change_song(%Song{} = song, attrs \\ %{}) do
     Song.changeset(song, attrs)
   end
+
+  # updates a song with status of played
+  def update_played(song_id) do
+    song = get_song!(song_id)
+    IO.inspect(song)
+    song = song
+    |> Ecto.Changeset.change(played: true)
+    |> Repo.update()
+    IO.inspect(song)
+  end
+
+
 end

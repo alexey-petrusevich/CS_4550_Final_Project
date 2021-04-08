@@ -3,13 +3,9 @@ defmodule ServerWeb.PlaybackController do
   alias Server.AuthTokens
 
   def interact(conn, data) do
-    IO.inspect(data)
     user_id = data["host_id"];
     action = data["action"];
-    IO.inspect(user_id)
-    IO.inspect(action)
     token = AuthTokens.get_auth_token_by_user_id(user_id).token
-    IO.inspect(token)
     case action do
       "play" ->
         make_put("https://api.spotify.com/v1/me/player/play", token)
