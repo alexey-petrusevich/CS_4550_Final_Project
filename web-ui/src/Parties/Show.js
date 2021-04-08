@@ -5,7 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { get_party, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
-import { connect_cb, channel_join, get_playlists, set_songs } from "../Channels/socket";
+import { connect_cb, channel_join, get_playlists, set_songs } from "../socket";
 
 //playback control images
 import play from "../images/play.png";
