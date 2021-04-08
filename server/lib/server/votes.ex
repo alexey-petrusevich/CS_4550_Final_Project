@@ -56,7 +56,10 @@ defmodule Server.Votes do
   def create_vote(attrs \\ %{}) do
     %Vote{}
     |> Vote.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+         on_conflict: :replace_all,
+         conflict_target: [:post_id, :user_id]
+       )
   end
 
   @doc """
