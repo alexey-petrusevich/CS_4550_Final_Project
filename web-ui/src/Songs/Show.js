@@ -24,8 +24,9 @@ function Voting() {
   )
 }
 
-
-function SongDisplay({song, host_id, callback}) {
+// displays song cards
+// includes 'Add To Queue' button if the party is active
+function SongDisplay({song, host_id, active, is_host, callback}) {
     return (
         <Col md="3">
           <Card className="song-card">
@@ -33,24 +34,29 @@ function SongDisplay({song, host_id, callback}) {
             <Card.Text>
               By {song.artist}<br />
             </Card.Text>
-            <Button variant="primary" onClick={() => {
-              queue_track(host_id, "queue", song.track_uri);
-              set_song_played(song.id, callback);
-            }}>
-              Add To Queue
-            </Button>
+            { active && is_host &&
+              <Button variant="primary" onClick={() => {
+                queue_track(host_id, "queue", song.track_uri);
+                set_song_played(song.id, callback);
+                }}>
+                Add To Queue
+              </Button>
+            }
             <Voting />
           </Card>
         </Col>
     );
 }
 
-export default function ShowSongs({songs, user_id, cb, active_party}) {
-  console.log("Unfiltered songs", songs);
-    let displaySongs = songs.filter((s) => !s.played == active_party)
+//shows songs associated with the party and it's active state
+//i.e. shows un-played songs from the selected playlists if the party
+//is active and shows played songs if the party has ended
+export default function ShowSongs({party, cb, is_host}) {
+  console.log("Unfiltered songs", party.songs);
+    let displaySongs = party.songs.filter((s) => !s.played == party.is_active)
     console.log("Filtered songs", displaySongs);
     let song_cards = displaySongs.map((song) => (
-      <SongDisplay song={song} host_id={user_id} callback={cb} key={song.id} />
+      <SongDisplay song={song} host_id={party.host.id} is_host={is_host} active={party.is_active} callback={cb} key={song.id} />
     ));
     return (
       <Row>
