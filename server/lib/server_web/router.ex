@@ -37,5 +37,13 @@ defmodule ServerWeb.Router do
     # - user_id, action, track_id
     post "/playback", PlaybackController, :interact
 
+
+    # make API calls for requests
+    # party id, user_id, songs title, artist
+    # put it in requests contorller
+    # update - title and the artists with the result of the call
+    # write track uri
+    post "/search", RequestController, :search
+
   end
 end
