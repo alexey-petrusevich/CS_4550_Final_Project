@@ -58,7 +58,7 @@ defmodule Server.Votes do
     |> Vote.changeset(attrs)
     |> Repo.insert(
          on_conflict: :replace_all,
-         conflict_target: [:post_id, :user_id]
+         conflict_target: [:song_id, :user_id]
        )
   end
 
