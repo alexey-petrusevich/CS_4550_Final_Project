@@ -6,36 +6,36 @@ import { set_song_played } from '../socket.js';
 
 function RequestCard({request, party_id}) {
 
+  // queue_track(host_id, "queue", song.track_uri);
+  // set_song_played(song.id, callback);
+
+
+
+
   function submit() {
 
   }
 
   return (
-    <Card className="request-card">
-      <Card.Text>
-        <Col sm={3}>
-          <p><b>Song Title: </b>{request.title}</p>
-        </Col>
-        <Col sm={3}>
-          <p><b>Song Artist: </b>{request.artist}</p>
-        </Col>
-        <Col sm={3}>
-          <p><i>Requested By: </i>{request.user.username}</p>
-        </Col>
-        <Col sm={2}>
-          <Button variant="primary" type="submit">
-            Add To Queue
-          </Button>
-        </Col>
-      </Card.Text>
-    </Card>
+    <Col md="3">
+      <Card className="song-card">
+        <Card.Title>{request.title}</Card.Title>
+        <Card.Text>
+          <p>By {request.artist} </p>
+          <p>Requested By {request.user.username}</p>
+        </Card.Text>
+        <Button variant="primary" onClick={() => {
+          console.log("Queueing song ", request.track_uri);
+        }}>
+          Add To Queue
+        </Button>
+      </Card>
+    </Col>
   );
 }
 
 export default function ShowRequests({requests, party_id}) {
-  let party_requests = requests.filter((rqs) => rqs.party.id === party_id)
-  console.log("Filtered songs", party_requests);
-  let request_cards = party_requests.map((request) => (
+  let request_cards = requests.map((request) => (
     <RequestCard request={request} party_id={party_id} key={request.id} />
   ));
   return (

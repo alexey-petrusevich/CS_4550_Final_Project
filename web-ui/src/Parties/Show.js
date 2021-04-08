@@ -77,7 +77,7 @@ function PlaylistControls({host_id, party_id}) {
 function ShowParty({session}) {
   let history = useHistory();
   const [party, setParty] = useState({name: "", roomcode: "",
-      description: "", songs: [], is_active: false, host: {username: "N/A"}});
+      description: "", songs: [], requests: [], is_active: false, host: {username: "N/A"}});
   const [authed, setAuthed] = useState(false);
 
   //loads the party with the id given by the route path
@@ -160,7 +160,7 @@ function ShowParty({session}) {
           <h3>Requests</h3>
           <p><i>Attendee requests</i></p>
           <RequestsNew party_id={party.id}/>
-          <ShowRequests requests={requests} party_id={party.id}/>
+          <ShowRequests requests={party.requests} party_id={party.id}/>
         </Col>
       </Row>
     );

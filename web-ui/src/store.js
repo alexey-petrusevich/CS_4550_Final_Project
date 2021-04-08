@@ -108,7 +108,7 @@ function error(state = null, action) {
 function root_reducer(state, action) {
     console.log("root_reducer", state, action);
     let reducer = combineReducers({
-         users, parties, requests, votes, error, session
+         users, parties, error, session
     });
     let state1 = reducer(state, action);
     console.log("state1", state1);

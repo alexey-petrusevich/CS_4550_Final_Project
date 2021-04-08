@@ -4,7 +4,8 @@ defmodule Server.Repo.Migrations.CreateRequests do
   def change do
     create table(:requests) do
       add :title, :string, null: false
-      add :artist, :string
+      add :artist, :string, null: false
+      add :track_uri, :string, null: false
       add :party_id, references(:parties, on_delete: :nothing), null: false
       add :user_id, references(:users, on_delete: :nothing), null: false
 

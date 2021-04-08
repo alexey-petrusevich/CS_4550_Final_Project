@@ -119,5 +119,4 @@ export function queue_track(host_id, action, track_uri) {
 export function load_defaults() {
     get_users();
     get_parties();
-    get_requests();
 }

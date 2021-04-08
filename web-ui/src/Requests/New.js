@@ -18,6 +18,7 @@ export default function RequestsNew({party_id}) {
         console.log("errors", resp.errors);
       }
       else {
+        console.log("Request response ", resp);
         // get_requests();
         // history.push("/parties/" + resp.data.id);
       }

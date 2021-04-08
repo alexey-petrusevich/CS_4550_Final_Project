@@ -21,6 +21,7 @@ defmodule ServerWeb.UserView do
   end
 
   def render("simpleUser.json", %{user: user}) do
+    IO.inspect(user)
    %{id: user.id,
      username: user.username,
      password_hash: user.password_hash,

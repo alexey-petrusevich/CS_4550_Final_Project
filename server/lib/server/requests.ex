@@ -19,6 +19,7 @@ defmodule Server.Requests do
   """
   def list_requests do
     Repo.all(Request)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule Server.Requests do
       ** (Ecto.NoResultsError)
 
   """
-  def get_request!(id), do: Repo.get!(Request, id)
+  def get_request!(id) do
+    Repo.get!(Request, id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a request.
@@ -51,6 +55,7 @@ defmodule Server.Requests do
   """
   def create_request(attrs \\ %{}) do
     %Request{}
+    |> Repo.preload(:user)
     |> Request.changeset(attrs)
     |> Repo.insert()
   end
