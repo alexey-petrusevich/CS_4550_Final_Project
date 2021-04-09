@@ -106,4 +106,16 @@ defmodule Server.Requests do
   def change_request(%Request{} = request, attrs \\ %{}) do
     Request.changeset(request, attrs)
   end
+
+  # returns collection of user_ids of all the requests in the DB
+  def request_all_user_ids_by_track_uri(track_uri) do
+    query = from r in "requests",
+                 where: r.track_uri == ^track_uri,
+                 distinct: r.user_id,
+                 select: r.user_id
+    result = Repo.all(query)
+    IO.inspect("finished query, result = ")
+    IO.inspect(result)
+    result
+  end
 end

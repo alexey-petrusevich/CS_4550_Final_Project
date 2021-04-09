@@ -4,6 +4,7 @@ defmodule ServerWeb.RequestController do
   alias Server.Requests
   alias Server.Requests.Request
   alias Server.AuthTokens
+  alias Server.Users
 
   action_fallback ServerWeb.FallbackController
 
@@ -48,9 +49,17 @@ defmodule ServerWeb.RequestController do
       nil
     else
       IO.inspect("track found, creating new request in DB")
-      title = tracks |> Enum.at(0) |> Map.get("name")
-      artist = tracks |> Enum.at(0) |> Map.get("artists") |> Enum.at(0) |> Map.get("name")
-      track_uri = tracks |> Enum.at(0) |> Map.get("uri")
+      title = tracks
+              |> Enum.at(0)
+              |> Map.get("name")
+      artist = tracks
+               |> Enum.at(0)
+               |> Map.get("artists")
+               |> Enum.at(0)
+               |> Map.get("name")
+      track_uri = tracks
+                  |> Enum.at(0)
+                  |> Map.get("uri")
       request = %{
         title: title,
         artist: artist,
@@ -63,10 +72,18 @@ defmodule ServerWeb.RequestController do
     end
   end
 
+  # updates impact score of the given user
+  def update_impact_score(data) do
+    user_id = data["user_id"]
+    Users.update_impact_score(user_id)
+  end
+
+
   def create(conn, %{"request" => request_params}) do
     IO.inspect("Request params")
     IO.inspect(request_params)
     with {:ok, %Request{} = request} <- search(conn, request_params) do
+      update_impact_score(request_params)
       success_msg = request.title <> " by " <> request.artist <> " was successfully requested."
       IO.inspect(success_msg)
       conn

@@ -8,6 +8,8 @@ defmodule Server.Songs do
   alias Server.AuthTokens
 
   alias Server.Songs.Song
+  alias Server.Requests
+  alias Server.Users
 
   @doc """
   Returns the list of songs.
@@ -114,7 +116,9 @@ defmodule Server.Songs do
     artist_uri = get_artist_uri(song.track_uri)
     genre = get_track_genre(artist_uri)
     {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
-#    IO.inspect(song)
+    # update impact scores for everyone who votes for this song
+    update_impact_scores(song_id)
+    #    IO.inspect(song)
     song = song
            |> Ecto.Changeset.change(played: true)
            |> Ecto.Changeset.change(genre: genre)
@@ -123,7 +127,28 @@ defmodule Server.Songs do
            |> Ecto.Changeset.change(loudness: loudness)
            |> Ecto.Changeset.change(valence: valence)
            |> Repo.update()
-#    IO.inspect(song)
+
+    #    IO.inspect(song)
+  end
+
+
+  # updates impact score for each user who made a requests with the given song_id
+  def update_impact_scores(song_id) do
+    song = get_song!(song_id)
+    track_uri = song.track_uri
+    # this returns the list of user ids
+    IO.inspect("got track uri")
+    IO.inspect(track_uri)
+    IO.inspect("requesting user ids")
+    user_ids = Requests.request_all_user_ids_by_track_uri(track_uri)
+    IO.inspect("got user ids")
+    IO.inspect(user_ids)
+    Enum.map(
+      user_ids,
+      fn user_id ->
+        Users.update_impact_score(to_string(user_id))
+      end
+    )
   end
 
 
