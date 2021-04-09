@@ -55,7 +55,7 @@ let SessionInfo = connect()(({session, dispatch}) => {
     return (
       <Col className="login" md={{ span: 4, offset: 4 }}>
         <p>
-        Logged in as <Link to={{pathname: `/users/` + session.user_id}}>{session.username}</Link> &nbsp;
+        Logged in as {session.username} &nbsp;
         <Button className="logout" onClick={logout}>Logout</Button>
         </p>
       </Col>
@@ -75,10 +75,14 @@ const LoginOrInfo = connect(({session}) => ({session}))(LOI);
 
 function AppNav({session}) {
   let dash_link = null;
+  let prof_link = null;
 
   if (session) {
     dash_link = (
       <Link className="nav" to="/dashboard">Dashboard</Link>
+    )
+    prof_link = (
+      <Link to={{pathname: `/users/` + session.user_id}}>Profile</Link>
     )
   }
 
@@ -89,6 +93,7 @@ function AppNav({session}) {
         <Nav variant="pills">
           <Link className="nav" to="/">Home</Link>
           { dash_link }
+          { prof_link }
         </Nav>
       </Col>
         <LoginOrInfo />
