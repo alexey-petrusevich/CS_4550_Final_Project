@@ -7,15 +7,7 @@ import { queue_song } from '../socket.js';
 import thumbs_up from "../images/thumbs_up.png";
 import thumbs_down from "../images/thumbs_down.png";
 
-function Voting({votes, song_id, user_id, cb}) {
-  const [count, setCount] = useState(0);
-
-  //updates the value of the count after new votes are received (after the callback)
-  useEffect(() => {
-    let vote_total = 0;
-    votes.map((vote) => { vote_total += vote.value });
-    setCount(vote_total);
-  });
+function Voting({count, song_id, user_id, cb}) {
 
   function submit_vote(value, callback) {
     user_vote({song_id: song_id, user_id: user_id, value: value})
@@ -57,28 +49,40 @@ function Voting({votes, song_id, user_id, cb}) {
 // displays song cards
 // includes 'Add To Queue' button if the party is active
 function SongDisplay({song, host_id, active, is_host, user_id, callback}) {
-    return (
-        <Col md="3">
-          <Card className="song-card">
-            <Card.Title>{song.title}</Card.Title>
-            <Card.Text>
-              By {song.artist}<br />
-            </Card.Text>
-            { active && is_host &&
-              <Button variant="primary" onClick={() => {
-                //queue_track(host_id, "queue", song.track_uri);
-                console.log("Updating song to be played")
-                queue_song(host_id, song, true, callback);
-                }}>
-                Add To Queue
-              </Button>
-            }
-            { active && !is_host &&
-              <Voting votes={song.votes} song_id={song.id} user_id={user_id} cb={callback}/>
-            }
-          </Card>
-        </Col>
-    );
+  const [count, setCount] = useState(0);
+
+  //updates the value of the count after new votes are received (after the callback)
+  useEffect(() => {
+    let vote_total = 0;
+    song.votes.map((vote) => { vote_total += vote.value });
+    setCount(vote_total);
+  });
+
+  return (
+    <Col md="3">
+      <Card className="song-card">
+        <Card.Title>{song.title}</Card.Title>
+        <Card.Text>
+          By {song.artist}<br />
+        </Card.Text>
+        { active && is_host &&
+          <div>
+            <Card.Text>Votes: {count}</Card.Text>
+            <Button variant="primary" onClick={() => {
+              //queue_track(host_id, "queue", song.track_uri);
+              console.log("Updating song to be played")
+              queue_song(host_id, song, true, callback);
+              }}>
+              Add To Queue
+            </Button>
+          </div>
+        }
+        { active && !is_host &&
+          <Voting count={count} song_id={song.id} user_id={user_id} cb={callback}/>
+        }
+      </Card>
+    </Col>
+  );
 }
 
 //shows songs associated with the party and it's active state

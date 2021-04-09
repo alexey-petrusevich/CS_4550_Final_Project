@@ -26,7 +26,7 @@ alex = Repo.insert!(%User{username: "Alex", name: "Alex Petrusevich", email: "pe
 benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 25})
 
 party1 = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id, is_active: false})
-party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 3s], host_id: austin.id, is_active: false})
+party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 3], host_id: austin.id, is_active: false})
 party3 = Repo.insert!(%Party{name: "Sam's Kickback", roomcode: "7203", description: "Chilling with Sam over the weekend", attendees: [1, 4], host_id: iain.id, is_active: false})
 
 song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "art pop", title: "Kingston", track_uri: "0EDQwboQDmswDRn58wcslg", party_id: party1.id, played: false, energy: 0.344, danceability: 0.73, loudness: -9.541, valence: 0.543})
@@ -46,7 +46,7 @@ song13 = Repo.insert!(%Song{artist: "BROCKHAMPTON", genre: "boy band", title: "B
 song14 = Repo.insert!(%Song{artist: "Brent Faiyaz", genre: "dmv rap", title: "Show U Off", track_uri: "00selpxxljfn9n5Pf4K3VR", party_id: party2.id, played: true, energy: 0.405, danceability: 0.583, loudness: -11.295, valence: 0.549})
 song15 = Repo.insert!(%Song{artist: "JAY-Z", genre: "east coast hip hop", title: "4:44", track_uri: "1gT5TGwbkkkUliNzHRIGi1", party_id: party2.id, played: true, energy: 0.852, danceability: 0.261, loudness: -4.965, valence: 0.431})
 
-request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "spotify:track:70C4NyhjD5OZUMzvWZ3njJ", played: false, party_id: party.id, user_id: iain.id})
-request1 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party.id, user_id: iain.id})
+request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "spotify:track:70C4NyhjD5OZUMzvWZ3njJ", played: false, party_id: party1.id, user_id: iain.id})
+request1 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party1.id, user_id: iain.id})
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})
