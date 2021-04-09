@@ -419,13 +419,13 @@ time.
 - When the party starts, the playlist starts playing from the
 beginning
     - Bob wants input on the next set of songs to be played, so he
-    selects 5 songs from the list to be voted on
+      selects 5 songs from the list to be voted on
     - He starts the voting round, which will last for 1 minute
     - After the round of voting, the top 3 of the 5 songs will
-    automatically be added to the queue
+      automatically be added to the queue
     - After those songs are played, if there are no other rounds of
-    voting, the playlist continues playing from where it left off
-    before the voting
+      voting, the playlist continues playing from where it left off
+      before the voting
 - Later, an attendee sends in a song request
     - Bob likes the song and knows, from previous events, that it will
     be a crowd favorite, so he adds the song directly to the queue
@@ -451,8 +451,8 @@ played, so she up-votes the song to give the DJ feedback
 - Later, Bob tells everyone he is going to open a round of voting for
 the next few songs
     - Alice up-votes 3 of the 5 songs that she likes, down-votes one
-    of the songs that she does not want to hear, and has no preference
-    on the 5th song
+      of the songs that she does not want to hear, and has no preference
+      on the 5th song
 - Alice then wants to dance to her all time favorite song
     - She sends in a song request to Bob with the song title and
     artist
