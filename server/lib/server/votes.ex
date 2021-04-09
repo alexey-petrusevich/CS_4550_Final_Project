@@ -37,8 +37,8 @@ defmodule Server.Votes do
   """
   def get_vote!(id), do: Repo.get!(Vote, id)
 
-  def get_vote_by_song_id!(song_id) do
-    Repo.get_by!(Vote, song_id: song_id)
+  def get_vote_by_song_id(song_id) do
+    Repo.get_by(Vote, song_id: song_id)
   end
 
   @doc """
@@ -54,9 +54,14 @@ defmodule Server.Votes do
 
   """
   def create_vote(attrs \\ %{}) do
+    IO.inspect("in create vote, attr")
+    IO.inspect(attrs)
     %Vote{}
     |> Vote.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+         #on_conflict: :replace_all,
+         #conflict_target: [:song_id, :user_id]
+       )
   end
 
   @doc """

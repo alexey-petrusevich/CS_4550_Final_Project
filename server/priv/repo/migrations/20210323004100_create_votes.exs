@@ -10,7 +10,7 @@ defmodule Server.Repo.Migrations.CreateVotes do
       timestamps()
     end
 
-    create index(:votes, [:song_id])
-    create index(:votes, [:user_id])
+    create index(:votes, [:song_id, :user_id])
+#    create index(:votes, [:user_id])
   end
 end

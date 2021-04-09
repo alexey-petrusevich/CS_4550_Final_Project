@@ -5,6 +5,7 @@ defmodule Server.Songs do
 
   import Ecto.Query, warn: false
   alias Server.Repo
+  alias Server.AuthTokens
 
   alias Server.Songs.Song
 
@@ -106,15 +107,99 @@ defmodule Server.Songs do
     Song.changeset(song, attrs)
   end
 
+
   # updates a song with status of played
   def update_played(song_id) do
     song = get_song!(song_id)
-    IO.inspect(song)
+    artist_uri = get_artist_uri(song.track_uri)
+    genre = get_track_genre(artist_uri)
+    {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
+#    IO.inspect(song)
     song = song
-    |> Ecto.Changeset.change(played: true)
-    |> Repo.update()
-    IO.inspect(song)
+           |> Ecto.Changeset.change(played: true)
+           |> Ecto.Changeset.change(genre: genre)
+           |> Ecto.Changeset.change(energy: energy)
+           |> Ecto.Changeset.change(danceability: danceability)
+           |> Ecto.Changeset.change(loudness: loudness)
+           |> Ecto.Changeset.change(valence: valence)
+           |> Repo.update()
+#    IO.inspect(song)
   end
 
+
+  # return track genre given artist_uri and spotify access token
+  # in case there are more than one genres, return the first return by API
+  # if no genres returned by API call, returns "none" for genre
+  def get_track_genre(artist_uri) do
+    token = AuthTokens.get_public_token()
+    track_artist = get_artists_id(artist_uri)
+    url = "https://api.spotify.com/v1/artists/#{track_artist}"
+    headers = [
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer #{token}}",
+    ]
+    resp = HTTPoison.get!(url, headers)
+    data = Jason.decode!(resp.body)
+    # manual delay because requesting too fast fails
+    Process.sleep(100)
+    genres = data["genres"]
+    if (length(genres) == 0) do
+      "none"
+    else
+      hd(data["genres"])
+    end
+  end
+
+
+  # returns a map containing the following data given track_uri and access token:
+  # {energy, danceability, loudness, valence}
+  def get_track_stats(track_uri) do
+    token = AuthTokens.get_public_token()
+    track_id = get_track_id(track_uri)
+    url = "https://api.spotify.com/v1/audio-features/#{track_id}"
+    headers = [
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer #{token}}",
+    ]
+    resp = HTTPoison.get!(url, headers)
+    data = Jason.decode!(resp.body)
+    {data["energy"], data["danceability"], data["loudness"], data["valence"]}
+  end
+
+  # returns artist URI given track URI
+  def get_artist_uri(track_uri) do
+    token = AuthTokens.get_public_token()
+    track_id = get_track_id(track_uri)
+    market = "US"
+    url = "https://api.spotify.com/v1/tracks/#{track_id}?market=#{market}"
+    headers = [
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer #{token}}",
+    ]
+    resp = HTTPoison.get!(url, headers)
+    data = Jason.decode!(resp.body)
+    artist = data["artists"]
+             |> Enum.at(0)
+    artist_uri = artist["uri"]
+    artist_uri
+  end
+
+
+  # returns track id given track uri
+  def get_track_id(track_uri) do
+    track_uri
+    |> String.split(":")
+    |> Enum.at(2)
+  end
+
+
+  def get_artists_id(artists_uri) do
+    artists_uri
+    |> String.split(":")
+    |> Enum.at(2)
+  end
 
 end
