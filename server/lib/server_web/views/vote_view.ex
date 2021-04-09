@@ -12,7 +12,8 @@ defmodule ServerWeb.VoteView do
 
   def render("vote.json", %{vote: vote}) do
     %{id: vote.id,
-      upvotes: vote.upvotes,
-      downvotes: vote.downvotes}
+      value: vote.value,
+      user_id: vote.user_id,
+      song_id: vote.song_id}
   end
 end

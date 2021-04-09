@@ -37,8 +37,9 @@ defmodule Server.Votes do
   """
   def get_vote!(id), do: Repo.get!(Vote, id)
 
-  def get_vote_by_song_id!(song_id) do
-    Repo.get_by!(Vote, song_id: song_id)
+  # gets the vote associated with the given song and user
+  def get_vote_by_song_and_user(song_id, user_id) do
+    Repo.get_by(Vote, [song_id: song_id, user_id: user_id])
   end
 
   @doc """
@@ -54,9 +55,14 @@ defmodule Server.Votes do
 
   """
   def create_vote(attrs \\ %{}) do
+    IO.inspect("in create vote, attr")
+    IO.inspect(attrs)
     %Vote{}
     |> Vote.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+         #on_conflict: :replace_all,
+         #conflict_target: [:song_id, :user_id]
+       )
   end
 
   @doc """
@@ -71,9 +77,16 @@ defmodule Server.Votes do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_vote(%Vote{} = vote, attrs) do
+  def update_vote!(%Vote{} = vote, attrs) do
     vote
     |> Vote.changeset(attrs)
+    |> Repo.update()
+  end
+
+  # updates the value of a user's vote
+  def update_vote(vote_id, value) do
+    get_vote!(vote_id)
+    |> Ecto.Changeset.change(value: value)
     |> Repo.update()
   end
 
@@ -105,4 +118,15 @@ defmodule Server.Votes do
   def change_vote(%Vote{} = vote, attrs \\ %{}) do
     Vote.changeset(vote, attrs)
   end
+
+  # gets all the user_ids of users who up voted the given song id
+  def request_all_user_ids_by_track_uri(song_id) do
+    query = from v in "votes",
+                 where: v.song_id == ^song_id,
+                 where: v.value == 1, # only upvotes
+                 distinct: v.user_id,
+                 select: v.user_id
+    Repo.all(query)
+  end
+
 end

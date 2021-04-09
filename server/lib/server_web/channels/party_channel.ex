@@ -4,6 +4,9 @@ defmodule ServerWeb.PartyChannel do
   alias Server.Playlists
   alias Server.Parties
   alias Server.Songs
+  alias Server.Requests
+
+  alias ServerWeb.PlaybackController
 
   @impl true
   def join("party:" <> roomcode, payload, socket) do
@@ -42,10 +45,19 @@ defmodule ServerWeb.PartyChannel do
 
   # updates the given song to be played -> true
   @impl true
-  def handle_in("queued_song", %{"song_id" => id}, socket) do
+  def handle_in("queue_song", %{"is_song" => song, "track_id" => id, "track_uri" => uri, "host_id" => host_id}, socket) do
     IO.inspect(id)
-    Songs.update_played(id)
-    {:reply, {:ok, 200}, socket}
+    PlaybackController.queue(uri, host_id)
+    # update song played only if a song_id is given (otherwise it is a request)
+    if song do
+      IO.inspect("It's a song!!!")
+      Songs.update_played(id)
+    else
+      IO.inspect("It's a request!!!")
+      Requests.update_played(id)
+    end
+
+    {:reply, {:ok, "Successfully added track to your playback queue."}, socket}
   end
 
   # Add authorization logic here as required.

@@ -1,4 +1,5 @@
 import { Socket } from "phoenix";
+import store from './store';
 
 //TODO will need to be updated to just /socket when deploying to prod
 let socket = new Socket("ws://localhost:4000/socket", { params: { token: "" } });
@@ -51,10 +52,19 @@ export function set_songs(playlist_uri, party_id, user_id) {
   return "successs";
 }
 
-export function set_song_played(song_id, callback) {
-  console.log("Setting song ", song_id, " to played status");
-  channel.push("queued_song", {song_id: song_id})
-      .receive("ok", resp => callback());
+//queues either a song or a request
+export function queue_song(host_id, track, is_song, callback) {
+  console.log("Setting song ", track.title, " to played status");
+  console.log("is song?", is_song)
+  channel.push("queue_song", {is_song: is_song, track_id: track.id, track_uri: track.track_uri, host_id: host_id})
+      .receive("ok", resp => {
+        callback(); //updates song view (removes played songs)
+        let action = {
+          type: 'success/set',
+          data: resp,
+        }
+        store.dispatch(action);
+      });
 }
 
 //-------------------------PARTIES---------------------------------

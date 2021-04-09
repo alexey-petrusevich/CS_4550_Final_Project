@@ -4,6 +4,7 @@ defmodule ServerWeb.RequestController do
   alias Server.Requests
   alias Server.Requests.Request
   alias Server.AuthTokens
+  alias Server.Users
 
   action_fallback ServerWeb.FallbackController
 
@@ -48,29 +49,49 @@ defmodule ServerWeb.RequestController do
       nil
     else
       IO.inspect("track found, creating new request in DB")
-      title = tracks |> Enum.at(0) |> Map.get("name")
-      artist = tracks |> Enum.at(0) |> Map.get("artists") |> Enum.at(0) |> Map.get("name")
-      track_uri = tracks |> Enum.at(0) |> Map.get("uri")
+      title = tracks
+              |> Enum.at(0)
+              |> Map.get("name")
+      artist = tracks
+               |> Enum.at(0)
+               |> Map.get("artists")
+               |> Enum.at(0)
+               |> Map.get("name")
+      track_uri = tracks
+                  |> Enum.at(0)
+                  |> Map.get("uri")
       request = %{
         title: title,
         artist: artist,
         party_id: party_id,
         user_id: user_id,
-        track_uri: track_uri
+        track_uri: track_uri,
+        played: false
       }
       IO.inspect(request)
       Requests.create_request(request)
     end
   end
 
+  # updates impact score of the given user
+  def update_impact_score(data) do
+    user_id = data["user_id"]
+    Users.update_impact_score(user_id)
+  end
+
+
   def create(conn, %{"request" => request_params}) do
     IO.inspect("Request params")
     IO.inspect(request_params)
     with {:ok, %Request{} = request} <- search(conn, request_params) do
+      Users.update_impact_score(request_params["user_id"])
+      success_msg = request.title <> " by " <> request.artist <> " was successfully requested."
+      IO.inspect(success_msg)
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.request_path(conn, :show, request))
-      |> render("show.json", request: request)
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(:created, Jason.encode!(%{success: success_msg}))
+    end
+
     # else
     #   conn
     #   |> put_resp_header("content-type", "application/json; charset=UTF-8")
@@ -80,7 +101,6 @@ defmodule ServerWeb.RequestController do
     #          %{error: "Track not found"}
     #        )
     #      )
-    end
   end
 
   def show(conn, %{"id" => id}) do

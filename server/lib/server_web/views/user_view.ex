@@ -13,19 +13,25 @@ defmodule ServerWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
+      name: user.name,
+      email: user.email,
       password_hash: user.password_hash,
       impact_score: user.impact_score,
       top_artists: user.top_artists,
       top_genres: user.top_genres,
-      energy: user.energy}
+      energy: user.energy,
+      danceability: user.danceability,
+      loudness: user.loudness,
+      valence: user.valence,
+    }
   end
 
   def render("simpleUser.json", %{user: user}) do
-    IO.inspect(user)
    %{id: user.id,
+     name: user.name,
+     email: user.email,
      username: user.username,
      password_hash: user.password_hash,
      impact_score: user.impact_score}
    end
-
 end
