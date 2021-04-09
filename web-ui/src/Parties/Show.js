@@ -80,13 +80,13 @@ function PartyBody({is_host, party, update, user_id}) {
     if (party.is_active) {
       return (
         <div>
-          <h3>List of Songs</h3>
-          <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
-          <ShowSongs party={party} cb={update} is_host={true}/>
-          <div className="component-spacing"></div>
           <h3>Requests</h3>
           <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
           <ShowRequests party={party} />
+          <div className="component-spacing"></div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
+          <ShowSongs party={party} cb={update} is_host={true}/>
         </div>
       );
     } else if (party.is_active == null) {
@@ -112,13 +112,13 @@ function PartyBody({is_host, party, update, user_id}) {
     if (party.is_active) {
       return (
         <div>
-          <h3>List of Songs</h3>
-          <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
-          <ShowSongs party={party} cb={update} is_host={is_host}/>
-          <div className="component-spacing"></div>
           <h3>Request A Song</h3>
           <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
           <RequestsNew party_id={party.id}/>
+          <div className="component-spacing"></div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
+          <ShowSongs party={party} cb={update} is_host={is_host}/>
         </div>
       )
     } else {

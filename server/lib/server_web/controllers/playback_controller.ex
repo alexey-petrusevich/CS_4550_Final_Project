@@ -15,7 +15,7 @@ defmodule ServerWeb.PlaybackController do
         |> handle_response(conn, "Successfully paused your active song.", "Failed to pause playback. Playback may already be paused.")
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", token)
-        |> handle_response(conn, "Successfully skipped your active song.", "Failed to skip your active song.")
+        |> handle_response(conn, "Successfully skipped playback to the next song.", "Failed to skip your active song.")
       "queue" ->
         track_uri = data["track_uri"];
         make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> track_uri, token)
@@ -29,6 +29,7 @@ defmodule ServerWeb.PlaybackController do
       Map.get(Jason.decode!(response.body), "error") |> Map.get("message")
     end  # error msg if code is error
     IO.inspect(message)
+    IO.inspect(response)
     case status_code do
       # success
       204 ->

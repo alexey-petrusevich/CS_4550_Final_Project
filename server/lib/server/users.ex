@@ -35,6 +35,10 @@ defmodule Server.Users do
     |> Enum.map(fn x -> Map.merge(x, get_user_data(to_string(x.id))) end)
   end
 
+  def get_user(id) do
+    Repo.get!(User, id)
+  end
+
   @doc """
   Gets a single user.
 
@@ -193,7 +197,8 @@ defmodule Server.Users do
 
   # update user impact score given user_id
   def update_impact_score(user_id) do
-    user = get_user!(user_id)
+    IO.inspect(user_id)
+    user = get_user(user_id)
     newScore = user.impact_score + 1
     user = user
            |> Ecto.Changeset.change(impact_score: newScore)

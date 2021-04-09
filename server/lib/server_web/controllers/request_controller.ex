@@ -83,7 +83,7 @@ defmodule ServerWeb.RequestController do
     IO.inspect("Request params")
     IO.inspect(request_params)
     with {:ok, %Request{} = request} <- search(conn, request_params) do
-      update_impact_score(request_params)
+      Users.update_impact_score(request_params["user_id"])
       success_msg = request.title <> " by " <> request.artist <> " was successfully requested."
       IO.inspect(success_msg)
       conn

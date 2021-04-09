@@ -4,7 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { queue_track } from '../api.js';
 import { set_song_played } from '../socket.js';
 
-function RequestCard({request, party_active, party_id}) {
+function RequestCard({request, party}) {
 
   // queue_track(host_id, "queue", song.track_uri);
   // set_song_played(song.id, callback);
@@ -21,10 +21,11 @@ function RequestCard({request, party_active, party_id}) {
           <p>By {request.artist} </p>
           <p>Requested By {request.user.username}</p>
         </Card.Text>
-        {party_active &&
+        {party.is_active &&
           <Button variant="primary" onClick={() => {
             console.log("Queueing song ", request.track_uri);
-          }}>
+                queue_track(party.host.id, "queue", request.track_uri);
+            }}>
             Add To Queue
           </Button>
         }
@@ -41,12 +42,12 @@ export default function ShowRequests({party, user_id}) {
   if (user_id) {
     let filtered_requests = party.requests.filter((req) => req.user.id == user_id)
     request_cards = filtered_requests.map((request) => (
-      <RequestCard request={request} party_id={party.id} party_active={party.is_active} key={request.id} />
+      <RequestCard request={request} party={party} key={request.id} />
     ));
 
   } else {
     request_cards = party.requests.map((request) => (
-      <RequestCard request={request} party_id={party.id} party_active={party.is_active} key={request.id} />
+      <RequestCard request={request} party={party} key={request.id} />
     ));
   }
   return (

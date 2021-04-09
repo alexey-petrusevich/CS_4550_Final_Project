@@ -16,14 +16,14 @@ import UserProfile from "./Users/Profile";
 import Dashboard from "./Dashboard";
 
 //displays any alerts returned by the server
-//dismissable and timeout after 4 seconds
+//dismissable and timeout after 3.2 seconds
 function AlertBanner({error, success}) {
   let alert_banner = null;
 
  useEffect(() => {
    const alert_timer = setTimeout(() => {
      clear_alert();
-   }, 4000)
+   }, 3200)
 
    return () => {
      clearTimeout(alert_timer)

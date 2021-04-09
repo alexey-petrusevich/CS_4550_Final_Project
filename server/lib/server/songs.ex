@@ -113,12 +113,15 @@ defmodule Server.Songs do
   # updates a song with status of played
   def update_played(song_id) do
     song = get_song!(song_id)
+    IO.inspect(song)
     artist_uri = get_artist_uri(song.track_uri)
+    IO.inspect(artist_uri)
     genre = get_track_genre(artist_uri)
+    IO.inspect(genre)
     {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
     # update impact scores for everyone who votes for this song
     update_impact_scores(song_id) # for whoever requested the same song
-    update_impact_scores_for_votes(song_id) # for whoever voted for the song
+    #update_impact_scores_for_votes(song_id) # for whoever voted for the song
 
     #    IO.inspect(song)
     song

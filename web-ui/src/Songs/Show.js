@@ -37,6 +37,7 @@ function SongDisplay({song, host_id, active, is_host, callback}) {
             { active && is_host &&
               <Button variant="primary" onClick={() => {
                 queue_track(host_id, "queue", song.track_uri);
+                console.log("Updating song to be played")
                 set_song_played(song.id, callback);
                 }}>
                 Add To Queue
