@@ -135,11 +135,41 @@ export function get_playlists(host_id) {
 
 //------------------------PLAYBACK----------------------------
 export function playback(host_id, action) {
-  api_post("/playback", {action, host_id});
+  api_post("/playback", {action, host_id}).then((resp) => {
+    console.log(resp);
+    if (resp.success) {
+      let action = {
+        type: 'success/set',
+        data: resp.success,
+      }
+      store.dispatch(action);
+    } else if (resp.error) {
+      let action = {
+        type: 'error/set',
+        data: resp.error,
+      }
+      store.dispatch(action);
+    }
+  });
 }
 
 export function queue_track(host_id, action, track_uri) {
-  api_post("/playback", {action, host_id, track_uri});
+  api_post("/playback", {action, host_id, track_uri}).then((resp) => {
+    console.log(resp);
+    if (resp.success) {
+      let action = {
+        type: 'success/set',
+        data: resp.success,
+      }
+      store.dispatch(action);
+    } else if (resp.error) {
+      let action = {
+        type: 'error/set',
+        data: resp.error,
+      }
+      store.dispatch(action);
+    }
+  });
 }
 
 

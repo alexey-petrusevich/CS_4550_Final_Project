@@ -55,8 +55,8 @@ function PlaylistControls({host_id, party_id}) {
     set_songs(plist.playlist_uri, party_id, host_id);
   }
 
-  let playlists = state.playlists.map((pl) => (
-    <Dropdown.Item onSelect={() => select_playlist(pl)}>
+  let playlists = state.playlists.map((pl, index) => (
+    <Dropdown.Item key={index} onSelect={() => select_playlist(pl)}>
       <p><b>{pl.playlist_title}</b> <i className="tracks">{pl.num_tracks} songs</i></p>
     </Dropdown.Item>
   ));

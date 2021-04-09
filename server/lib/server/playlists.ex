@@ -110,7 +110,6 @@ defmodule Server.Playlists do
   BQC_XI0Jl1lMRcgiHM9vFUXua6JZ6ZSd2YHYDNMkBa9q6zRm6L_cTP_d6TTYwYGaU5TInwMeHakaj3A17vu0NBKGHHaSrb3nmxjS8xU9_RknL5f8sqBHRpYlNiBYc4jLu79qdr_ceAJQesw5QmDklnEMCXprxDHultQZes8ctFlXmLGutrTCXzJtzuyV721KhNxcv1O6SP_67EnQnLYXPofEcDuSr6la4OOv8wloDnRqHEnQVSZa1Hubp55VyqQzeNJcPfKFYop0OGN9M7DmrIeJghtMC4tMqRwOA15J6jz3
 """
 
-
   # given a collection of tracks, stores each song in the DB
   def store_tracks(tracks, party_id, token) do
     Enum.map(
@@ -133,6 +132,5 @@ defmodule Server.Playlists do
       end
     )
   end
-
 
 end

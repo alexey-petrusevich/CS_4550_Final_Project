@@ -9,48 +9,51 @@ defmodule ServerWeb.PlaybackController do
     case action do
       "play" ->
         make_put("https://api.spotify.com/v1/me/player/play", token)
-        |> handle_response(conn, :ok, "Success", "Failed to play")
+        |> handle_response(conn, "Successfully played your active song.", "Failed to start playback. Playback may already be active.")
       "pause" ->
         make_put("https://api.spotify.com/v1/me/player/pause", token)
-        |> handle_response(conn, :ok, "Success", "Failed to pause")
+        |> handle_response(conn, "Successfully paused your active song.", "Failed to pause playback. Playback may already be paused.")
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", token)
-        |> handle_response(conn, :ok, "Success", "Failed to skip")
+        |> handle_response(conn, "Successfully skipped your active song.", "Failed to skip your active song.")
       "queue" ->
         track_uri = data["track_uri"];
         make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> track_uri, token)
-        |> handle_response(conn, :created, "Success", "Failed to enqueue track")
+        |> handle_response(conn, "Successfully added your song to the queue.", "Failed to enqueue track.")
     end
   end
 
-  def handle_response(response, conn, ok_code, success_msg, error_msg) do
-    code = elem(response, 0)
-    data = elem(response, 1) # error msg if code is error
-    case code do
-      :ok ->
-        handle_ok(conn, data, ok_code, success_msg)
-      :error ->
-        handle_error(conn, data, error_msg)
+  def handle_response(response, conn, success_msg, failure_msg) do
+    status_code = response.status_code
+    message = if response.body !== "" do
+      Map.get(Jason.decode!(response.body), "error") |> Map.get("message")
+    end  # error msg if code is error
+    IO.inspect(message)
+    case status_code do
+      # success
+      204 ->
+        handle_ok(conn, success_msg)
+      # no device found TODO default device id?
+      404 ->
+        handle_error(conn, message)
+      # other failure
+      _ ->
+        handle_error(conn, failure_msg)
     end
   end
 
 
-  def handle_ok(conn, data, ok_code, msg) do
+  def handle_ok(conn, msg) do
     conn
     |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    |> send_resp(ok_code, Jason.encode!(%{success: msg}))
+    |> send_resp(:ok, Jason.encode!(%{success: msg}))
   end
 
 
-  def handle_error(conn, data, msg) do
+  def handle_error(conn, msg) do
     conn
     |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    |> send_resp(
-         :error,
-         Jason.encode!(
-           %{error: msg}
-         )
-       )
+    |> send_resp(:bad_request, Jason.encode!(%{error: msg}))
   end
 
 
