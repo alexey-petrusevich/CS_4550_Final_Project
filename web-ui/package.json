@@ -9,6 +9,7 @@
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
     "node-sass": "^5.0.0",
+    "npm": "^6.14.12",
     "phoenix": "^1.5.8",
     "react": "^17.0.2",
     "react-async-child": "0.0.1",
@@ -19,9 +20,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-simple-oauth2-login": "^0.2.0",
+    "recharts": "^2.0.9",
     "redux": "^4.0.5",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.3",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

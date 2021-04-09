@@ -23,6 +23,7 @@ defmodule Server.Songs do
   def list_songs do
     Repo.all(Song)
     |> Repo.preload(:party)
+    |> Repo.preload(:votes)
   end
 
   @doc """
@@ -42,6 +43,7 @@ defmodule Server.Songs do
   def get_song!(id) do
     Repo.get!(Song, id)
     |> Repo.preload(:party)
+    |> Repo.preload(:votes)
   end
 
   @doc """
@@ -58,6 +60,7 @@ defmodule Server.Songs do
   """
   def create_song(attrs \\ %{}) do
     %Song{}
+    |> Repo.preload(:votes)
     |> Song.changeset(attrs)
     |> Repo.insert()
   end

@@ -58,69 +58,93 @@ defmodule Server.Users do
     |> Map.merge(get_user_data(id))
   end
 
+  @doc """
+  Generates User Data
+
+  """
   def get_user_data(id) do
     id_int = String.to_integer(id)
 
-    IO.inspect(
-      Ecto.Adapters.SQL.query(
-        Repo,
-        "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
-        [id_int, [id_int]]
-      )
-    )
-    # artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where id in (SELECT song_id from partiessongs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2))", [id_int, [id_int]])
-    artists = Ecto.Adapters.SQL.query(
-                Repo,
-                "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
-                [id_int, [id_int]]
-              )
-              |> elem(1)
-              |> Map.fetch(:rows)
-              |> elem(1)
-              |> List.flatten
-              |> Enum.frequencies
-              |> Map.to_list
-              |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-              |> Enum.map(fn x -> elem(x, 0) end)
+    artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+    |> Enum.frequencies
+    |> Map.to_list
+    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+    |> Enum.map(fn x -> Tuple.to_list(x) end)
+    # |> Enum.map(fn x -> elem(x, 0) end)
 
-    genres = Ecto.Adapters.SQL.query(
-               Repo,
-               "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
-               [id_int, [id_int]]
-             )
-             |> elem(1)
-             |> Map.fetch(:rows)
-             |> elem(1)
-             |> List.flatten
-             |> Enum.frequencies
-             |> Map.to_list
-             |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-             |> Enum.map(fn x -> elem(x, 0) end)
+    # TODO Filter by "none" for non-existing genres
+    genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+    |> Enum.frequencies
+    |> Map.to_list
+    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+    |> Enum.map(fn x -> Tuple.to_list(x) end)
+    # |> Enum.map(fn x -> elem(x, 0) end)
 
-    energy_vals = Ecto.Adapters.SQL.query(
-                    Repo,
-                    "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
-                    [id_int, [id_int]]
-                  )
-                  |> elem(1)
-                  |> Map.fetch(:rows)
-                  |> elem(1)
-                  |> List.flatten
+    energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
 
-    IO.puts(Enum.sum(energy_vals))
-    IO.puts(Enum.count(energy_vals))
+    danceability_vals = Ecto.Adapters.SQL.query(Repo, "SELECT danceability from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
 
-    energy_avg = 0
+    loudness_vals = Ecto.Adapters.SQL.query(Repo, "SELECT loudness from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
 
-    if Enum.count(energy_vals) != 0 do
-      energy_avg = (Enum.sum(energy_vals) * 1.0) / Enum.count(energy_vals)
-    end
+    valence_vals = Ecto.Adapters.SQL.query(Repo, "SELECT valence from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    |> elem(1)
+    |> Map.fetch(:rows)
+    |> elem(1)
+    |> List.flatten
+
+    IO.inspect(danceability_vals)
+    IO.inspect(Enum.sum(danceability_vals))
+    IO.inspect(Enum.count(danceability_vals) * 1.0)
+
+    energy_avg = if Enum.count(energy_vals) > 0 do
+                    Float.round((Enum.sum(energy_vals) / (Enum.count(energy_vals) * 1.0)), 3)
+                  else
+                    0.0
+                  end
+
+    danceability_avg = if Enum.count(danceability_vals) > 0 do
+                          Float.round((Enum.sum(danceability_vals) / (Enum.count(danceability_vals) * 1.0)), 3)
+                        else
+                          0.0
+                        end
+    loudness_avg = if Enum.count(loudness_vals) > 0 do
+                      Float.round((Enum.sum(loudness_vals) / (Enum.count(loudness_vals) * 1.0)), 3)
+                    else
+                      0.0
+                    end
+    valence_avg = if Enum.count(valence_vals) > 0 do
+                    Float.round((Enum.sum(valence_vals) / (Enum.count(valence_vals) * 1.0)), 3)
+                  else
+                    0.0
+                  end
 
     %{
       top_artists: artists,
       top_genres: genres,
-      energy: energy_avg
-    }
+      energy: energy_avg,
+      danceability: danceability_avg,
+      loudness: loudness_avg,
+      valence: valence_avg}
   end
 
   @doc """
