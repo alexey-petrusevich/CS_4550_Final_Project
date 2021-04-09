@@ -11,8 +11,8 @@ Environment=PORT=4810
 Environment=PROD=true
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/spotifyparty/spotifyparty
-ExecStart=/bin/bash /home/spotifyparty/spotifyparty/start.sh
+WorkingDirectory=/home/spotifyparty/spotifyparty/server
+ExecStart=/bin/bash /home/spotifyparty/spotifyparty/server/start.sh
 
 [Install]
 WantedBy=multi-user.target

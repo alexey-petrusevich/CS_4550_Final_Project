@@ -6,7 +6,7 @@ Our team consists of Aliaksei Petrusevich, Benjamin Ockert, Austin
 Kim, and Iain Morrison.
 
 ## The Deployment
-Our deployed app can be found at https://DEPLOYEDURL, and our source
+Our deployed app can be found at https://spotifyparty.morrisonineu.org, and our source
 code can be found at:
 https://github.com/alexey-petrusevich/CS_4550_Final_Project. Our app
 is currently deployed and working as it should. The individual work
@@ -63,7 +63,6 @@ songs by the user actually go through to the party, and other
 statistics that Spotify keeps track of, including "danceability".
 
 ### To-do list for write-up (remove before submission)
-- Add deployed URL
 - Individual group member's work (above)
 - More detail about voting
 - Information about how playback is implemented
