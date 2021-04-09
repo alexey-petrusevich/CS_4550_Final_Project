@@ -3,6 +3,7 @@ defmodule ServerWeb.VoteController do
 
   alias Server.Votes
   alias Server.Votes.Vote
+  alias Server.Users
 
   action_fallback ServerWeb.FallbackController
 
@@ -21,6 +22,7 @@ defmodule ServerWeb.VoteController do
       conn
       |> send_resp(:reset_content, Jason.encode!(%{vote: vote}))
     else
+      Users.update_impact_score(user_id)
       newVote = %{
         user_id: user_id,
         song_id: song_id,
