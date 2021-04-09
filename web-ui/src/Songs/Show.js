@@ -2,7 +2,7 @@ import { Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { queue_track } from '../api.js';
-import { set_song_played } from '../socket.js';
+import { queue_song } from '../socket.js';
 
 // import thumbs_up from "../images/thumbsup.png";
 // import thumbs_down from "../images/thumbsdown.png";
@@ -36,9 +36,9 @@ function SongDisplay({song, host_id, active, is_host, callback}) {
             </Card.Text>
             { active && is_host &&
               <Button variant="primary" onClick={() => {
-                queue_track(host_id, "queue", song.track_uri);
+                //queue_track(host_id, "queue", song.track_uri);
                 console.log("Updating song to be played")
-                set_song_played(song.id, callback);
+                queue_song(host_id, song, true, callback);
                 }}>
                 Add To Queue
               </Button>

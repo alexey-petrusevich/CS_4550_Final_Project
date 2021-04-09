@@ -2,16 +2,12 @@ import { Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { queue_track } from '../api.js';
-import { set_song_played } from '../socket.js';
+import { set_song_played, queue_song } from '../socket.js';
 
-function RequestCard({request, party}) {
+function RequestCard({request, party, update}) {
 
   // queue_track(host_id, "queue", song.track_uri);
   // set_song_played(song.id, callback);
-
-  function submit() {
-
-  }
 
   return (
     <Col md="3">
@@ -24,10 +20,13 @@ function RequestCard({request, party}) {
         {party.is_active &&
           <Button variant="primary" onClick={() => {
             console.log("Queueing song ", request.track_uri);
-                queue_track(party.host.id, "queue", request.track_uri);
+                queue_song(party.host.id, request, false, update);
             }}>
             Add To Queue
           </Button>
+        }
+        {!party.is_active &&
+          <h4 className="text-success">This request was played</h4>
         }
       </Card>
     </Col>
@@ -35,19 +34,24 @@ function RequestCard({request, party}) {
 }
 
 //displays the requests of the given party
-export default function ShowRequests({party, user_id}) {
+export default function ShowRequests({party, user_id, cb}) {
   let request_cards;
   //determines what requests to show
-  //if a user_id is given, only dislpay their requests
+  //if a user_id is given, only display their requests
   if (user_id) {
     let filtered_requests = party.requests.filter((req) => req.user.id == user_id)
     request_cards = filtered_requests.map((request) => (
       <RequestCard request={request} party={party} key={request.id} />
     ));
 
+  } else if (party.is_active) {
+    let filtered_requests = party.requests.filter((req) => !req.played);
+    request_cards = filtered_requests.map((request) => (
+      <RequestCard request={request} party={party} key={request.id} update={cb}/>
+    ));
   } else {
     request_cards = party.requests.map((request) => (
-      <RequestCard request={request} party={party} key={request.id} />
+      <RequestCard request={request} party={party} key={request.id}/>
     ));
   }
   return (

@@ -115,4 +115,15 @@ defmodule Server.Requests do
                  select: r.user_id
     Repo.all(query)
   end
+
+  # updates a request with status of played
+  def update_played(request_id) do
+    request = get_request!(request_id)
+    IO.inspect("Updating request to be played")
+    IO.inspect(request)
+
+    request
+    |> Ecto.Changeset.change(played: true)
+    |> Repo.update()
+  end
 end

@@ -16,11 +16,13 @@ defmodule ServerWeb.PlaybackController do
       "skip" ->
         make_post("https://api.spotify.com/v1/me/player/next", token)
         |> handle_response(conn, "Successfully skipped playback to the next song.", "Failed to skip your active song.")
-      "queue" ->
-        track_uri = data["track_uri"];
-        make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> track_uri, token)
-        |> handle_response(conn, "Successfully added your song to the queue.", "Failed to enqueue track.")
     end
+  end
+
+  # had to move this out of an API call and rather a channel call
+  def queue(uri, host_id) do
+      token = AuthTokens.get_auth_token_by_user_id(host_id).token
+      make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> uri, token)
   end
 
   def handle_response(response, conn, success_msg, failure_msg) do

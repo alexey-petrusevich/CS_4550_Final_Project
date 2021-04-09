@@ -82,7 +82,7 @@ function PartyBody({is_host, party, update, user_id}) {
         <div>
           <h3>Requests</h3>
           <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
-          <ShowRequests party={party} />
+          <ShowRequests party={party} cb={update} />
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
@@ -100,7 +100,7 @@ function PartyBody({is_host, party, update, user_id}) {
         <div>
           <h3>Played Songs</h3>
           <p><i>Here's what songs were played during your party.</i></p>
-          <ShowSongs party={party} cb={update} />
+          <ShowSongs party={party} />
           <div className="component-spacing"></div>
           <h3>Requested Songs</h3>
           <p><i>Here's what songs your attendees requested you play.</i></p>
@@ -121,6 +121,12 @@ function PartyBody({is_host, party, update, user_id}) {
           <ShowSongs party={party} cb={update} is_host={is_host}/>
         </div>
       )
+    } else if (party.is_active == null) {
+      return (
+        <div>
+          <p>Waiting for the host to start this party...</p>
+        </div>
+      );
     } else {
       return (
         <div>

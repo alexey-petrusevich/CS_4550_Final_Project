@@ -123,7 +123,6 @@ defmodule Server.Songs do
     update_impact_scores(song_id) # for whoever requested the same song
     #update_impact_scores_for_votes(song_id) # for whoever voted for the song
 
-    #    IO.inspect(song)
     song
     |> Ecto.Changeset.change(played: true)
     |> Ecto.Changeset.change(genre: genre)
@@ -133,7 +132,6 @@ defmodule Server.Songs do
     |> Ecto.Changeset.change(valence: valence)
     |> Repo.update()
 
-    #    IO.inspect(song)
   end
 
   def update_impact_scores_for_votes(song_id) do

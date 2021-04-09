@@ -23,6 +23,7 @@ defmodule ServerWeb.RequestView do
       title: request.title,
       artist: request.artist,
       track_uri: request.track_uri,
+      played: request.played,
       user: render_one(request.user, UserView, "simpleUser.json")}
   end
 end
