@@ -117,18 +117,30 @@ defmodule Server.Songs do
     genre = get_track_genre(artist_uri)
     {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
     # update impact scores for everyone who votes for this song
-    update_impact_scores(song_id)
-    #    IO.inspect(song)
-    song = song
-           |> Ecto.Changeset.change(played: true)
-           |> Ecto.Changeset.change(genre: genre)
-           |> Ecto.Changeset.change(energy: energy)
-           |> Ecto.Changeset.change(danceability: danceability)
-           |> Ecto.Changeset.change(loudness: loudness)
-           |> Ecto.Changeset.change(valence: valence)
-           |> Repo.update()
+    update_impact_scores(song_id) # for whoever requested the same song
+    update_impact_scores_for_votes(song_id) # for whoever voted for the song
 
     #    IO.inspect(song)
+    song
+    |> Ecto.Changeset.change(played: true)
+    |> Ecto.Changeset.change(genre: genre)
+    |> Ecto.Changeset.change(energy: energy)
+    |> Ecto.Changeset.change(danceability: danceability)
+    |> Ecto.Changeset.change(loudness: loudness)
+    |> Ecto.Changeset.change(valence: valence)
+    |> Repo.update()
+
+    #    IO.inspect(song)
+  end
+
+  def update_impact_scores_for_votes(song_id) do
+    user_ids = Votes.request_all_user_ids_by_track_uri(song_id)
+    Enum.map(
+      user_ids,
+      fn user_id ->
+        Users.update_impact_score(to_string(user_id))
+      end
+    )
   end
 
 

@@ -110,4 +110,14 @@ defmodule Server.Votes do
   def change_vote(%Vote{} = vote, attrs \\ %{}) do
     Vote.changeset(vote, attrs)
   end
+
+  def request_all_user_ids_by_track_uri(song_id) do
+    query = from v in "votes",
+                 where: v.song_id == ^song_id,
+                 where: v.value == 1, # only upvotes
+                 distinct: v.user_id,
+                 select: v.user_id
+    Repo.all(query)
+  end
+
 end
