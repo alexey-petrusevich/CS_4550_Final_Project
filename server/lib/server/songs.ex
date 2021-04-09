@@ -137,12 +137,7 @@ defmodule Server.Songs do
     song = get_song!(song_id)
     track_uri = song.track_uri
     # this returns the list of user ids
-    IO.inspect("got track uri")
-    IO.inspect(track_uri)
-    IO.inspect("requesting user ids")
     user_ids = Requests.request_all_user_ids_by_track_uri(track_uri)
-    IO.inspect("got user ids")
-    IO.inspect(user_ids)
     Enum.map(
       user_ids,
       fn user_id ->

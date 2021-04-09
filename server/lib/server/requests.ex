@@ -113,9 +113,6 @@ defmodule Server.Requests do
                  where: r.track_uri == ^track_uri,
                  distinct: r.user_id,
                  select: r.user_id
-    result = Repo.all(query)
-    IO.inspect("finished query, result = ")
-    IO.inspect(result)
-    result
+    Repo.all(query)
   end
 end
