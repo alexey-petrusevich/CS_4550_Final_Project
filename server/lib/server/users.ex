@@ -87,9 +87,9 @@ defmodule Server.Users do
 
     IO.puts(Enum.sum(energy_vals))
     IO.puts(Enum.count(energy_vals))
-    
+
     energy_avg = 0
-    
+
     if Enum.count(energy_vals) != 0 do
       energy_avg = (Enum.sum(energy_vals) * 1.0) / Enum.count(energy_vals)
     end
@@ -112,6 +112,8 @@ defmodule Server.Users do
 
   """
   def create_user(attrs \\ %{}) do
+    IO.inspect("user data")
+    IO.inspect(attrs)
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()

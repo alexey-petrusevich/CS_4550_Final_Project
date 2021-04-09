@@ -20,10 +20,10 @@ alias Server.AuthTokens.AuthToken
 
 pass_hash = Argon2.hash_pwd_salt("password")
 
-iain = Repo.insert!(%User{username: "Iain", password_hash: pass_hash, impact_score: 0})
-austin = Repo.insert!(%User{username: "Austin", password_hash: pass_hash, impact_score: 500})
-alex = Repo.insert!(%User{username: "Alex", password_hash: pass_hash, impact_score: 314})
-benjamin = Repo.insert!(%User{username: "Ben", password_hash: pass_hash, impact_score: 25})
+iain = Repo.insert!(%User{username: "Iain", name: "Iain Morrison", email: "morrison.i@northeastern.edu", password_hash: pass_hash, impact_score: 0})
+austin = Repo.insert!(%User{username: "Austin", name: "Austin Kim", email: "kim.a@northeastern.edu", password_hash: pass_hash, impact_score: 500})
+alex = Repo.insert!(%User{username: "Alex", name: "Alex Petrusevich", email: "petrusevich.a@northeastern.edu", password_hash: pass_hash, impact_score: 314})
+benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 25})
 
 party = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id})
 party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 4], host_id: austin.id})
