@@ -44,3 +44,27 @@ view of the DJ/host, who will then be able to take action. The current
 song being played will also show up across all views, and will be
 updated automatically when a song is skipped or a song ends and a new
 song begins.
+
+In addition to storing users, we are storing event history. Attendees
+of a party session will be able to look back on their past events and
+see what songs were played, in what order they were played, and how
+many votes each song had. This will be useful to all users if and when
+they want to make a playlist for their own hosted party. We are also
+storing what actions users took, either up-voting or down-voting and
+this will be used for the various stats we are visualizing.
+
+On any given user's "User Page" we are visualizing a variety of user
+statistics. These statistics are generated based on what votes the
+given user gives songs that come up in the queue during parties. These
+statistics come from the songs' data on Spotify, and are pulled using
+the Spotify API and visualized by our app. The statistics being shown
+are top genres, top songs, an impact score based on how many up-voted
+songs by the user actually go through to the party, and other
+statistics that Spotify keeps track of, including "danceability".
+
+### To-do list for write-up (remove before submission)
+- Individual group member's work (above)
+- More detail about voting
+- Information about how playback is implemented
+- The complex part about our app and why
+- Most significant challenge and how we resolved it
