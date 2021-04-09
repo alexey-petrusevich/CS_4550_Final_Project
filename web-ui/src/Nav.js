@@ -23,10 +23,12 @@ function LoginForm() {
           <Form.Control name="name"
                         type="text"
                         onChange={(ev) => setName(ev.target.value)}
+                        placeholder="Username"
                         value={name} />
           <Form.Control name="password"
                         type="password"
                         onChange={(ev) => setPass(ev.target.value)}
+                        placeholder="Password"
                         value={pass} />
           <Button variant="primary" type="submit">
             Login
@@ -71,20 +73,8 @@ function LOI({session}) {
 
 const LoginOrInfo = connect(({session}) => ({session}))(LOI);
 
-function AppNav({session, error}) {
-  let error_banner = null;
+function AppNav({session}) {
   let dash_link = null;
-
-  //displays any errors returned by the server
-  if (error) {
-    error_banner = (
-      <Row>
-        <Col>
-          <Alert variant="danger">{error}</Alert>
-        </Col>
-      </Row>
-    );
-  }
 
   if (session) {
     dash_link = (
@@ -103,9 +93,8 @@ function AppNav({session, error}) {
       </Col>
         <LoginOrInfo />
       </Row>
-      {error_banner}
     </div>
   );
 }
 
-export default connect(({session, error}) => ({session, error}))(AppNav);
+export default connect(({session}) => ({session}))(AppNav);

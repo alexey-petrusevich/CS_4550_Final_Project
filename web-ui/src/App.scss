@@ -8,8 +8,19 @@
 }
 
 .alert {
-  position: relative;
-  top: 20px;
+  position: fixed;
+  top: 40px;
+  z-index: 9999;
+  left: 0;
+  margin: auto;
+  right: 0;
+  top: 2em;
+  width: 50%;
+}
+
+.form-msg {
+  color: red;
+  font-size: 11px;
 }
 
 // login/logout form
@@ -34,7 +45,6 @@
     top: 10px;
     height: 95%;
     width: 65%;
-
   }
 }
 
@@ -221,11 +231,7 @@
   position: relative;
 }
 
-.voting-buttons {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
+
 
 .tracks {
   font-size: 10px;
@@ -240,4 +246,37 @@
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.voting-buttons {
+
+}
+
+.votes {
+  position: absolute;
+  bottom: 12px;
+}
+
+.vote-img {
+  width: 40px;
+}
+
+.vote-btn {
+  background-color: white;
+  border: none;
+}
+
+.vote-up {
+  position: relative;
+  left: 16px;
+}
+
+.vote-down {
+  position: relative;
+  right: 16px;
+}
+
+.vote-btn:hover {
+  background-color: #white;
+  border: none;
 }

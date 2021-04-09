@@ -106,4 +106,24 @@ defmodule Server.Requests do
   def change_request(%Request{} = request, attrs \\ %{}) do
     Request.changeset(request, attrs)
   end
+
+  # returns collection of user_ids of all the requests in the DB
+  def request_all_user_ids_by_track_uri(track_uri) do
+    query = from r in "requests",
+                 where: r.track_uri == ^track_uri,
+                 distinct: r.user_id,
+                 select: r.user_id
+    Repo.all(query)
+  end
+
+  # updates a request with status of played
+  def update_played(request_id) do
+    request = get_request!(request_id)
+    IO.inspect("Updating request to be played")
+    IO.inspect(request)
+
+    request
+    |> Ecto.Changeset.change(played: true)
+    |> Repo.update()
+  end
 end

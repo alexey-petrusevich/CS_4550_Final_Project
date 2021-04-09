@@ -35,6 +35,10 @@ defmodule Server.Users do
     |> Enum.map(fn x -> Map.merge(x, get_user_data(to_string(x.id))) end)
   end
 
+  def get_user(id) do
+    Repo.get!(User, id)
+  end
+
   @doc """
   Gets a single user.
 
@@ -57,46 +61,66 @@ defmodule Server.Users do
   def get_user_data(id) do
     id_int = String.to_integer(id)
 
-    IO.inspect(Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]]))
+    IO.inspect(
+      Ecto.Adapters.SQL.query(
+        Repo,
+        "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
+        [id_int, [id_int]]
+      )
+    )
     # artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where id in (SELECT song_id from partiessongs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2))", [id_int, [id_int]])
-    artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
-    |> elem(1)
-    |> Map.fetch(:rows)
-    |> elem(1)
-    |> List.flatten
-    |> Enum.frequencies
-    |> Map.to_list
-    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-    |> Enum.map(fn x -> elem(x, 0) end)
+    artists = Ecto.Adapters.SQL.query(
+                Repo,
+                "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
+                [id_int, [id_int]]
+              )
+              |> elem(1)
+              |> Map.fetch(:rows)
+              |> elem(1)
+              |> List.flatten
+              |> Enum.frequencies
+              |> Map.to_list
+              |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+              |> Enum.map(fn x -> elem(x, 0) end)
 
-    genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
-    |> elem(1)
-    |> Map.fetch(:rows)
-    |> elem(1)
-    |> List.flatten
-    |> Enum.frequencies
-    |> Map.to_list
-    |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-    |> Enum.map(fn x -> elem(x, 0) end)
+    genres = Ecto.Adapters.SQL.query(
+               Repo,
+               "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
+               [id_int, [id_int]]
+             )
+             |> elem(1)
+             |> Map.fetch(:rows)
+             |> elem(1)
+             |> List.flatten
+             |> Enum.frequencies
+             |> Map.to_list
+             |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
+             |> Enum.map(fn x -> elem(x, 0) end)
 
-    energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
-    |> elem(1)
-    |> Map.fetch(:rows)
-    |> elem(1)
-    |> List.flatten
+    energy_vals = Ecto.Adapters.SQL.query(
+                    Repo,
+                    "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)",
+                    [id_int, [id_int]]
+                  )
+                  |> elem(1)
+                  |> Map.fetch(:rows)
+                  |> elem(1)
+                  |> List.flatten
 
     IO.puts(Enum.sum(energy_vals))
     IO.puts(Enum.count(energy_vals))
-    
+
     energy_avg = 0
-    
+
     if Enum.count(energy_vals) != 0 do
       energy_avg = (Enum.sum(energy_vals) * 1.0) / Enum.count(energy_vals)
     end
 
-    %{top_artists: artists,
+    %{
+      top_artists: artists,
       top_genres: genres,
-      energy: energy_avg}
+      energy: energy_avg
+    }
   end
 
   @doc """
@@ -112,6 +136,8 @@ defmodule Server.Users do
 
   """
   def create_user(attrs \\ %{}) do
+    IO.inspect("user data")
+    IO.inspect(attrs)
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -162,5 +188,20 @@ defmodule Server.Users do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
+  end
+
+  # returns a list of users associated with song id
+  def get_users_by_song_id(song_id) do
+
+  end
+
+  # update user impact score given user_id
+  def update_impact_score(user_id) do
+    IO.inspect(user_id)
+    user = get_user(user_id)
+    newScore = user.impact_score + 1
+    user = user
+           |> Ecto.Changeset.change(impact_score: newScore)
+           |> Repo.update()
   end
 end

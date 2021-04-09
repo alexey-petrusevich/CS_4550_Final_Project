@@ -1,5 +1,9 @@
 import { Container } from 'react-bootstrap';
 import { Switch, Route } from 'react-router-dom';
+import { Row, Col, Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import store from './store';
 
 import "./App.scss";
 
@@ -11,9 +15,61 @@ import NewUser from "./Users/New";
 import UserProfile from "./Users/Profile";
 import Dashboard from "./Dashboard";
 
-function App() {
+//displays any alerts returned by the server
+//dismissable and timeout after 3.2 seconds
+function AlertBanner({error, success}) {
+  let alert_banner = null;
+
+ useEffect(() => {
+   const alert_timer = setTimeout(() => {
+     clear_alert();
+   }, 3200)
+
+   return () => {
+     clearTimeout(alert_timer)
+   }
+ }, []);
+
+  //clears the alert from the store (for dissapearing or closing out)
+  function clear_alert() {
+    let action = {
+        type: 'clear/set',
+        data: "",
+    }
+    store.dispatch(action);
+  }
+
+  if (error) {
+    return (
+      <Row>
+        <Col>
+          <Alert variant="danger" onClose={() => clear_alert()} dismissible>
+            {error}
+          </Alert>
+        </Col>
+      </Row>
+    );
+  }
+
+  //displays success banner
+  if (success) {
+    return (
+      <Row>
+        <Col>
+          <Alert variant="success" onClose={() => clear_alert()} dismissible>
+            {success}
+          </Alert>
+        </Col>
+      </Row>
+    );
+  }
+}
+
+//Our App Components
+function App({error, success}) {
   return (
     <Container className="app-background">
+      {(success || error) && <AlertBanner error={error} success={success}/>}
       <Nav />
       <Switch>
         <Route path="/" exact>
@@ -37,4 +93,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(({error, success}) => ({error, success}))(App);

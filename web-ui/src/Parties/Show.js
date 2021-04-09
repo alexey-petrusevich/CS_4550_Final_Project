@@ -9,8 +9,8 @@ import RequestsNew from "../Requests/New";
 import ShowRequests from "../Requests/Show";
 import { connect_cb, channel_join, get_playlists, set_songs, update_party_active } from "../socket";
 
+//jumbotron image
 import concert from "../images/concert.jpg";
-
 //playback control images
 import play from "../images/play.png";
 import pause from "../images/pause.png";
@@ -55,8 +55,8 @@ function PlaylistControls({host_id, party_id}) {
     set_songs(plist.playlist_uri, party_id, host_id);
   }
 
-  let playlists = state.playlists.map((pl) => (
-    <Dropdown.Item onSelect={() => select_playlist(pl)}>
+  let playlists = state.playlists.map((pl, index) => (
+    <Dropdown.Item key={index} onSelect={() => select_playlist(pl)}>
       <p><b>{pl.playlist_title}</b> <i className="tracks">{pl.num_tracks} songs</i></p>
     </Dropdown.Item>
   ));
@@ -72,6 +72,75 @@ function PlaylistControls({host_id, party_id}) {
       <p className="linked-msg"><b>Selected playlist: </b><i>{playlist}</i></p>
     </div>
   )
+}
+
+function PartyBody({is_host, party, update, user_id}) {
+
+  if (is_host) {
+    if (party.is_active) {
+      return (
+        <div>
+          <h3>Requests</h3>
+          <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
+          <ShowRequests party={party} cb={update} />
+          <div className="component-spacing"></div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
+          <ShowSongs party={party} cb={update} is_host={true}/>
+        </div>
+      );
+    } else if (party.is_active == null) {
+      return (
+        <div>
+          <p>Please login with Spotify to start your party!</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h3>Played Songs</h3>
+          <p><i>Here's what songs were played during your party.</i></p>
+          <ShowSongs party={party} />
+          <div className="component-spacing"></div>
+          <h3>Requested Songs</h3>
+          <p><i>Here's what songs your attendees requested you play.</i></p>
+          <ShowRequests party={party} />
+        </div>
+      );
+    }
+  } else { //attendee
+    if (party.is_active) {
+      return (
+        <div>
+          <h3>Request A Song</h3>
+          <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
+          <RequestsNew party_id={party.id}/>
+          <div className="component-spacing"></div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
+          <ShowSongs party={party} user_id={user_id} cb={update} is_host={is_host}/>
+        </div>
+      )
+    } else if (party.is_active == null) {
+      return (
+        <div>
+          <p>Waiting for the host to start this party...</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h3>Played Songs</h3>
+          <p><i>Here's what songs the host played during this party.</i></p>
+          <ShowSongs party={party} cb={update} />
+          <div className="component-spacing"></div>
+          <h3>Your Requested Songs</h3>
+          <p><i>Here's what songs you requested the host play.</i></p>
+          <ShowRequests party={party} user_id={user_id} />
+        </div>
+      );
+    }
+  }
 }
 
 function ShowParty({session}) {
@@ -133,12 +202,12 @@ function ShowParty({session}) {
             <p><b>Attendee access code: </b>{party.roomcode}</p>
             <p><i>You are the host</i></p>
             {party.is_active == false &&
-              <p><b><i>This party has been ended</i></b></p>
+              <p><b><i>This party has ended</i></b></p>
             }
             {party.is_active == null &&
               <div>
                 <SpotifyAuth callback={on_return}/>
-                {authed && party.songs.length == 0 &&
+                {authed  &&
                   <div>
                     <PlaylistControls host_id={party.host.id} party_id={party.id}/>
                     <Button className="party-status" variant="success" onClick={() =>
@@ -153,41 +222,29 @@ function ShowParty({session}) {
               <PlaybackControls host_id={party.host.id}/>
             }
           </Jumbotron>
-          <h3>List of Songs</h3>
-          <p><i>List of songs to choose from for voting</i></p>
-          <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
-          <div className="component-spacing"></div>
-          <h3>Requests</h3>
-          <p><i>Attendee requests</i></p>
-          <RequestsNew party_id={party.id}/>
-          <ShowRequests requests={party.requests} party_id={party.id}/>
+          <PartyBody is_host={true} party={party} update={update} />
         </Col>
       </Row>
     );
-
-
+    //attendee
   } else {
     return (
       <Row>
         <Col>
-          <h2>{party.name}</h2>
-          <p><b>Description: </b>{party.description}</p>
-          <p><i>You are an attendee</i></p>
-          <div className="component-spacing"></div>
-          <h3>Currently Playing</h3>
-          <p><i>Give feedback on the current playing song</i></p>
-          <div className="component-spacing"></div>
-          <h3>Voting</h3>
-          <p><i>Cast your votes for the next few songs to be played</i></p>
-          <div className="component-spacing"></div>
-          <h3>Request a Song</h3>
-          <p><i>Request a new song by specifying a title and artist</i></p>
+          <Jumbotron className="jumbotron">
+            <Image className="header-image" src={concert} rounded />
+            <h2>{party.name}</h2>
+            <p><b>Description: </b>{party.description}</p>
+            <p><i>You are an attendee</i></p>
+            {party.is_active == false &&
+              <p><b><i>This party has ended</i></b></p>
+            }
+          </Jumbotron>
+          <PartyBody is_host={false} party={party} update={update} user_id={session.user_id} />
         </Col>
       </Row>
     );
   }
-
-
 }
 
 export default connect(({session}) => ({session}))(ShowParty);
