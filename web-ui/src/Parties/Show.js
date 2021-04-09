@@ -141,7 +141,6 @@ function PartyBody({is_host, party, update, user_id}) {
       );
     }
   }
-
 }
 
 function ShowParty({session}) {

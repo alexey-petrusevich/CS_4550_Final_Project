@@ -65,7 +65,8 @@ defmodule ServerWeb.RequestController do
         artist: artist,
         party_id: party_id,
         user_id: user_id,
-        track_uri: track_uri
+        track_uri: track_uri,
+        played: false
       }
       IO.inspect(request)
       Requests.create_request(request)
