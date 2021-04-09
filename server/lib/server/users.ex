@@ -69,7 +69,8 @@ defmodule Server.Users do
     |> Enum.frequencies
     |> Map.to_list
     |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-    |> Enum.map(fn x -> elem(x, 0) end)
+    |> Enum.map(fn x -> Tuple.to_list(x) end)
+    # |> Enum.map(fn x -> elem(x, 0) end)
 
     # TODO Filter by "none" for non-existing genres
     genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
@@ -80,7 +81,8 @@ defmodule Server.Users do
     |> Enum.frequencies
     |> Map.to_list
     |> Enum.sort(fn ({_k1, val1}, {_k2, val2}) -> val1 >= val2 end)
-    |> Enum.map(fn x -> elem(x, 0) end)
+    |> Enum.map(fn x -> Tuple.to_list(x) end)
+    # |> Enum.map(fn x -> elem(x, 0) end)
 
     energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
     |> elem(1)

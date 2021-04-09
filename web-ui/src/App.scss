@@ -1,6 +1,4 @@
-@import 'semantic-ui-css/semantic.min.css';
 @import '~bootstrap/scss/bootstrap';
-
 
 #root {
   background-color: #191414;
@@ -140,8 +138,13 @@
 
 .party-card {
   color: black;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.profile-party-card {
+  color: black;
+  margin: 15px;
+  backgroundColor: '#EAEAEA';
 }
 
 .dash-button {
@@ -193,4 +196,8 @@
 
 .tracks {
   font-size: 10px;
+}
+
+.profile-page {
+
 }
