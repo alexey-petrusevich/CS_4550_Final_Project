@@ -7,9 +7,9 @@ export PORT=4810
 echo "Stopping old copy of app, if any..."
 
 # Replace 'practice' with proper app name
-server/_build/prod/rel/practice/bin/practice stop || true
+_build/prod/rel/server/bin/server stop || true
 
 echo "Starting app..."
 
 # Replace 'practice' with proper app name
-server/_build/prod/rel/practice/bin/practice start
+_build/prod/rel/server/bin/server start
