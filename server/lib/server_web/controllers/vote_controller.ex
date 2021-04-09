@@ -7,20 +7,24 @@ defmodule ServerWeb.VoteController do
 
   action_fallback ServerWeb.FallbackController
 
+  def index(conn, _params) do
+    votes = Votes.list_votes()
+    render(conn, "index.json", votes: votes)
+  end
 
   # updates (creates) a vote for the given song
-  def vote(conn, data) do
+  def vote(conn, %{"vote" => vote}) do
     # user_id, song_id, value
-    user_id = data["user_id"]
-    song_id = data["song_id"]
-    value = data["value"]
+    user_id = vote["user_id"]
+    song_id = vote["song_id"]
+    value = vote["value"]
     # check if entry already exists
-    vote = Votes.get_vote_by_song_id!(song_id)
+    vote = Votes.get_vote_by_song_and_user(song_id, user_id)
     if (vote) do
-      vote = %{vote | value: value}
-      Votes.update_vote(vote)
+      vote = Votes.update_vote(vote.id, value)
       conn
-      |> send_resp(:reset_content, Jason.encode!(%{vote: vote}))
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(200, Jason.encode!(%{}))
     else
       Users.update_impact_score(user_id)
       newVote = %{
@@ -30,7 +34,8 @@ defmodule ServerWeb.VoteController do
       }
       Votes.create_vote(newVote)
       conn
-      |> send_resp(:created, Jason.encode!(%{vote: vote}))
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(200, Jason.encode!(%{}))
     end
   end
 

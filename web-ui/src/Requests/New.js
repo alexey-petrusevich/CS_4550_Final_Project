@@ -24,6 +24,7 @@ export default function RequestsNew({party_id}) {
     //     history.push("/parties/" + party_id);
     //   }
     // });
+    setRequest({title: "", artist: ""});
   }
 
   function updateTitle(ev) {

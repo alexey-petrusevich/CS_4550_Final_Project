@@ -118,7 +118,7 @@ function PartyBody({is_host, party, update, user_id}) {
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
-          <ShowSongs party={party} cb={update} is_host={is_host}/>
+          <ShowSongs party={party} user_id={user_id} cb={update} is_host={is_host}/>
         </div>
       )
     } else if (party.is_active == null) {
@@ -207,7 +207,7 @@ function ShowParty({session}) {
             {party.is_active == null &&
               <div>
                 <SpotifyAuth callback={on_return}/>
-                {authed && party.songs.length == 0 &&
+                {authed  &&
                   <div>
                     <PlaylistControls host_id={party.host.id} party_id={party.id}/>
                     <Button className="party-status" variant="success" onClick={() =>

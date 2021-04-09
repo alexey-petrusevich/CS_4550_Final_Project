@@ -103,6 +103,11 @@ export function create_request(request) {
   });
 }
 
+//------------------------VOTES----------------------------
+export function user_vote(vote) {
+  return api_post("/vote", {vote});
+}
+
 
 //------------------------LOGIN----------------------------
 export function api_login(username, password) {
@@ -127,9 +132,7 @@ export function api_login(username, password) {
 //------------------------PLAYLIST----------------------------
 export function get_playlists(host_id) {
   api_get("/playlist/" + host_id).then((resp) =>
-  console.log(resp)
-);
-
+  console.log("Playlists", resp));
 }
 
 

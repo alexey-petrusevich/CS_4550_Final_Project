@@ -45,7 +45,6 @@
     top: 10px;
     height: 95%;
     width: 65%;
-
   }
 }
 
@@ -232,11 +231,7 @@
   position: relative;
 }
 
-.voting-buttons {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
+
 
 .tracks {
   font-size: 10px;
@@ -251,4 +246,37 @@
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.voting-buttons {
+
+}
+
+.votes {
+  position: absolute;
+  bottom: 12px;
+}
+
+.vote-img {
+  width: 40px;
+}
+
+.vote-btn {
+  background-color: white;
+  border: none;
+}
+
+.vote-up {
+  position: relative;
+  left: 16px;
+}
+
+.vote-down {
+  position: relative;
+  right: 16px;
+}
+
+.vote-btn:hover {
+  background-color: #white;
+  border: none;
 }
