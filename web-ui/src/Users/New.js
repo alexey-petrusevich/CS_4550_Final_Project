@@ -10,6 +10,14 @@ function NewUser() {
   let history = useHistory();
   const [user, setUser] = useState({name: "", pass1: "", pass2: ""});
 
+  function check_email(email) {
+    // from w3resource.com
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+      return "";
+    }
+    return "Invalid email address.";
+  }
+
   function check_pass(p1, p2) {
     if (p1 !== p2) {
       return "Passwords don't match.";
@@ -27,6 +35,7 @@ function NewUser() {
     u1[field] = ev.target.value;
     u1.password = u1.pass1;
     u1.pass_msg = check_pass(u1.pass1, u1.pass2);
+    u1.email_msg = check_email(u1.email);
     setUser(u1);
   }
 
@@ -34,46 +43,59 @@ function NewUser() {
     ev.preventDefault();
     console.log(user);
     //get rid of the extra password and pass_msg entry
-    let data = pick(user, ['name', 'password']);
-    create_user(data).then(() => {
-      get_users();
-      history.push("/");
-    });
+    let data = pick(user, ['name', 'username', 'email', 'password']);
+    console.log(data);
+    create_user(data);
+    setTimeout(function(){history.push("/");}, 2000);
   }
 
   return (
-    <Row>
-      <Col>
-        <h2>Create an Account</h2>
-        <Form onSubmit={onSubmit}>
-          <Form.Group>
-            <Form.Label>Username</Form.Label>
+    <div>
+      <h2>Create an Account</h2>
+      <Form onSubmit={onSubmit}>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Enter Your Name</Form.Label>
             <Form.Control type="text"
                           onChange={(ev) => update("name", ev)}
                           value={user.name || ""} />
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
+          <Form.Group as={Col}>
+            <Form.Label>Select A Username</Form.Label>
+            <Form.Control type="text"
+                          onChange={(ev) => update("username", ev)}
+                          value={user.username || ""} />
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Group>
+          <Form.Label><p>Enter Your Email <i className="form-msg">{user.email_msg}</i></p></Form.Label>
+          <Form.Control type="text"
+                        onChange={(ev) => update("email", ev)}
+                        value={user.email || ""} />
+        </Form.Group>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Create A Password</Form.Label>
             <Form.Control type="password"
                           onChange={(ev) => update("pass1", ev)}
                           value={user.pass1 || ""} />
 
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Confirm Password</Form.Label>
+          <Form.Group as={Col}>
+            <Form.Label><p>Confirm Password <i className="form-msg">{user.pass_msg}</i></p></Form.Label>
             <Form.Control type="password"
                           onChange={(ev) => update("pass2", ev)}
                           value={user.pass2 || ""} />
-            <p>{user.pass_msg}</p>
           </Form.Group>
-          <Button variant="primary"
-                  type="submit"
-                  disabled={user.pass_msg !== ""}>
-            Register
-          </Button>
-        </Form>
-      </Col>
-    </Row>
+        </Form.Row>
+        <Button variant="primary"
+                type="submit"
+                disabled={user.pass_msg !== "" || user.email_msg !== ""}>
+          Register
+        </Button>
+      </Form>
+    </div>
   );
 }
 

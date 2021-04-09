@@ -23,10 +23,12 @@ function LoginForm() {
           <Form.Control name="name"
                         type="text"
                         onChange={(ev) => setName(ev.target.value)}
+                        placeholder="Username"
                         value={name} />
           <Form.Control name="password"
                         type="password"
                         onChange={(ev) => setPass(ev.target.value)}
+                        placeholder="Password"
                         value={pass} />
           <Button variant="primary" type="submit">
             Login

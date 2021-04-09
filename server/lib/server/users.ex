@@ -132,6 +132,8 @@ defmodule Server.Users do
 
   """
   def create_user(attrs \\ %{}) do
+    IO.inspect("user data")
+    IO.inspect(attrs)
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()

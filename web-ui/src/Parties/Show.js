@@ -9,8 +9,8 @@ import RequestsNew from "../Requests/New";
 import ShowRequests from "../Requests/Show";
 import { connect_cb, channel_join, get_playlists, set_songs, update_party_active } from "../socket";
 
+//jumbotron image
 import concert from "../images/concert.jpg";
-
 //playback control images
 import play from "../images/play.png";
 import pause from "../images/pause.png";
@@ -74,8 +74,68 @@ function PlaylistControls({host_id, party_id}) {
   )
 }
 
-function PartyBody({is_host, is_active}) {
-  return null;
+function PartyBody({is_host, party, update, user_id}) {
+
+  if (is_host) {
+    if (party.is_active) {
+      return (
+        <div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
+          <ShowSongs party={party} cb={update} is_host={true}/>
+          <div className="component-spacing"></div>
+          <h3>Requests</h3>
+          <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
+          <ShowRequests party={party} />
+        </div>
+      );
+    } else if (party.is_active == null) {
+      return (
+        <div>
+          <p>Please login with Spotify to start your party!</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h3>Played Songs</h3>
+          <p><i>Here's what songs were played during your party.</i></p>
+          <ShowSongs party={party} cb={update} />
+          <div className="component-spacing"></div>
+          <h3>Requested Songs</h3>
+          <p><i>Here's what songs your attendees requested you play.</i></p>
+          <ShowRequests party={party} />
+        </div>
+      );
+    }
+  } else { //attendee
+    if (party.is_active) {
+      return (
+        <div>
+          <h3>List of Songs</h3>
+          <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
+          <ShowSongs party={party} cb={update} is_host={is_host}/>
+          <div className="component-spacing"></div>
+          <h3>Request A Song</h3>
+          <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
+          <RequestsNew party_id={party.id}/>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h3>Played Songs</h3>
+          <p><i>Here's what songs the host played during this party.</i></p>
+          <ShowSongs party={party} cb={update} />
+          <div className="component-spacing"></div>
+          <h3>Your Requested Songs</h3>
+          <p><i>Here's what songs you requested the host play.</i></p>
+          <ShowRequests party={party} user_id={user_id} />
+        </div>
+      );
+    }
+  }
+
 }
 
 function ShowParty({session}) {
@@ -118,22 +178,6 @@ function ShowParty({session}) {
     }
   }
 
-  let party_body = null;
-
-  if (party.is_active) {
-    party_body = (
-      <div>
-        <h3>List of Songs</h3>
-        <p><i>List of songs to choose from for voting</i></p>
-        <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
-        <div className="component-spacing"></div>
-        <h3>Requests</h3>
-        <p><i>Attendee requests</i></p>
-        <ShowRequests requests={party.requests} party_id={party.id}/>
-      </div>
-    )
-  }
-
   let username = session.username
   let hostname = party.host.username;
   if (username === hostname) {
@@ -173,12 +217,11 @@ function ShowParty({session}) {
               <PlaybackControls host_id={party.host.id}/>
             }
           </Jumbotron>
-          <PartyBody is_host={true} is_active={party.is_active} />
+          <PartyBody is_host={true} party={party} update={update} />
         </Col>
       </Row>
     );
-
-
+    //attendee
   } else {
     return (
       <Row>
@@ -192,19 +235,11 @@ function ShowParty({session}) {
               <p><b><i>This party has ended</i></b></p>
             }
           </Jumbotron>
-          <h3>List of Songs</h3>
-          <p><i>List of songs to choose from for voting</i></p>
-          <ShowSongs songs={party.songs} user_id={party.host.id} cb={update} active_party={party.is_active}/>
-          <div className="component-spacing"></div>
-          <h3>Requests</h3>
-          <p><i>Request A Song</i></p>
-          <RequestsNew party_id={party.id}/>
-          <PartyBody is_host={false} is_active={party.is_active} />
+          <PartyBody is_host={false} party={party} update={update} user_id={session.user_id} />
         </Col>
       </Row>
     );
   }
-
 }
 
 export default connect(({session}) => ({session}))(ShowParty);
