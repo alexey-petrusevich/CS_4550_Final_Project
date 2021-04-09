@@ -63,6 +63,7 @@ songs by the user actually go through to the party, and other
 statistics that Spotify keeps track of, including "danceability".
 
 ### To-do list for write-up (remove before submission)
+- Add deployed URL
 - Individual group member's work (above)
 - More detail about voting
 - Information about how playback is implemented
