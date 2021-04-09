@@ -3,7 +3,7 @@
 export SECRET_KEY_BASE=W68eso5YQOlbtvSNUR50N/HDWj6IaEhAwMR3LtzuBEQAefwYVbX84bvoTA7XtiGi
 export MIX_ENV=prod
 export PORT=4810
-export DATABASE_URL=ecto://spotify:Sp0t!fY123@localhost/spotifyparty_dev
+export DATABASE_URL=ecto://spotify:Sp0t!fY123@localhost/spotifyparty_dev # TODO: Is this localhost or host URL?
 # export NODEBIN=`pwd`/assets/node_modules/.bin
 # export PATH="$PATH:$NODEBIN"
 
