@@ -32,9 +32,13 @@ song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "King
 song2 = Repo.insert!(%Song{artist: "Athletic Progression", genre: "genre2", title: "WHITE CRAYON", track_uri: "spotify:track:2XXfb3FToGrAOZKGJ1Nwhj", energy: 0.5, party_id: 2, played: true})
 song3 = Repo.insert!(%Song{artist: "Faye Webster", genre: "genre1", title: "faye2", track_uri: "asdf", energy: 0.5, party_id: 2, played: false})
 song4 = Repo.insert!(%Song{artist: "Artist 3", genre: "genre3", title: "WHITE CRAYON", track_uri: "qwer", energy: 0.3, party_id: 2, played: true})
+song4 = Repo.insert!(%Song{artist: "The Beatles", genre: "genre3", title: "Let It Be", track_uri: "uri", energy: 0.3, party_id: 2, played: false})
 
 
 token = Repo.insert!(%AuthToken{token: "asgniunbiueiui324891827u984", user_id: benjamin.id})
 
-request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "uri", party_id: party.id, user_id: iain.id})
+request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "uri3", party_id: party.id, user_id: iain.id})
 request1 = Repo.insert!(%Request{title: "Let It Be", artist: "The Beatles", track_uri: "uri", party_id: party.id, user_id: iain.id})
+request1 = Repo.insert!(%Request{title: "Let It Be", artist: "The Beatles", track_uri: "uri", party_id: party.id, user_id: alex.id})
+request1 = Repo.insert!(%Request{title: "Let It Be", artist: "The Beatles", track_uri: "uri", party_id: party.id, user_id: benjamin.id})
+request1 = Repo.insert!(%Request{title: "Let It Be", artist: "The Beatles", track_uri: "uri", party_id: party.id, user_id: austin.id})
