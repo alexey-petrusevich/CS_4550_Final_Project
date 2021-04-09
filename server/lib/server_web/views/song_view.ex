@@ -1,6 +1,9 @@
 defmodule ServerWeb.SongView do
   use ServerWeb, :view
   alias ServerWeb.SongView
+  alias ServerWeb.VoteView
+
+  alias Server.Repo
 
   def render("index.json", %{songs: songs}) do
     %{data: render_many(songs, SongView, "song.json")}
@@ -11,6 +14,8 @@ defmodule ServerWeb.SongView do
   end
 
   def render("song.json", %{song: song}) do
+    song = song
+    |> Repo.preload(:votes)
     %{id: song.id,
       track_uri: song.track_uri,
       title: song.title,
@@ -18,6 +23,7 @@ defmodule ServerWeb.SongView do
       party_id: song.party_id,
       genre: song.genre,
       energy: song.energy,
-      played: song.played}
+      played: song.played,
+      votes: render_many(song.votes, VoteView, "vote.json")}
   end
 end

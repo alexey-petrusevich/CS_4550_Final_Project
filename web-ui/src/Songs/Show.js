@@ -7,13 +7,22 @@ import { queue_song } from '../socket.js';
 import thumbs_up from "../images/thumbs_up.png";
 import thumbs_down from "../images/thumbs_down.png";
 
-function Voting({song_id, user_id}) {
+function Voting({votes, song_id, user_id, cb}) {
+  const [count, setCount] = useState(0);
 
-  function submit_vote(value) {
-    user_vote({song_id: song_id, user_id: user_id, value: value});
+  //updates the value of the count after new votes are received (after the callback)
+  useEffect(() => {
+    let vote_total = 0;
+    votes.map((vote) => { vote_total += vote.value });
+    setCount(vote_total);
+  });
 
+  function submit_vote(value, callback) {
+    user_vote({song_id: song_id, user_id: user_id, value: value})
+      .then((resp) => {
+        callback()
+      });
   }
-
 
   return (
     <Row className="voting-buttons">
@@ -23,12 +32,13 @@ function Voting({song_id, user_id}) {
                      className="vote-img"
                      onClick={() => {
                        console.log("Up vote from ", user_id, " for song ", song_id)
-                       submit_vote(1);
+                       submit_vote(1, cb);
+
                      }} />
         </button>
       </Col>
       <Col>
-        <p className="votes">Votes: 0</p>
+        <p className="votes">Votes: { count }</p>
       </Col>
       <Col>
         <button className="vote-btn vote-down"><img src={thumbs_down}
@@ -36,7 +46,7 @@ function Voting({song_id, user_id}) {
                      className="vote-img"
                      onClick={() => {
                        console.log("Down vote", -1);
-                       submit_vote(-1);
+                       submit_vote(-1, cb);
                      }} />
         </button>
       </Col>
@@ -64,7 +74,7 @@ function SongDisplay({song, host_id, active, is_host, user_id, callback}) {
               </Button>
             }
             { active && !is_host &&
-              <Voting song_id={song.id} user_id={user_id}/>
+              <Voting votes={song.votes} song_id={song.id} user_id={user_id} cb={callback}/>
             }
           </Card>
         </Col>
