@@ -137,7 +137,6 @@ defmodule Server.Users do
                   else
                     0.0
                   end
->>>>>>> new-aus
 
     %{
       top_artists: artists,
