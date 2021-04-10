@@ -17,23 +17,23 @@ import pause from "../images/pause.png";
 import skip from "../images/skip.png";
 
 //play, pause, skip playback controls
-function PlaybackControls({host_id}) {
+function PlaybackControls({party_id, host_id}) {
   return (
     <Row className="playback-controls">
       <button className="playback-btn"><img src={play}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => playback(host_id, "play")} />
+                   onClick={() => playback(host_id, "play", party_id)} />
       </button>
       <button className="playback-btn"><img src={pause}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => playback(host_id, "pause")} />
+                   onClick={() => playback(host_id, "pause", party_id)} />
       </button>
       <button className="playback-btn"><img src={skip}
                    alt="Play"
                    className="playback-img"
-                   onClick={() => playback(host_id, "skip")} />
+                   onClick={() => playback(host_id, "skip", party_id)} />
       </button>
     </Row>
   )
@@ -225,7 +225,7 @@ function ShowParty({session}) {
                 </div>
               }
               {party.is_active &&
-                <PlaybackControls host_id={party.host.id}/>
+                <PlaybackControls party_id={party.id} host_id={party.host.id}/>
               }
             </div>
           </Jumbotron>

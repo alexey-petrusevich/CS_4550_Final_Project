@@ -155,8 +155,8 @@ export function get_playlists(host_id) {
 
 
 //------------------------PLAYBACK----------------------------
-export function playback(host_id, action) {
-  api_post("/playback", {action, host_id}).then((resp) => {
+export function playback(host_id, action, party_id) {
+  api_post("/playback", {action, host_id, party_id}).then((resp) => {
     console.log(resp);
     if (resp.error) {
       let action = {

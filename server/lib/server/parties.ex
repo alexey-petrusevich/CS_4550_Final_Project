@@ -50,6 +50,11 @@ defmodule Server.Parties do
     Repo.exists?(query)
   end
 
+  def get_device_id!(party_id) do
+    party = get_party!(party_id)
+    party.device_id
+  end
+
   @doc """
   Creates a party.
 
@@ -135,6 +140,8 @@ defmodule Server.Parties do
   def update_active(party_id, status) do
     party = get_party!(party_id)
     {resp, msg} = get_device_id(party_id, status)
+    IO.inspect(resp)
+    IO.inspect("response")
     if (resp == :ok) do
       party
       |> Ecto.Changeset.change(is_active: status)
@@ -153,7 +160,7 @@ defmodule Server.Parties do
   # required scope: user-read-playback-state
   def get_device_id(party_id, party_active) do
     if (party_active) do
-      # party is active
+      # party is active)
       user_id = get_user_id_by_party_id(party_id)
       token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
       url = "https://api.spotify.com/v1/me/player/devices"
