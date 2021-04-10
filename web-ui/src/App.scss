@@ -142,6 +142,7 @@
 
 .welcome {
   text-align: center;
+  vertical-align: middle;
   font-size: 60px;
 }
 
@@ -176,7 +177,7 @@
 }
 
 .nav {
-  margin-right: 20px;
+  margin-right: 4%;
 }
 
 .party-card {
@@ -187,7 +188,7 @@
 .profile-party-card {
   color: black;
   margin: 15px;
-  backgroundColor: '#EAEAEA';
+  background: '#EAEAEA';
 }
 
 .dash-button {
@@ -234,7 +235,14 @@
   position: relative;
 }
 
-
+.card-container {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 10px;
+  margin: 0;
+  max-height: fit-content;
+}
 
 .tracks {
   font-size: 10px;
@@ -252,7 +260,7 @@
 }
 
 .voting-buttons {
-
+  color: green;
 }
 
 .votes {
@@ -285,5 +293,5 @@
 }
 
 .profile-page {
-
+  color: white;
 }

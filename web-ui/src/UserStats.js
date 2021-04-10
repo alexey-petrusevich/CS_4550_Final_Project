@@ -1,18 +1,17 @@
-import React, { PureComponent, Component } from 'react';
+import React, { Badge, PureComponent, Component } from 'react';
 import RGL, { WidthProvider } from "react-grid-layout";
-import { PieChart, Pie, Tooltip, Sector, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Treemap, ResponsiveContainer, LabelList, Label, Legend, Cell } from 'recharts';
+import { Rectangle, PieChart, Pie, Tooltip, Sector, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Treemap, ResponsiveContainer, LabelList, Label, Legend, Cell } from 'recharts';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-export default function UserStats(user) {
-
+export default function UserStats(user, pageId) {
+  
   //#region ----------------------FEATURES----------------------------
   const user_features = [
     {
       feature: "danceability",
       A: user.danceability,
       fullMark: 1,
-
     },
     {
       feature: "energy",
@@ -48,17 +47,23 @@ export default function UserStats(user) {
   //#region ------------------------ARTISTS--------------------------
   const user_artists = [];
 
+  var artist1 = String(user.top_artists[0]).split(',');
+  var artist2 = String(user.top_artists[1]).split(',');
+  var artist3 = String(user.top_artists[2]).split(',');
+
   var i;
   for (i = 0; i < user.top_artists.length; i++) { 
     var artistItem = {
       name: user.top_artists[i][0],
       children: [
-        { name: user.top_artists[i][0], size: (user.top_artists[i][1] * 0.75) * 1000}
+        { name: user.top_artists[i][0], size: user.top_artists[i][1] },
       ]
     };
-
     user_artists.push(artistItem);
   }
+
+  const artistColors = [];
+  
   //#endregion
 
   //#region ------------------------GENRES--------------------------
@@ -80,6 +85,7 @@ export default function UserStats(user) {
   var j;
   for (j = 0; j < user.top_genres.length; j++) { 
     var genre_name = user.top_genres[j][0];
+    // console.log(genre_name);
     var genre_index = 9;
 
     if (genre_name.includes("classical") || genre_name.includes("opera") || genre_name.includes("early music") 
@@ -112,81 +118,210 @@ export default function UserStats(user) {
     genres.sort(function(a, b){return a.value - b.value})
   }
 
+  genres.sort(function(a, b){return b.value - a.value})
+  // console.log(genres);
+  // console.log(genres[0].name);
+
   //#endregion
 
-  return (
-    <div className="user-stats-page">
-      <h3>Impact Score</h3>
-      <p className="impact-score">{user.impact_score}</p>
-      <ReactGridLayout
-            rowHeight= {300}
-            className="layout"
-            isDraggable={false}
-            isResizeable={false}
-        >
-        <div key="1" data-grid={{ x: 0, y: 0, w: 3, h: 5, static: true }}>
-          <h3>Top Artists</h3>
-          <ResponsiveContainer width="100%" height="18%">
-            <Treemap width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" fill="#8884d8" />
-          </ResponsiveContainer>
-        </div>
-        <div key="2" data-grid={{ x: 4, y: 0, w: 4, h: 5, static: true }}>
-          <h3>Top Genres</h3>
-          <ResponsiveContainer width="100%" height="20%">
-            <PieChart width={150} height={150}>
-              <Pie
-                dataKey="value"
-                isAnimationActive={true}
-                data={genres}
-                startAngle={360}
-                endAngle={0}
-                activeIndex={0}
-                cx="50%"
-                cy="50%"
-                innerRadius="40%"
-                outerRadius="70%"
-                fill="#8884d8"
-                label
-                >
-                {
-                  genres.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={genre_colors[index]}/>
-                  ))
-                }
-                {/* <LabelList dataKey="name" position="outside" /> */}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div key="3" data-grid={{ x: 9, y: 0, w: 4, h: 5, static: true }}>
-          <h3>Top Styles</h3>
-          <ResponsiveContainer width="100%" height="20%">
-            <RadarChart
-                cx="50%"
-                cy="50%"
-                outerRadius="60%"
-                width={150}
-                height={150}
-                data={user_features}
-                fill="#E8E8E8"
-              >
-                <PolarGrid />
-                <PolarAngleAxis dataKey="feature" />
-                <Radar 
-                  name="Features"
-                  dataKey="A"
-                  stroke="#8884d8"
+  //#region ----------------------PROGRESS----------------------------
+
+  const badgeRanks = [
+    //Beginner 0 - 49 
+    'badge badge-secondary', 
+    //Silver 50 - 99
+    'badge badge-info', 
+    //Gold 100 - 199
+    'badge badge-warning', 
+    //Platinum 200 - 399
+    'badge badge-light',
+    //Elite 400+
+    'badge badge-primary', 
+  ]
+
+  let progressVal = Math.round(user.impact_score * 2);
+  let currBadge = badgeRanks[0];
+  let badgeTitle = "Noob";
+  let nextGoal = 50;
+
+  if (user.impact_score >= 50 && user.impact_score < 100) {
+    currBadge = badgeRanks[1];
+    badgeTitle = "Silver";
+    progressVal = Math.round((user.impact_score - 50) * 2);
+    nextGoal = 100;
+  } else if (user.impact_score >= 100 && user.impact_score < 200) {
+    currBadge = badgeRanks[2];
+    badgeTitle = "Gold";
+    progressVal = user.impact_score - 100;
+    nextGoal = 200;
+  } else if (user.impact_score == 200) {
+    progressVal = 0;
+    nextGoal = 400;
+  } else if (user.impact_score > 200 && user.impact_score < 400) {
+    currBadge = badgeRanks[3];
+    badgeTitle = "Platinum";
+    progressVal = (user.impact_score - 200) / 2;
+    nextGoal = 400;
+  } else if (user.impact_score >= 400) {
+    currBadge = badgeRanks[4];
+    badgeTitle = "Elite";
+    progressVal = 100;
+    nextGoal = 400;
+  }
+
+  console.log(badgeRanks[0]);
+
+  //#endregion
+
+  var layout = [
+    { x: 0, y: 0, w: 2.5, h: 4, static: true },
+    { x: 2.5, y: 0, w: 3, h: 4, static: true },
+    { x: 5.5, y: 0, w: 3, h: 4, static: true },
+  ];
+  
+  // var k;
+  // for (k = 0; k < 3; k++) { 
+  //   var artist_name = user.top_artists[k][0];
+  //     console.log(artist_name);
+  // }
+
+  if (pageId == 1) {
+    return (
+      <div className="user-stats-page">
+        <ReactGridLayout
+              rowHeight= {300}
+              className="layout"
+              isDraggable={false}
+              isResizeable={false}
+          >
+          <div key="1" data-grid={layout[0]}>
+            <h3>Impact Score</h3>
+            <h3><span class={currBadge}>{badgeTitle}</span></h3>
+            <h4 style={{'paddingTop':'6px'}}>{user.impact_score} / {nextGoal}</h4>
+            <h4 style={{'paddingTop':'0'}}><progress style={{'width':'90%'}} value={progressVal} max='100'>{progressVal}%</progress></h4>
+          </div>
+          <div key="2" data-grid={layout[1]}>
+            <h3>Top 3 Artists</h3>
+            <ul class="list-group" style={{'color':'black'}}>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist1[0] }
+                <span class="badge badge-primary badge-pill">{ artist1[1] }</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist2[0] }
+                <span class="badge badge-primary badge-pill">{ artist2[1] }</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist3[0] }
+                <span class="badge badge-primary badge-pill">{ artist3[1] }</span>
+              </li>
+            </ul>
+          </div>
+          <div key="3" data-grid={layout[2]}>
+            <h3 style={{'paddingLeft':'10px'}}>Top Genres</h3>
+            <ul class="list-group" style={{'color':'black', 'paddingLeft':'10px'}}>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[0].name }
+                <span class="badge badge-primary badge-pill">{ genres[0].value }</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[1].name }
+                <span class="badge badge-primary badge-pill">{ genres[1].value }</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[2].name }
+                <span class="badge badge-primary badge-pill">{ genres[2].value }</span>
+              </li>
+            </ul>
+          </div>
+        </ReactGridLayout>
+      </div>
+    );
+  } else if (pageId == 2) {
+
+    const newLayout = [
+      { x: 0, y: 0, w: 10, h: 2, static: true },
+      { x: 0, y: 2, w: 10, h: 3, static: true },
+      { x: 0, y: 6, w: 4, h: 3, static: true },
+      { x: 4, y: 6, w: 4, h: 3, static: true },
+    ];
+    layout.splice(0, layout.length, ...newLayout)
+
+    return (
+      <div className="user-stats-page">
+        <ReactGridLayout
+              rowHeight= {45}
+              className="layout"
+              isDraggable={false}
+              isResizeable={false}
+          >
+          <div key="1" data-grid={layout[0]}>
+            <h4>Impact Score</h4>
+            <h3><span class={currBadge}>{badgeTitle}</span>   {user.impact_score} / {nextGoal}</h3>
+            <h4 style={{'paddingTop':'0'}}><progress style={{'width':'90%'}} value={progressVal} max='100'>{progressVal}%</progress></h4>
+          </div>
+          <div key="2" data-grid={layout[1]}>
+            <h3>Top Artists</h3>
+            <ResponsiveContainer width="80%" height="100%">
+              <Treemap isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" fill="#8884d8" />
+            </ResponsiveContainer>
+          </div>
+          <div key="3" data-grid={layout[2]}>
+            <h3>Top Genres</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart width={150} height={150}>
+                <Pie
+                  dataKey="value"
+                  isAnimationActive={true}
+                  data={genres}
+                  startAngle={360}
+                  endAngle={0}
+                  activeIndex={0}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="40%"
+                  outerRadius="70%"
                   fill="#8884d8"
-                  dot="true"
-                  fillOpacity={0.7}
+                  label
+                  >
+                  {
+                    genres.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={genre_colors[index]}/>
+                    ))
+                  }
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div key="4" data-grid={layout[3]}>
+            <h3>Top Styles</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart
+                  cx="50%"
+                  cy="50%"
+                  outerRadius="60%"
+                  width={150}
+                  height={150}
+                  data={user_features}
+                  fill="#E8E8E8"
                 >
-                  <LabelList dataKey="A" position="end" />
-                </Radar>
-              </RadarChart>
-          </ResponsiveContainer>
-        </div>
-      </ReactGridLayout>
-    </div>
-  );
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="feature" />
+                  <Radar 
+                    name="Features"
+                    dataKey="A"
+                    stroke="#8884d8"
+                    fill="#8884d8"
+                    dot="true"
+                    fillOpacity={0.7}
+                  >
+                  </Radar>
+                </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </ReactGridLayout>
+      </div>
+    );
+  } 
 }
