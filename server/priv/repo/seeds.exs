@@ -26,7 +26,7 @@ alex = Repo.insert!(%User{username: "Alex", name: "Alex Petrusevich", email: "pe
 benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 25})
 
 party1 = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id, is_active: false})
-party2 = Repo.insert!(%Party{name: "Phi Delt Formal", roomcode: "0985", description: "Annual Phi Delta Theta formal dance with Chi Omega", attendees: [1, 3], host_id: austin.id, is_active: false})
+party2 = Repo.insert!(%Party{name: "Senior Prom", roomcode: "0985", description: "Prom for the Class of 2021", attendees: [1, 3], host_id: austin.id, is_active: false})
 party3 = Repo.insert!(%Party{name: "Sam's Kickback", roomcode: "7203", description: "Chilling with Sam over the weekend", attendees: [1, 4], host_id: iain.id, is_active: false})
 
 song1 = Repo.insert!(%Song{artist: "Faye Webster", genre: "art pop", title: "Kingston", track_uri: "0EDQwboQDmswDRn58wcslg", party_id: party1.id, played: false, energy: 0.344, danceability: 0.73, loudness: -9.541, valence: 0.543})

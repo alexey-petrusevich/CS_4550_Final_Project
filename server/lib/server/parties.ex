@@ -132,7 +132,5 @@ defmodule Server.Parties do
     party = get_party!(party_id)
     |> Ecto.Changeset.change(is_active: status)
     |> Repo.update()
-
-    IO.inspect(party)
   end
 end

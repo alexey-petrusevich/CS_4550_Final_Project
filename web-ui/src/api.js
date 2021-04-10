@@ -4,7 +4,6 @@ import store from './store';
 export async function api_get(path) {
   let text = await fetch("http://localhost:4000/api/v1" + path, {});
   let resp = await text.json();
-  console.log(resp.data);
   return resp.data;
 }
 
@@ -66,7 +65,6 @@ export function get_user(id) {
 
 //creates a user and then logs them in
 export function create_user(user) {
-  console.log("Sending user request", user);
   api_post("/users", {user}).then((resp) => {
     console.log("User response", resp);
     if (resp.success) {
@@ -111,6 +109,12 @@ export function create_request(request) {
       let action = {
         type: 'success/set',
         data: resp.success,
+      }
+      store.dispatch(action);
+    } else {
+      let action = {
+        type: 'error/set',
+        data: resp.error,
       }
       store.dispatch(action);
     }
