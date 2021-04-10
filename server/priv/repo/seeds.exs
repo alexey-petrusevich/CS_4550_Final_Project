@@ -61,6 +61,7 @@ song15 = Repo.insert!(%Song{artist: "JAY-Z", genre: "east coast hip hop", title:
 
 request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "spotify:track:70C4NyhjD5OZUMzvWZ3njJ", played: false, party_id: party1.id, user_id: iain.id})
 request2 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party1.id, user_id: iain.id})
+request3 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party2.id, user_id: iain.id})
 
 vote1 = Repo.insert!(%Vote{value: 1, song_id: 1, user_id: 1});
 vote2 = Repo.insert!(%Vote{value: 1, song_id: 1, user_id: 2});
