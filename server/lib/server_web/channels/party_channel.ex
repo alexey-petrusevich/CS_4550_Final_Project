@@ -53,8 +53,8 @@ defmodule ServerWeb.PartyChannel do
           broadcast! socket, "party_end", %{body: roomcode}
           {:noreply, socket}
         end
-      {:error, cset} ->
-        {:reply, {:error, %{error: "Error starting this party. Plese try again."}}, socket}
+      {:error, msg} ->
+        {:reply, {:error, %{error: msg}}, socket}
     end
   end
 
