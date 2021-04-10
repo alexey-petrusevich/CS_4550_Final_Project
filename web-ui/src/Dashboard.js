@@ -11,8 +11,8 @@ const ReactGridLayout = WidthProvider(RGL);
 function PartyInfo({party}) {
   // var event_path = "/parties/" + party.id
   return (
-    <Col md="6" style={{ 'paddingBottom':'20px' }}>
-      <Card className="party-card">
+    <Col md="6" style={{ 'paddingBottom':'20px', 'paddingRight':'30px', 'paddingTop':'0px'}}>
+      <Card className="song-card">
         <Card.Title><strong>{party.name}</strong></Card.Title>
         <Card.Text>
           <i>Hosted by {party.host.name}</i><br />
@@ -65,7 +65,7 @@ function Dashboard({parties, session}) {
         <div key="1" data-grid={{ x: 0, y: 0, w: 6.5, h: 0.2, static: true }}>
           <h3>Parties You've Hosted{ new_party_link }</h3>
         </div>
-        <div className="card-container" key="2" data-grid={{ x: 0, y: 0.2, w: 6.5, h: 1.1, static: true }}>
+        <div className="card-container" key="2" data-grid={{ x: 0, y: 0.2, w: 6.7, h: 1.1, static: true }}>
           <div><Row>{host_cards}</Row></div>
         </div>
         <div style={{ 'paddingLeft':'8px' }} key="3" data-grid={{ x: 7, y: 0, w: 5, h: 0.2, static: true }}>
@@ -74,7 +74,7 @@ function Dashboard({parties, session}) {
         <div key="4" data-grid={{ x: 7, y: 0.2, w: 5, h: 4, static: true }}>
           <div style={{ 'paddingLeft':'10px' }}>{ UserStats(user, 2) }</div>
         </div>
-        <div key="5" data-grid={{ x: 0, y: 1.3, w: 6.5, h: 0.2, static: true }}>
+        <div key="5" data-grid={{ x: 0, y: 1.3, w: 6.7, h: 0.2, static: true }}>
           <h3>Parties You've Attended</h3>
         </div>
         <div className="card-container" key="6" data-grid={{ x: 0, y: 1.5, w: 6.5, h: 1.1, static: true }}>

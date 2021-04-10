@@ -27,5 +27,8 @@ server-*.tar
 # this depending on your deployment strategy.
 /priv/static/
 
+gen-vars.sh
 .idea
 server.iml
+deploy.sh
+start.sh

@@ -1,0 +1,5 @@
+gen-vars.sh
+server/config
+server/deploy.sh
+server/start.sh
+erlang-solutions_2.0_all.deb

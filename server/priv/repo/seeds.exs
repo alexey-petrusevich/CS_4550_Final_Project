@@ -21,16 +21,16 @@ alias Server.AuthTokens.AuthToken
 pass_hash = Argon2.hash_pwd_salt("password")
 
 iain = Repo.insert!(%User{username: "Iain", name: "Iain Morrison", email: "morrison.i@northeastern.edu", password_hash: pass_hash, impact_score: 0})
-austin = Repo.insert!(%User{username: "Austin", name: "Austin Kim", email: "kim.a@northeastern.edu", password_hash: pass_hash, impact_score: 250})
+austin = Repo.insert!(%User{username: "Austin", name: "Austin Kim", email: "kim.a@northeastern.edu", password_hash: pass_hash, impact_score: 182})
 alex = Repo.insert!(%User{username: "Alex", name: "Alex Petrusevich", email: "petrusevich.a@northeastern.edu", password_hash: pass_hash, impact_score: 314})
-benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 25})
+benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 82})
 partyMan = Repo.insert!(%User{username: "partyMan", name: "Party Man", email: "party@northeastern.edu", password_hash: pass_hash, impact_score: 600})
 sam = Repo.insert!(%User{username: "Sam", name: "Sam Smith", email: "sam@northeastern.edu", password_hash: pass_hash, impact_score: 3918})
 
 party1 = Repo.insert!(%Party{name: "Trevor's Birthday", roomcode: "1234", description: "Celebrate Trevor's birthday", host_id: benjamin.id, is_active: false})
-party2 = Repo.insert!(%Party{name: "Senior Prom", roomcode: "0985", description: "Prom for the Class of 2021", attendees: [1, 3], host_id: austin.id, is_active: false})
-party3 = Repo.insert!(%Party{name: "Sam's Kickback", roomcode: "7203", description: "Chilling with Sam over the weekend", attendees: [1, 4], host_id: iain.id, is_active: false})
-party4 = Repo.insert!(%Party{name: "Sam's Kickback2", roomcode: "7205", description: "Chilling with Sam over the weekend", attendees: [2], host_id: iain.id, is_active: false})
+party2 = Repo.insert!(%Party{name: "Senior Prom", roomcode: "0985", description: "Prom for Class of 2021", attendees: [1, 3], host_id: austin.id, is_active: false})
+party3 = Repo.insert!(%Party{name: "Sam's Kickback", roomcode: "7203", description: "Chilling with Sam", attendees: [1, 4], host_id: iain.id, is_active: false})
+party4 = Repo.insert!(%Party{name: "Sam's Kickback2", roomcode: "7205", description: "Chilling with Sam", attendees: [2], host_id: iain.id, is_active: false})
 party5 = Repo.insert!(%Party{name: "Aus Party 1", roomcode: "1010", description: "Another Party", attendees: [1, 4], host_id: austin.id, is_active: false})
 party6 = Repo.insert!(%Party{name: "Aus Party 2", roomcode: "1011", description: "Another Party", attendees: [1, 4], host_id: austin.id, is_active: false})
 party7 = Repo.insert!(%Party{name: "Aus Party 3", roomcode: "1012", description: "Another Party", attendees: [1, 4], host_id: austin.id, is_active: false})
@@ -61,6 +61,7 @@ song15 = Repo.insert!(%Song{artist: "JAY-Z", genre: "east coast hip hop", title:
 
 request1 = Repo.insert!(%Request{title: "Piano Man", artist: "Billy Joel", track_uri: "spotify:track:70C4NyhjD5OZUMzvWZ3njJ", played: false, party_id: party1.id, user_id: iain.id})
 request2 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party1.id, user_id: iain.id})
+request3 = Repo.insert!(%Request{title: "Herman's Habit", artist: "La La Land", track_uri: "spotify:track:4f6PUDRYJI51UrZy0jDAxD", played: false, party_id: party2.id, user_id: iain.id})
 
 vote1 = Repo.insert!(%Vote{value: 1, song_id: 1, user_id: 1});
 vote2 = Repo.insert!(%Vote{value: 1, song_id: 1, user_id: 2});

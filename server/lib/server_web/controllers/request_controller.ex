@@ -50,7 +50,7 @@ defmodule ServerWeb.RequestController do
                   |> Enum.at(0)
                   |> Map.get("uri")
 
-      if (request_exists(track_uri)) do
+      if (request_exists(track_uri, party_id)) do
         {:error, "#{title} by #{artist} has already been requested by another user!"}
       else
         request = %{
@@ -67,8 +67,8 @@ defmodule ServerWeb.RequestController do
   end
 
 
-  def request_exists(track_uri) do
-    Requests.exists(track_uri)
+  def request_exists(track_uri, party_id) do
+    Requests.exists(track_uri, party_id)
   end
 
 

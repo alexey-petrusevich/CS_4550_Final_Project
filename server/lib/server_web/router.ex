@@ -26,7 +26,7 @@ defmodule ServerWeb.Router do
     # for joining parties (eventually in channel)?
     post "/parties/join", PartyController, :join
 
-    # server uri: http://localhost:4000/api/v1/auth/callback
+    # server uri: /api/v1/auth/callback
     get "/auth/callback", AuthController, :callback
 
     # this endpoint has overloaded methods:
