@@ -71,27 +71,6 @@ function parties(state = [], action) {
     }
 }
 
-
-//--------------------------VOTES--------------------------
-function votes(state = [], action) {
-    switch (action.type) {
-      case 'votes/set':
-        return action.data;
-      default:
-        return state;
-  }
-}
-
-//--------------------------REQUESTS--------------------------
-function requests(state = [], action) {
-    switch (action.type) {
-      case 'requests/set':
-        return action.data;
-      default:
-        return state;
-  }
-}
-
 //--------------------------ALERTS--------------------------
 //error handlers for server responses
 function error(state = null, action) {
@@ -122,12 +101,10 @@ function success(state = null, action) {
 }
 
 function root_reducer(state, action) {
-    console.log("root_reducer", state, action);
     let reducer = combineReducers({
          users, parties, error, success, session
     });
     let state1 = reducer(state, action);
-    console.log("state1", state1);
 
     return state1;
 }

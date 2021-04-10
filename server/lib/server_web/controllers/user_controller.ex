@@ -14,7 +14,6 @@ defmodule ServerWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       success_msg = "Your account has been successfully created."
-      IO.inspect(success_msg)
       conn
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:created, Jason.encode!(%{success: success_msg}))

@@ -8,13 +8,9 @@ defmodule ServerWeb.AuthController do
   # code --> the auth flow code given by Spotify
   # user_id --> the id of the user who is getting auth'd
   def callback(conn, %{"code" => code, "state" => user_id}) do
-    IO.inspect("Spotify Auth code received")
-    IO.inspect(code)
 
     # exchanges the auth code for a access_token
     token = AuthTokens.token_for_code(code)
-    IO.inspect("Exchanged access token")
-    IO.inspect(token)
 
     auth_params = %{}
     |> Map.put("token", token)

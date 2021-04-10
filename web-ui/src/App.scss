@@ -5,9 +5,9 @@
   color: white;
 }
 
-// body {
-//   padding: 0em;
-// }
+body {
+  background-color: #191414;
+}
 
 .alert {
   position: fixed;
@@ -18,6 +18,7 @@
   right: 0;
   top: 2em;
   width: 50%;
+  font-size: 14px;
 }
 
 .form-msg {
@@ -63,6 +64,11 @@
   display: inline;
 }
 
+.vote-display {
+  margin-left: 20px;
+}
+
+
 // nav bar
 .nav-bar {
   border-bottom: .5px solid white;
@@ -102,10 +108,20 @@
   font-size: 12px;
 }
 
-//body {
-//  padding:0em ;
-//  margin: 0em;
-//}
+.song-card {
+  background-color: #333333;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.song-title {
+  font-size: 18px;
+}
+
+.song-action-row {
+  margin-left: 1%;
+
+}
 
 .landing-page {
   background-image: url('/images/concert2.jpg');
@@ -173,6 +189,7 @@
 
 .welcome {
   text-align: center;
+  vertical-align: middle;
   font-size: 60px;
 }
 
@@ -207,7 +224,7 @@
 }
 
 .nav {
-  margin-right: 20px;
+  margin-right: 4%;
 }
 
 .party-card {
@@ -218,7 +235,7 @@
 .profile-party-card {
   color: black;
   margin: 15px;
-  backgroundColor: '#EAEAEA';
+  background: '#EAEAEA';
 }
 
 .dash-button {
@@ -258,11 +275,20 @@
   border: none;
 }
 
-.song-card {
+.rd {
   color: black;
   margin-right: 10px;
   margin-bottom: 10px;
   position: relative;
+}
+
+.card-container {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 10px;
+  margin: 0;
+  max-height: fit-content;
 }
 
 .tracks {
@@ -281,6 +307,7 @@
 }
 
 .voting-buttons {
+  color: green;
 }
 
 .votes {
@@ -313,5 +340,5 @@
 }
 
 .profile-page {
-
+  color: white;
 }

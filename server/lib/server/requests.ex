@@ -126,8 +126,6 @@ defmodule Server.Requests do
   # updates a request with status of played
   def update_played(request_id) do
     request = get_request!(request_id)
-    IO.inspect("Updating request to be played")
-    IO.inspect(request)
     Users.update_impact_score(request.user_id)
     request
     |> Ecto.Changeset.change(played: true)
