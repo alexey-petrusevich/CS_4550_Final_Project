@@ -23,9 +23,10 @@ defmodule ServerWeb.PlaybackController do
   end
 
   # had to move this out of an API call and rather a channel call
-  def queue(uri, host_id) do
+  def queue(uri, host_id, party_id) do
       token = AuthTokens.get_auth_token_by_user_id(host_id).token
-      resp = make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> uri, token)
+      device_id = Parties.get_device_id!(party_id)
+      resp = make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> uri <> "&device_id=" <> device_id, token)
       resp.status_code
   end
 

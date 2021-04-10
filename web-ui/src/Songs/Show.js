@@ -39,7 +39,7 @@ function Voting({count, song_id, user_id, party_code, cb}) {
 
 // displays song cards
 // includes 'Add To Queue' button if the party is active
-function SongDisplay({song, party_code, host_id, active, is_host, user_id, callback}) {
+function SongDisplay({song, party, host_id, active, is_host, user_id, callback}) {
   const [count, setCount] = useState(0);
 
   //updates the value of the count after new votes are received (after the callback)
@@ -59,7 +59,7 @@ function SongDisplay({song, party_code, host_id, active, is_host, user_id, callb
         { active && is_host &&
           <Row className="song-action-row">
             <Button className="queue-button" variant="primary" onClick={() => {
-              queue_song(host_id, song, true, party_code, callback);
+              queue_song(host_id, song, true, party.roomcode, callback, party.id);
               }}>
               Add To Queue
             </Button>
@@ -67,7 +67,7 @@ function SongDisplay({song, party_code, host_id, active, is_host, user_id, callb
           </Row>
         }
         { active && !is_host &&
-          <Voting count={count} party_code={party_code} song_id={song.id} user_id={user_id} cb={callback}/>
+          <Voting count={count} party_code={party.roomcode} song_id={song.id} user_id={user_id} cb={callback}/>
         }
       </Card>
     </Col>
@@ -82,7 +82,7 @@ export default function ShowSongs({party, cb, user_id, is_host}) {
     let song_cards = displaySongs.map((song) => (
       <SongDisplay song={song} host_id={party.host.id} user_id={user_id}
        is_host={is_host} active={party.is_active} callback={cb}
-       party_code={party.roomcode} key={song.id} />
+       party={party} key={song.id} />
     ));
     return (
       <Row>
