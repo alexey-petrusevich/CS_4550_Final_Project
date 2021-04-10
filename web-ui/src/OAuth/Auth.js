@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { get_user_id } from '../store'
 import OAuth2Login from 'react-simple-oauth2-login';
 
-export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
+//export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
 
 function SpotifyAuth({u_id, callback}) {
   let [msg, setMsg] = useState("");
@@ -16,7 +16,7 @@ function SpotifyAuth({u_id, callback}) {
         authorizationUrl="https://accounts.spotify.com/authorize"
         responseType="code"
         clientId="b6c7bd84e4724169b21570019ea15078"
-        redirectUri="http://localhost:4000/api/v1/auth/callback"
+        redirectUri="http://spotifyparty.benockert.site/api/v1/auth/callback"
         scope="user-read-playback-state user-modify-playback-state playlist-read-private"
         state={u_id}
         className="auth-button"
