@@ -12,14 +12,15 @@ defmodule ServerWeb.PartyChannel do
   def join("party:" <> roomcode, payload, socket) do
     if authorized?(payload) do
       IO.inspect("User joined channel #{roomcode}")
+      send(self(), "new_user:" <> roomcode)
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-  def handle_info(:after_join, socket) do
-    broadcast!(socket, "new_user", %{body: "A new user has joined the party!"})
+  def handle_info("new_user:" <> roomcode , socket) do
+    broadcast!(socket, "new_user", %{body: roomcode, msg: "A new user has joined the party!"})
     {:noreply, socket}
   end
 

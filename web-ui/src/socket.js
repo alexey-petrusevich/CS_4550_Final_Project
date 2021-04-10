@@ -17,11 +17,25 @@ export function channel_join(roomcode, callback) {
          .receive("ok", resp => {console.log("Successfully connected to channel ", roomcode)})
          .receive("error", resp => {console.log("Unable to connect to channel ", roomcode)});
 
-  //channel.on("new_user", resp => {console.log(resp.body)});
+  // broadcasts a message when a new user joins a party
+  channel.on("new_user", resp => {
+    if (resp.body === roomcode) {
+      let action = {
+        type: 'info/set',
+        data: resp.msg,
+      }
+      store.dispatch(action);
+      callback();
+  }});
 
   //listens for a song to be successfully queued
   channel.on("queued_song", resp => {
     if (resp.body === roomcode) {
+      let action = {
+        type: 'info/set',
+        data: resp.title + " by " + resp.artist + " has been queued and will be played soon!",
+      }
+      store.dispatch(action);
       callback();
     }
   });
@@ -36,7 +50,7 @@ export function channel_join(roomcode, callback) {
   //listens for a party to end
   channel.on("party_end", resp => {
     let action = {
-      type: 'success/set',
+      type: 'info/set',
       data: "This party has been ended.",
     }
     store.dispatch(action);

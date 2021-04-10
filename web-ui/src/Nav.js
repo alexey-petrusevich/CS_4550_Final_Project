@@ -18,27 +18,34 @@ function LoginForm() {
     }
 
     return (
-      <Col className="login" lg={7}>
-        <Form onSubmit={on_submit} inline>
-          <Form.Control name="name"
-                        type="text"
-                        onChange={(ev) => setName(ev.target.value)}
-                        placeholder="Username"
-                        value={name} />
-          <Form.Control name="password"
-                        type="password"
-                        onChange={(ev) => setPass(ev.target.value)}
-                        placeholder="Password"
-                        value={pass} />
-          <Button variant="primary" type="submit">
-            Login
-          </Button>
-          <Nav variant="pills" className="register">
-            <Link to="/users/new">Register</Link>
-          </Nav>
-        </Form>
-
-      </Col>
+      <Form className="login" onSubmit={on_submit} inline>
+        <Form.Row>
+          <Col>
+            <Form.Control name="name"
+                          type="text"
+                          onChange={(ev) => setName(ev.target.value)}
+                          placeholder="Username"
+                          value={name} />
+          </Col>
+          <Col>
+            <Form.Control name="password"
+                          type="password"
+                          onChange={(ev) => setPass(ev.target.value)}
+                          placeholder="Password"
+                          value={pass} />
+          </Col>
+          <Col>
+            <Button variant="primary" type="submit">
+              Login
+            </Button>
+          </Col>
+          <Col>
+            <Nav variant="pills" className="register">
+              <Link to="/users/new">Register</Link>
+            </Nav>
+          </Col>
+        </Form.Row>
+      </Form>
     );
   }
 
@@ -53,9 +60,9 @@ let SessionInfo = connect()(({session, dispatch}) => {
     }
 
     return (
-      <Col className="login" md={{ span: 4, offset: 4 }}>
+      <Col className="login" md={{ span: 3, offset: 0 }}>
         <p>
-          Logged in as {session.username} &nbsp;
+          Logged in as {session.name} &nbsp;
           <Button className="logout" onClick={logout}>Logout</Button>
         </p>
       </Col>
