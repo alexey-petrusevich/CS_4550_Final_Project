@@ -3,6 +3,15 @@ import { useState } from 'react';
 import { get_user_id } from '../store'
 import OAuth2Login from 'react-simple-oauth2-login';
 
+/*
+export const URL;
+if (process.env.NODE_ENV === "prod") {
+  URL = "http://spotifyparty.morrisonineu.org/api/v1/auth/callback";
+} else {
+  URL = "http://localhost:4000/api/v1/auth/callback";
+}
+*/
+
 function SpotifyAuth({callback}) {
   let [msg, setMsg] = useState("");
 
@@ -16,7 +25,7 @@ function SpotifyAuth({callback}) {
         authorizationUrl="https://accounts.spotify.com/authorize"
         responseType="code"
         clientId="b6c7bd84e4724169b21570019ea15078"
-        redirectUri="http://spotifyparty.morrisonineu.org/api/v1/auth/callback"
+        redirectUri="http://localhost:4000/api/v1/auth/callback" // Needs to be changed manually
         scope="user-modify-playback-state playlist-read-private"
         state={id}
         className="auth-button"

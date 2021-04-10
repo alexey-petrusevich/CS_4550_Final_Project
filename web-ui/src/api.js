@@ -1,8 +1,15 @@
 import store from './store';
 
+export const URL;
+if (process.env.NODE_ENV === "prod") {
+  URL = "http://spotifyparty.morrisonineu.org/api/v1";
+} else {
+  URL = "http://localhost:4000/api/v1";
+}
+
 //------------------------API----------------------------
 export async function api_get(path) {
-  let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, {});
+  let text = await fetch(URL + path, {});
   let resp = await text.json();
   return resp.data;
 }
@@ -13,7 +20,7 @@ export async function api_post(path, data) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data)
   };
-  let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, req);
+  let text = await fetch(URL + path, req);
   let resp = await text.json();
   return resp;
 }
@@ -24,7 +31,7 @@ export async function api_put(path, data) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, req);
+    let text = await fetch(URL + path, req);
     let resp = await text.json();
     return resp;
 }

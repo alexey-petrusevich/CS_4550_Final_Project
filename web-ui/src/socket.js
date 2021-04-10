@@ -1,8 +1,15 @@
 import { Socket } from "phoenix";
 import store from './store';
 
+export const URL;
+if (process.env.NODE_ENV === "prod") {
+  URL = "ws://spotifyparty.morrisonineu.org/socket";
+} else {
+  URL = "ws://localhost:4000/socket";
+}
+
 //TODO will need to be updated to just /socket when deploying to prod
-let socket = new Socket("ws://spotifyparty.morrisonineu.org/socket", { params: { token: "" } });
+let socket = new Socket(URL, { params: { token: "" } });
 socket.connect();
 
 let channel = null;
