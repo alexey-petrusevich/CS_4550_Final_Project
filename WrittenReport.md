@@ -85,7 +85,6 @@ statistics that Spotify keeps track of, including "danceability",
 
 ### To-do list for write-up (remove before submission)
 - Individual group member's work (above)
-- More detail about voting
-- Information about how playback is implemented
-- The complex part about our app and why
+- Maybe more information about playback and voting
+- More about complex part about our app and why we implemented it
 - Most significant challenge and how we resolved it
