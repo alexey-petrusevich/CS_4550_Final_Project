@@ -52,7 +52,11 @@ export default function UserStats(user, pageId) {
   var artist3 = String(user.top_artists[2]).split(',');
 
   var i;
-  for (i = 0; i < user.top_artists.length; i++) {
+  var artist_count = user.top_artists.length;
+  if (artist_count > 8) {
+    artist_count = 8;
+  }
+  for (i = 0; i < artist_count; i++) {
     var artistItem = {
       name: user.top_artists[i][0],
       children: [
@@ -62,13 +66,13 @@ export default function UserStats(user, pageId) {
     user_artists.push(artistItem);
   }
 
-  const artistColors = [];
+  const artistColors = ["#43D8FF", "#34D244", "#FF87A7", "#FFFA87", "#52F0E2", "#FFBC5F", "#C887F0", "#4FFFC5"];
 
-  var a;
-  for (a= 0; a < user.top_artists.length; a++) {
-    var newColor = Math.floor(Math.random()*16777215).toString(16);
-    artistColors.push("#" + newColor);
-  }
+  // var a;
+  // for (a= 0; a < user.top_artists.length; a++) {
+  //   var newColor = Math.floor(Math.random()*16777215).toString(16);
+  //   artistColors.push("#" + newColor);
+  // }
 
   // Handles when there are no artists for the user
   function ProfileArtists() {
@@ -310,7 +314,7 @@ export default function UserStats(user, pageId) {
           <div key="2" data-grid={layout[1]}>
             <h3>Top Artists</h3>
             <ResponsiveContainer width="80%" height="100%">
-              <Treemap aspectRatio={2} isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" />
+              <Treemap aspectRatio={2} isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#000000"/>
             </ResponsiveContainer>
           </div>
           <div key="3" data-grid={layout[2]}>

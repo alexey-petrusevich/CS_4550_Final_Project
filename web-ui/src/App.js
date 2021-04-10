@@ -19,7 +19,7 @@ import Dashboard from "./Dashboard";
 
 //displays any alerts returned by the server
 //dismissable and timeout after 3.2 seconds
-function AlertBanner({error, success}) {
+function AlertBanner({error, success, info}) {
 
  useEffect(() => {
    const alert_timer = setTimeout(() => {
@@ -64,13 +64,25 @@ function AlertBanner({error, success}) {
       </Row>
     );
   }
+
+  if (info) {
+    return (
+      <Row>
+        <Col>
+          <Alert variant="info" onClose={() => clear_alert()} dismissible>
+            {info}
+          </Alert>
+        </Col>
+      </Row>
+    );
+  }
 }
 
 //Our App Components
-function App({error, success}) {
+function App({error, success, info}) {
   return (
     <Container className="background">
-      {(success || error) && <AlertBanner error={error} success={success}/>}
+      {(success || error || info) && <AlertBanner error={error} success={success} info={info}/>}
       <Nav />
       <Switch>
         <Route path="/" exact>
@@ -100,4 +112,4 @@ function App({error, success}) {
   );
 }
 
-export default connect(({error, success}) => ({error, success}))(App);
+export default connect(({error, success, info}) => ({error, success, info}))(App);

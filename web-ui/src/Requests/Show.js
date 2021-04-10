@@ -9,10 +9,15 @@ function RequestCard({request, party, update}) {
   return (
     <Col md="3">
       <Card className="request-card-song">
-        <Card.Title>{request.title}</Card.Title>
+        <Card.Title><strong>{request.title}</strong></Card.Title>
         <Card.Text>
           <p>By {request.artist} </p>
-          <p>Requested By {request.user.username}</p>
+          {!party.is_active && !request.played &&
+              <p>Requested By {request.user.username}</p>
+          }
+          {!party.is_active && request.played &&
+              <p>Requested By {request.user.username}<strong className="request-success"><i>PLAYED</i></strong></p>
+          }
         </Card.Text>
         {party.is_active &&
           <Button variant="primary" onClick={() => {
@@ -20,9 +25,6 @@ function RequestCard({request, party, update}) {
           }}>
             Add To Queue
           </Button>
-        }
-        {!party.is_active &&
-          <p className="request-success text-success"><strong><i>This request was played</i></strong></p>
         }
       </Card>
     </Col>
