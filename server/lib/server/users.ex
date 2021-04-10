@@ -214,10 +214,6 @@ defmodule Server.Users do
     User.changeset(user, attrs)
   end
 
-  # returns a list of users associated with song id
-  def get_users_by_song_id(song_id) do
-
-  end
 
   # update user impact score given user_id
   def update_impact_score(user_id) do

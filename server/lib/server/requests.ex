@@ -5,6 +5,7 @@ defmodule Server.Requests do
 
   import Ecto.Query, warn: false
   alias Server.Repo
+  alias Server.Users
 
   alias Server.Requests.Request
 
@@ -94,6 +95,12 @@ defmodule Server.Requests do
     Repo.delete(request)
   end
 
+  def exists(track_uri) do
+    query = from r in "requests",
+                 where: r.track_uri == ^track_uri
+    Repo.exists?(query)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking request changes.
 
@@ -121,9 +128,10 @@ defmodule Server.Requests do
     request = get_request!(request_id)
     IO.inspect("Updating request to be played")
     IO.inspect(request)
-
+    Users.update_impact_score(request.user_id)
     request
     |> Ecto.Changeset.change(played: true)
     |> Repo.update()
   end
+
 end

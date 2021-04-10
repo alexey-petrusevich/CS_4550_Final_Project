@@ -8,6 +8,8 @@ defmodule Server.Parties do
 
   alias Server.Parties.Party
   alias Server.Users.User
+  alias Server.AuthTokens
+  alias Server.Users
 
   import Ecto.Changeset
 
@@ -60,7 +62,7 @@ defmodule Server.Parties do
   """
   def create_party(attrs \\ %{}) do
     attrs = attrs
-    |> Map.put("roomcode", gen_room_code())
+            |> Map.put("roomcode", gen_room_code())
 
     %Party{}
     |> Repo.preload(:host)
@@ -130,9 +132,49 @@ defmodule Server.Parties do
 
   def update_active(party_id, status) do
     party = get_party!(party_id)
-    |> Ecto.Changeset.change(is_active: status)
-    |> Repo.update()
+    {resp, msg} = get_device_id(party_id, status)
+    if (resp == :ok) do
+      party
+      |> Ecto.Changeset.change(is_active: status)
+      |> Ecto.Changeset.change(device_id: msg)
+      |> Repo.update()
+    else
+      {:error, msg}
+    end
+  end
 
-    IO.inspect(party)
+  def get_user_id_by_party_id(party_id) do
+    result = get_party!(party_id)
+    result.host_id
+  end
+
+  # required scope: user-read-playback-state
+  def get_device_id(party_id, party_active) do
+    if (party_active) do
+      # party is active
+      user_id = get_user_id_by_party_id(party_id)
+      token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
+      url = "https://api.spotify.com/v1/me/player/devices"
+      headers = [
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer #{token.token}}",
+      ]
+      resp = HTTPoison.get!(url, headers)
+      data = Jason.decode!(resp.body)
+      devices = data
+                |> Map.get("devices")
+      if (length(devices) > 0) do
+        id = devices
+             |> Enum.at(0)
+             |> Map.get("id")
+        {:ok, id}
+      else
+        {:error, "open spotify app!!"}
+      end
+    else
+      # status is false
+      {:ok, ""}
+    end
   end
 end

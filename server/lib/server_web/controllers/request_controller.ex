@@ -46,7 +46,7 @@ defmodule ServerWeb.RequestController do
     IO.inspect(tracks)
     if (Enum.count(tracks) == 0) do
       IO.inspect("track not found, sending error")
-      nil
+      {:error, "#{title} by #{artist} not found on Spotify!"}
     else
       IO.inspect("track found, creating new request in DB")
       title = tracks
@@ -60,18 +60,29 @@ defmodule ServerWeb.RequestController do
       track_uri = tracks
                   |> Enum.at(0)
                   |> Map.get("uri")
-      request = %{
-        title: title,
-        artist: artist,
-        party_id: party_id,
-        user_id: user_id,
-        track_uri: track_uri,
-        played: false
-      }
-      IO.inspect(request)
-      Requests.create_request(request)
+
+      if (request_exists(track_uri)) do
+        {:error, "#{title} by #{artist} has already been requested by another user!"}
+      else
+        request = %{
+          title: title,
+          artist: artist,
+          party_id: party_id,
+          user_id: user_id,
+          track_uri: track_uri,
+          played: false
+        }
+        IO.inspect(request)
+        Requests.create_request(request)
+      end
     end
   end
+
+
+  def request_exists(track_uri) do
+    Requests.exists?(track_uri)
+  end
+
 
   # updates impact score of the given user
   def update_impact_score(data) do
@@ -90,17 +101,12 @@ defmodule ServerWeb.RequestController do
       conn
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:created, Jason.encode!(%{success: success_msg}))
+    else
+      {:error, error_msg} ->
+        conn
+        |> put_resp_header("content-type", "application/json; charset=UTF-8")
+        |> send_resp(:not_acceptable, Jason.encode!(%{error: error_msg}))
     end
-
-    # else
-    #   conn
-    #   |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    #   |> send_resp(
-    #        :not_found,
-    #        Jason.encode!(
-    #          %{error: "Track not found"}
-    #        )
-    #      )
   end
 
   def show(conn, %{"id" => id}) do
