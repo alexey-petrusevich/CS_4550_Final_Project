@@ -92,8 +92,9 @@ export function set_songs(playlist_uri, party_id, user_id) {
 }
 
 //queues either a song or a request, handles success or error message
-export function queue_song(host_id, track, is_song, party_code, callback) {
-  channel.push("queue_song", {is_song: is_song, track_id: track.id, track_uri: track.track_uri, host_id: host_id, party_code: party_code})
+export function queue_song(host_id, track, is_song, party_code, callback, party_id) {
+  channel.push("queue_song", {is_song: is_song, track_id: track.id, track_uri: track.track_uri,
+    host_id: host_id, party_code: party_code, party_id: party_id})
       .receive("error", resp => {
         let action = {
           type: 'error/set',

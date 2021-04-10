@@ -177,7 +177,7 @@ defmodule Server.Parties do
              |> Map.get("id")
         {:ok, id}
       else
-        {:error, "Please open the Spotify app on your device and start playing a song."}
+        {:error, "Please open the Spotify app on your intended playback device."}
       end
     else
       # status is false

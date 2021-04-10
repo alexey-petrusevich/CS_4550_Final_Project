@@ -58,8 +58,8 @@ defmodule ServerWeb.PartyChannel do
 
   # updates the given song to be played -> true
   @impl true
-  def handle_in("queue_song", %{"is_song" => is_song, "track_id" => id, "track_uri" => uri, "host_id" => host_id, "party_code" => roomcode}, socket) do
-    status = PlaybackController.queue(uri, host_id)
+  def handle_in("queue_song", %{"is_song" => is_song, "party_id" => party_id, "track_id" => id, "track_uri" => uri, "host_id" => host_id, "party_code" => roomcode}, socket) do
+    status = PlaybackController.queue(uri, host_id, party_id)
     # update song played only if a song_id is given (otherwise it is a request)
     # also only update if it was successfully added to the queue
     if is_song do

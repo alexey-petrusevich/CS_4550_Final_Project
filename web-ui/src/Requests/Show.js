@@ -16,7 +16,7 @@ function RequestCard({request, party, update}) {
         </Card.Text>
         {party.is_active &&
           <Button variant="primary" onClick={() => {
-              queue_song(party.host.id, request, false, party.roomcode, update);
+              queue_song(party.host.id, request, false, party.roomcode, update, party.id);
           }}>
             Add To Queue
           </Button>
