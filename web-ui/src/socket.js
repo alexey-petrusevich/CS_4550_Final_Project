@@ -1,7 +1,7 @@
 import { Socket } from "phoenix";
 import store from './store';
 
-export const URL;
+export const URL = "";
 if (process.env.NODE_ENV === "prod") {
   URL = "ws://spotifyparty.morrisonineu.org/socket";
 } else {

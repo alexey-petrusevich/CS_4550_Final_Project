@@ -3,14 +3,12 @@ import { useState } from 'react';
 import { get_user_id } from '../store'
 import OAuth2Login from 'react-simple-oauth2-login';
 
-/*
-export const URL;
+export const URL = "";
 if (process.env.NODE_ENV === "prod") {
   URL = "http://spotifyparty.morrisonineu.org/api/v1/auth/callback";
 } else {
   URL = "http://localhost:4000/api/v1/auth/callback";
 }
-*/
 
 function SpotifyAuth({callback}) {
   let [msg, setMsg] = useState("");

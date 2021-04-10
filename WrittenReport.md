@@ -60,7 +60,8 @@ statistics come from the songs' data on Spotify, and are pulled using
 the Spotify API and visualized by our app. The statistics being shown
 are top genres, top songs, an impact score based on how many up-voted
 songs by the user actually go through to the party, and other
-statistics that Spotify keeps track of, including "danceability".
+statistics that Spotify keeps track of, including "danceability",
+"valence", "energy", and "loudness".
 
 ### To-do list for write-up (remove before submission)
 - Individual group member's work (above)

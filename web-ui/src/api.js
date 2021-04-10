@@ -1,6 +1,6 @@
 import store from './store';
 
-export const URL;
+export const URL = "";
 if (process.env.NODE_ENV === "prod") {
   URL = "http://spotifyparty.morrisonineu.org/api/v1";
 } else {
