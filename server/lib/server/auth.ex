@@ -50,15 +50,20 @@ defmodule Server.AuthTokens do
   #---------------------OAUTH----------------------
 
   def token_for_code(code) do
-    # TODO: move to env variable
-    client_id = "b6c7bd84e4724169b21570019ea15078"
-    client_secret = "d3acd431a7a44f739e3a4b2b184bb4fd"
-    #TODO client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
+    IO.inspect(System.get_env("MIX_ENV"))
+    redirect_uri = cond do
+      System.get_env("MIX_ENV") == "prod" -> System.get_env("REACT_APP_PROD_URL")
+      true -> System.get_env("REACT_APP_DEV_SERVER_URL")
+    end
+    IO.inspect(redirect_uri)
+
+    client_id = System.get_env("SPOTIFY_CLIENT_ID")
+    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
     auth_payload = Base.encode64("#{client_id}:#{client_secret}")
 
     # Spotify API authentication endpoint requirements
     url = "https://accounts.spotify.com/api/token"
-    body = "grant_type=authorization_code&code=#{code}&redirect_uri=http://localhost:4000/api/v1/auth/callback"
+    body = "grant_type=authorization_code&code=#{code}&redirect_uri=http://#{redirect_uri}/api/v1/auth/callback"
     headers = [
       {"Content-Type", "application/x-www-form-urlencoded"},
       {"Authorization", "Basic #{auth_payload}"}
@@ -73,11 +78,8 @@ defmodule Server.AuthTokens do
 
   # returns public token with no scope
   def get_public_token() do
-    # TODO: replace with getting from the environment
-    #client_id = "get from env"
-    #client_secret = "get from env"
-    client_id = "b6c7bd84e4724169b21570019ea15078"
-    client_secret = "d3acd431a7a44f739e3a4b2b184bb4fd"
+    client_id = System.get_env("SPOTIFY_CLIENT_ID")
+    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
     auth_payload = Base.encode64("#{client_id}:#{client_secret}")
     url = "https://accounts.spotify.com/api/token"
     body = "grant_type=client_credentials"

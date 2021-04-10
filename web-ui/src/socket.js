@@ -1,8 +1,10 @@
 import { Socket } from "phoenix";
 import store from './store';
 
+export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
+
 //TODO will need to be updated to just /socket when deploying to prod
-let socket = new Socket("ws://localhost:4000/socket", { params: { token: "" } });
+let socket = new Socket("ws://" + URL + "/socket", { params: { token: "" } });
 socket.connect();
 
 let channel = null;

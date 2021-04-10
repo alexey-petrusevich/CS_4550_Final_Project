@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { get_user_id } from '../store'
 import OAuth2Login from 'react-simple-oauth2-login';
 
-function SpotifyAuth({callback}) {
+export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
+
+function SpotifyAuth({u_id, callback}) {
   let [msg, setMsg] = useState("");
 
-  // gets the id of the requesting user as state for the server
-  // TODO get rid of
-  let id = get_user_id()
+  const redirect_uri = "http://" + URL + "/api/v1/auth/callback"
 
   return (
     <div>
@@ -18,7 +18,7 @@ function SpotifyAuth({callback}) {
         clientId="b6c7bd84e4724169b21570019ea15078"
         redirectUri="http://localhost:4000/api/v1/auth/callback"
         scope="user-read-playback-state user-modify-playback-state playlist-read-private"
-        state={id}
+        state={u_id}
         className="auth-button"
         buttonText="Link with Spotify"
         onRequest={() => setMsg("Awaiting authorization from Spotify")}
