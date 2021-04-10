@@ -1,4 +1,4 @@
-import { Nav, Row, Col, Form, Button, Alert } from 'react-bootstrap';
+import { Navbar, Nav, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useState } from 'react';
