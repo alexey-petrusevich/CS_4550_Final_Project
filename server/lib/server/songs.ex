@@ -10,6 +10,7 @@ defmodule Server.Songs do
   alias Server.Songs.Song
   alias Server.Requests
   alias Server.Users
+  alias Server.Votes
 
   @doc """
   Returns the list of songs.
@@ -122,10 +123,7 @@ defmodule Server.Songs do
     genre = get_track_genre(artist_uri)
     IO.inspect(genre)
     {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
-    # update impact scores for everyone who votes for this song
-    update_impact_scores(song_id) # for whoever requested the same song
-    #update_impact_scores_for_votes(song_id) # for whoever voted for the song
-
+    update_impact_scores_for_votes(song_id) # for whoever voted for the song
     song
     |> Ecto.Changeset.change(played: true)
     |> Ecto.Changeset.change(genre: genre)
@@ -134,11 +132,13 @@ defmodule Server.Songs do
     |> Ecto.Changeset.change(loudness: loudness)
     |> Ecto.Changeset.change(valence: valence)
     |> Repo.update()
-
   end
 
   def update_impact_scores_for_votes(song_id) do
+    IO.inspect("in update impact scores for votes")
     user_ids = Votes.request_all_user_ids_by_track_uri(song_id)
+    IO.inspect("got user ids")
+    IO.inspect(user_ids)
     Enum.map(
       user_ids,
       fn user_id ->
@@ -146,22 +146,9 @@ defmodule Server.Songs do
       end
     )
   end
-
-
-  # updates impact score for each user who made a requests with the given song_id
-  def update_impact_scores(song_id) do
-    song = get_song!(song_id)
-    track_uri = song.track_uri
-    # this returns the list of user ids
-    user_ids = Requests.request_all_user_ids_by_track_uri(track_uri)
-    Enum.map(
-      user_ids,
-      fn user_id ->
-        Users.update_impact_score(to_string(user_id))
-      end
-    )
-  end
-
+"""
+  Server.Songs.update_played(1)
+"""
 
   # return track genre given artist_uri and spotify access token
   # in case there are more than one genres, return the first return by API
