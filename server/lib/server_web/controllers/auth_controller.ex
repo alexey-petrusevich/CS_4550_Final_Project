@@ -24,7 +24,7 @@ defmodule ServerWeb.AuthController do
     # redirect back to the front-end to complete the flow
     conn
     |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    |> redirect(external: "http://localhost:3000/?code=hidden")
+    |> redirect(external: "http://localhost:4810/?code=hidden")
   end
 
   # error: Access Denied
@@ -32,7 +32,7 @@ defmodule ServerWeb.AuthController do
     # redirect back to the front-end to complete the flow
     conn
     |> put_resp_header("content-type", "application/json; charset=UTF-8")
-    |> redirect(external: "http://localhost:3000/?error=#{error}")
+    |> redirect(external: "http://localhost:4810/?error=#{error}")
   end
 
 end
