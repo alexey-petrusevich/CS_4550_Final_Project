@@ -41,10 +41,8 @@ function NewUser() {
 
   function onSubmit(ev) {
     ev.preventDefault();
-    console.log(user);
     //get rid of the extra password and pass_msg entry
     let data = pick(user, ['name', 'username', 'email', 'password']);
-    console.log(data);
     create_user(data);
     setTimeout(function(){history.push("/");}, 2000);
   }

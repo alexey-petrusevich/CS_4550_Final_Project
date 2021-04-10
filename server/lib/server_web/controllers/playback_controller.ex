@@ -26,8 +26,6 @@ defmodule ServerWeb.PlaybackController do
   def queue(uri, host_id) do
       token = AuthTokens.get_auth_token_by_user_id(host_id).token
       resp = make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> uri, token)
-      IO.inspect(resp)
-      IO.inspect(resp.status_code)
       resp.status_code
   end
 
@@ -36,8 +34,6 @@ defmodule ServerWeb.PlaybackController do
     message = if response.body !== "" do
       Map.get(Jason.decode!(response.body), "error") |> Map.get("message")
     end  # error msg if code is error
-    IO.inspect(message)
-    IO.inspect(response)
     case status_code do
       # success
       204 ->

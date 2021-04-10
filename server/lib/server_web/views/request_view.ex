@@ -14,11 +14,9 @@ defmodule ServerWeb.RequestView do
   end
 
   def render("request.json", %{request: request}) do
-
-    request = request |> Repo.preload(:user)
-    IO.inspect(request)
-
-    IO.inspect(request)
+    request = request
+    |> Repo.preload(:user)
+    
     %{id: request.id,
       title: request.title,
       artist: request.artist,

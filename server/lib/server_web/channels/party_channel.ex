@@ -11,7 +11,7 @@ defmodule ServerWeb.PartyChannel do
   @impl true
   def join("party:" <> roomcode, payload, socket) do
     if authorized?(payload) do
-      IO.inspect("Joined channel #{roomcode}")
+      IO.inspect("User joined channel #{roomcode}")
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -45,11 +45,9 @@ defmodule ServerWeb.PartyChannel do
     case Parties.update_active(id, active) do
       {:ok, party} ->
         if active do
-          IO.inspect("Sending party start message")
           broadcast! socket, "party_start", %{body: roomcode}
           {:noreply, socket}
         else
-          IO.inspect("Sending party end message")
           broadcast! socket, "party_end", %{body: roomcode}
           {:noreply, socket}
         end

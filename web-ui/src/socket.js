@@ -17,21 +17,21 @@ export function channel_join(roomcode, callback) {
 
   //channel.on("new_user", resp => {console.log(resp.body)});
 
-  // done
+  //listens for a song to be successfully queued
   channel.on("queued_song", resp => {
     if (resp.body === roomcode) {
       callback();
     }
   });
 
-  // done
+  //listens for a party to start
   channel.on("party_start", resp => {
     if (resp.body === roomcode) {
       callback();
     }
   });
 
-  // done
+  //listens for a party to end
   channel.on("party_end", resp => {
     let action = {
       type: 'success/set',
@@ -43,14 +43,14 @@ export function channel_join(roomcode, callback) {
     }
   });
 
-  // done
+  //listens for a new request to be made
   channel.on("new_request", resp => {
     if (resp.body === roomcode) {
       callback();
     }
   });
 
-  // done
+  //listens for a new vote to be made
   channel.on("new_vote", resp => {
     if (resp.body === roomcode) {
       callback();
@@ -105,7 +105,6 @@ export function queue_song(host_id, track, is_song, party_code, callback) {
 
 //-------------------------PARTIES---------------------------------
 export function update_party_active(party_id, is_active, party_code) {
-  console.log("Setting party ", party_id, " to be active ", is_active);
   channel.push("update_active", {party_id: party_id, is_active: is_active, party_code: party_code})
       .receive("error", resp => {
         let action = {

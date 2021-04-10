@@ -5,7 +5,7 @@ import { Rectangle, PieChart, Pie, Tooltip, Sector, Radar, RadarChart, PolarGrid
 const ReactGridLayout = WidthProvider(RGL);
 
 export default function UserStats(user, pageId) {
-  
+
   //#region ----------------------FEATURES----------------------------
   const user_features = [
     {
@@ -39,7 +39,7 @@ export default function UserStats(user, pageId) {
       newVal = 1;
     } else if (newVal <= 0.1) {
       newVal = 0.1;
-    } 
+    }
     return newVal;
   }
   //#endregion
@@ -52,7 +52,7 @@ export default function UserStats(user, pageId) {
   var artist3 = String(user.top_artists[2]).split(',');
 
   var i;
-  for (i = 0; i < user.top_artists.length; i++) { 
+  for (i = 0; i < user.top_artists.length; i++) {
     var artistItem = {
       name: user.top_artists[i][0],
       children: [
@@ -63,7 +63,7 @@ export default function UserStats(user, pageId) {
   }
 
   const artistColors = [];
-  
+
   //#endregion
 
   //#region ------------------------GENRES--------------------------
@@ -83,12 +83,12 @@ export default function UserStats(user, pageId) {
   const genre_colors = ["#D95E36", "#C75EE1", "#327111", "#5063EC", "#F760B9", "#72D6B6", "#8DD8FF", "#E4DF30", "#00D2D0", "#EEEEEE"];
 
   var j;
-  for (j = 0; j < user.top_genres.length; j++) { 
+  for (j = 0; j < user.top_genres.length; j++) {
     var genre_name = user.top_genres[j][0];
-    // console.log(genre_name);
+
     var genre_index = 9;
 
-    if (genre_name.includes("classical") || genre_name.includes("opera") || genre_name.includes("early music") 
+    if (genre_name.includes("classical") || genre_name.includes("opera") || genre_name.includes("early music")
                 || genre_name.includes("baroque") || genre_name.includes("romantic")) {
       genre_index = 0;
     } else if (genre_name.includes("experimental") || genre_name.includes("ambient") || genre_name.includes("relaxation")
@@ -119,24 +119,22 @@ export default function UserStats(user, pageId) {
   }
 
   genres.sort(function(a, b){return b.value - a.value})
-  // console.log(genres);
-  // console.log(genres[0].name);
 
   //#endregion
 
   //#region ----------------------PROGRESS----------------------------
 
   const badgeRanks = [
-    //Beginner 0 - 49 
-    'badge badge-secondary', 
+    //Beginner 0 - 49
+    'badge badge-secondary',
     //Silver 50 - 99
-    'badge badge-info', 
+    'badge badge-info',
     //Gold 100 - 199
-    'badge badge-warning', 
+    'badge badge-warning',
     //Platinum 200 - 399
     'badge badge-light',
     //Elite 400+
-    'badge badge-primary', 
+    'badge badge-primary',
   ]
 
   let progressVal = Math.round(user.impact_score * 2);
@@ -169,8 +167,6 @@ export default function UserStats(user, pageId) {
     nextGoal = 400;
   }
 
-  console.log(badgeRanks[0]);
-
   //#endregion
 
   var layout = [
@@ -178,12 +174,6 @@ export default function UserStats(user, pageId) {
     { x: 2.5, y: 0, w: 3, h: 4, static: true },
     { x: 5.5, y: 0, w: 3, h: 4, static: true },
   ];
-  
-  // var k;
-  // for (k = 0; k < 3; k++) { 
-  //   var artist_name = user.top_artists[k][0];
-  //     console.log(artist_name);
-  // }
 
   if (pageId == 1) {
     return (
@@ -308,7 +298,7 @@ export default function UserStats(user, pageId) {
                 >
                   <PolarGrid />
                   <PolarAngleAxis dataKey="feature" />
-                  <Radar 
+                  <Radar
                     name="Features"
                     dataKey="A"
                     stroke="#8884d8"
@@ -323,5 +313,5 @@ export default function UserStats(user, pageId) {
         </ReactGridLayout>
       </div>
     );
-  } 
+  }
 }

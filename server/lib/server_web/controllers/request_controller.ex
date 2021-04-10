@@ -15,16 +15,11 @@ defmodule ServerWeb.RequestController do
 
   # search Spotify for request song and title, creates db_entry if found
   def search(conn, data) do
-    IO.inspect("handling search")
-    IO.inspect("data")
-    IO.inspect(data)
     token = AuthTokens.get_public_token()
-    IO.inspect("token")
-    IO.inspect(token)
     title = data["title"]
     artist = data["artist"]
+    # replace spaces with hex %20 for Spotify query validity
     query = String.replace(title <> " " <> artist, " ", "%20")
-    IO.inspect(query)
     party_id = data["party_id"]
     user_id = data["user_id"]
     type = "track"
@@ -38,17 +33,11 @@ defmodule ServerWeb.RequestController do
       "Authorization": "Bearer #{token}}",
     ]
     resp = HTTPoison.get!(url, headers)
-    IO.inspect(resp)
     data = Jason.decode!(resp.body)
-    IO.inspect("got data from search")
-    IO.inspect(data)
     tracks = data["tracks"]["items"]
-    IO.inspect(tracks)
     if (Enum.count(tracks) == 0) do
-      IO.inspect("track not found, sending error")
       {:error, "#{title} by #{artist} not found on Spotify!"}
     else
-      IO.inspect("track found, creating new request in DB")
       title = tracks
               |> Enum.at(0)
               |> Map.get("name")
@@ -72,7 +61,6 @@ defmodule ServerWeb.RequestController do
           track_uri: track_uri,
           played: false
         }
-        IO.inspect(request)
         Requests.create_request(request)
       end
     end

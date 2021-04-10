@@ -117,11 +117,8 @@ defmodule Server.Songs do
   # updates a song with status of played
   def update_played(song_id) do
     song = get_song!(song_id)
-    IO.inspect(song)
     artist_uri = get_artist_uri(song.track_uri)
-    IO.inspect(artist_uri)
     genre = get_track_genre(artist_uri)
-    IO.inspect(genre)
     {energy, danceability, loudness, valence} = get_track_stats(song.track_uri)
     update_impact_scores_for_votes(song_id) # for whoever voted for the song
     song
@@ -135,10 +132,7 @@ defmodule Server.Songs do
   end
 
   def update_impact_scores_for_votes(song_id) do
-    IO.inspect("in update impact scores for votes")
     user_ids = Votes.request_all_user_ids_by_track_uri(song_id)
-    IO.inspect("got user ids")
-    IO.inspect(user_ids)
     Enum.map(
       user_ids,
       fn user_id ->

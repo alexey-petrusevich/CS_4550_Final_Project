@@ -168,11 +168,9 @@ defmodule Server.Parties do
         "Authorization": "Bearer #{token.token}}",
       ]
       resp = HTTPoison.get!(url, headers)
-      IO.inspect(resp)
       data = Jason.decode!(resp.body)
       devices = data
                 |> Map.get("devices")
-      IO.inspect(devices)
       if (length(devices) > 0) do
         id = devices
              |> Enum.at(0)

@@ -13,7 +13,6 @@ defmodule ServerWeb.PartyController do
   end
 
   def create(conn, %{"party" => party_params}) do
-    IO.inspect(party_params)
     with {:ok, %Party{} = party} <- Parties.create_party(party_params) do
       conn
       |> put_status(:created)

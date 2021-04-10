@@ -55,8 +55,6 @@ defmodule Server.Votes do
 
   """
   def create_vote(attrs \\ %{}) do
-    IO.inspect("in create vote, attr")
-    IO.inspect(attrs)
     %Vote{}
     |> Vote.changeset(attrs)
     |> Repo.insert(

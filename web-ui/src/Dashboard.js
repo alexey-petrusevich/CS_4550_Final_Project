@@ -35,8 +35,6 @@ function Dashboard({parties, session}) {
     get_user(user_id).then((p) => setUser(p));
   },[user_id]);
 
-  console.log(user);
-  
   let hostedParties = parties.filter( (party) => session && session.user_id === party.host.id);
 
   let host_cards = hostedParties.map((party) => (

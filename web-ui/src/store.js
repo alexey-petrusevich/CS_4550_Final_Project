@@ -101,12 +101,10 @@ function success(state = null, action) {
 }
 
 function root_reducer(state, action) {
-    console.log("root_reducer", state, action);
     let reducer = combineReducers({
          users, parties, error, success, session
     });
     let state1 = reducer(state, action);
-    console.log("state1", state1);
 
     return state1;
 }

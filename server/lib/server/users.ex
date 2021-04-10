@@ -112,9 +112,9 @@ defmodule Server.Users do
     |> elem(1)
     |> List.flatten
 
-    IO.inspect(danceability_vals)
-    IO.inspect(Enum.sum(danceability_vals))
-    IO.inspect(Enum.count(danceability_vals) * 1.0)
+    # IO.inspect(danceability_vals)
+    # IO.inspect(Enum.sum(danceability_vals))
+    # IO.inspect(Enum.count(danceability_vals) * 1.0)
 
     energy_avg = if Enum.count(energy_vals) > 0 do
                     Float.round((Enum.sum(energy_vals) / (Enum.count(energy_vals) * 1.0)), 3)
@@ -160,8 +160,6 @@ defmodule Server.Users do
 
   """
   def create_user(attrs \\ %{}) do
-    IO.inspect("user data")
-    IO.inspect(attrs)
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -217,7 +215,6 @@ defmodule Server.Users do
 
   # update user impact score given user_id
   def update_impact_score(user_id) do
-    IO.inspect(user_id)
     user = get_user(user_id)
     newScore = user.impact_score + 1
     user = user
