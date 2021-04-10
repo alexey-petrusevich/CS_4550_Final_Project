@@ -12,6 +12,7 @@ defmodule ServerWeb.VoteController do
     render(conn, "index.json", votes: votes)
   end
 
+
   # updates (creates) a vote for the given song
   def vote(conn, %{"vote" => vote}) do
     # user_id, song_id, value

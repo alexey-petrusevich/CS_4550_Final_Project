@@ -9,6 +9,7 @@ defmodule Server.Repo.Migrations.CreateParties do
       add :host_id, references(:users, on_delete: :nothing), null: false
       add :attendees, {:array, :integer}, null: false
       add :is_active, :boolean, null: true
+      add :device_id, :string, null: false
 
       timestamps()
     end

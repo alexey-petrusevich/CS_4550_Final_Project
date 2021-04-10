@@ -152,11 +152,14 @@ function ShowParty({session}) {
   //loads the party with the id given by the route path
   let { id } = useParams();
   useEffect(() => {
-    get_party(id).then((p) => setParty(p));
-  },[id]);
+    get_party(id).then((p) => {
+      console.log("USE EFFECT PARTY: ", p);
+      setParty(p);
+      channel_join(p.roomcode, update);
+    });
+    //join the channel for this party
 
-  //join the channel for this party
-  channel_join(party.roomcode)
+  },[id]);
 
   // updates the party state
   function update() {
@@ -167,7 +170,6 @@ function ShowParty({session}) {
   // active if it is null
   function toggle_active() {
     if (party.is_active) {
-      history.push("/dashboard");
       update_party_active(party.id, false);
     } else {
       update_party_active(party.id, true);
@@ -197,30 +199,32 @@ function ShowParty({session}) {
                 End Party
               </Button>
             }
-            <h2>{party.name}</h2>
-            <p><b>Description: </b>{party.description}</p>
-            <p><b>Attendee access code: </b>{party.roomcode}</p>
-            <p><i>You are the host</i></p>
-            {party.is_active == false &&
-              <p><b><i>This party has ended</i></b></p>
-            }
-            {party.is_active == null &&
-              <div>
-                <SpotifyAuth callback={on_return}/>
-                {authed  &&
-                  <div>
-                    <PlaylistControls host_id={party.host.id} party_id={party.id}/>
-                    <Button className="party-status" variant="success" onClick={() =>
-                      toggle_active()}>
-                      Start Party
-                    </Button>
-                  </div>
-                }
-              </div>
-            }
-            {party.is_active &&
-              <PlaybackControls host_id={party.host.id}/>
-            }
+            <div className="party-info">
+              <h2>{party.name}</h2>
+              <p><b>Description: </b>{party.description}</p>
+              <p><b>Attendee access code: </b>{party.roomcode}</p>
+              <p><i>You are the host</i></p>
+              {party.is_active == false &&
+                <p><b><i>This party has ended</i></b></p>
+              }
+              {party.is_active == null &&
+                <div>
+                  <SpotifyAuth callback={on_return}/>
+                  {authed  &&
+                    <div>
+                      <PlaylistControls host_id={party.host.id} party_id={party.id}/>
+                      <Button className="party-status" variant="success" onClick={() =>
+                        toggle_active()}>
+                        Start Party
+                      </Button>
+                    </div>
+                  }
+                </div>
+              }
+              {party.is_active &&
+                <PlaybackControls host_id={party.host.id}/>
+              }
+            </div>
           </Jumbotron>
           <PartyBody is_host={true} party={party} update={update} />
         </Col>

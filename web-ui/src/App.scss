@@ -5,6 +5,10 @@
   color: white;
 }
 
+// body {
+//   padding: 0em;
+// }
+
 .alert {
   position: fixed;
   top: 40px;
@@ -28,21 +32,29 @@
   top: 7px;
 }
 
+.btn-primary {
+  font-size: 14px;
+}
+
 .form-control {
   margin-right: 20px;
+  font-size: 14px;
 }
 
 .jumbotron {
   background-color: #333333;
   position: relative;
-  height: 325px;
-  max-height: 325px;
+  height: 355px;
+  max-height: 355px;
   .header-image {
     position: absolute;
     right: 10px;
     top: 10px;
     height: 95%;
     width: 65%;
+  }
+  .party-info {
+    font-size: 14px;
   }
 }
 
@@ -55,6 +67,7 @@
 .nav-bar {
   border-bottom: .5px solid white;
   padding: 15px;
+  font-size: 14px;
 }
 
 .component-spacing {
@@ -82,22 +95,40 @@
 }
 
 .dropdown {
-  padding-top: 10px;
+  padding-top: -15px;
 }
 
 .dropdown-button {
   font-size: 12px;
 }
 
+//body {
+//  padding:0em ;
+//  margin: 0em;
+//}
+
 .landing-page {
   background-image: url('/images/concert2.jpg');
-  background-color: transparent;
+  //background-color: transparent;
+  //background-repeat: no-repeat;
+  ////justify-content: center;
+  //-webkit-background-size: cover;
+  //background-size: cover;
+  //background-position: center;
+  ////background-position: -200px -250px;
+  //border: none;
+  //cursor: default;
+
+
   background-repeat: no-repeat;
-  background-position: -200px -250px;
-  border: none;
-  cursor: default;
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   height: 100vh;
-  width: 77vw;
+  //width: 77vw;
 }
 
 .home-button {
@@ -234,8 +265,6 @@
   position: relative;
 }
 
-
-
 .tracks {
   font-size: 10px;
 }
@@ -252,7 +281,6 @@
 }
 
 .voting-buttons {
-
 }
 
 .votes {
