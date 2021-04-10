@@ -64,6 +64,52 @@ export default function UserStats(user, pageId) {
 
   const artistColors = [];
 
+  var a;
+  for (a= 0; a < user.top_artists.length; a++) {
+    var newColor = Math.floor(Math.random()*16777215).toString(16);
+    artistColors.push("#" + newColor);
+  }
+
+  // Handles when there are no artists for the user
+  function ProfileArtists() {
+    if (user.top_artists.length < 1) {
+      console.log(user.top_artists.length);
+      console.log("no artists");
+      return (
+        <div>
+          <h3>Top Artists</h3>
+          <ul class="list-group" style={{'color':'black'}}>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <p><em>Currently no top artists.</em></p>
+            </li>
+          </ul>
+        </div>
+      );
+    } else {
+      console.log("yes artists");
+      return (
+        <div>
+          <h3>Top Artists</h3>
+            <ul class="list-group" style={{'color':'black'}}>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist1[0] }
+                <span class="badge badge-primary badge-pill">{ artist1[1] } played</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist2[0] }
+                <span class="badge badge-primary badge-pill">{ artist2[1] } played</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { artist3[0] }
+                <span class="badge badge-primary badge-pill">{ artist3[1] } played</span>
+              </li>
+            </ul>
+        </div>
+      );
+    }
+  }
+
+  console.log(artistColors);
   //#endregion
 
   //#region ------------------------GENRES--------------------------
@@ -114,11 +160,50 @@ export default function UserStats(user, pageId) {
       genre_index = 8;
     }
 
-    genres.splice(genre_index, 1, {name: genres[genre_index].name, value: genres[genre_index].value + Math.round(((user.top_genres[j][1] * 0.678) * 50))});
-    genres.sort(function(a, b){return a.value - b.value})
+    genres.splice(genre_index, 1, {name: genres[genre_index].name, value: genres[genre_index].value + user.top_genres[j][1]});
+    // genres.sort(function(a, b){return a.value - b.value})
   }
 
   genres.sort(function(a, b){return b.value - a.value})
+
+  // Handles when there are no genres for the user
+  function ProfileGenres() {
+    if (user.top_genres.length < 1) {
+      console.log(user.top_genres.length);
+      console.log("no genres");
+      return (
+        <div>
+          <h3>Top Genres</h3>
+          <ul class="list-group" style={{'color':'black'}}>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <p><em>Currently no top genres.</em></p>
+            </li>
+          </ul>
+        </div>
+      );
+    } else {
+      console.log("yes genres");
+      return (
+        <div>
+          <h3>Top Genres</h3>
+            <ul class="list-group" style={{'color':'black', 'paddingLeft':'10px'}}>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[0].name }
+                <span class="badge badge-primary badge-pill">{ genres[0].value } played</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[1].name }
+                <span class="badge badge-primary badge-pill">{ genres[1].value } played</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                { genres[2].name }
+                <span class="badge badge-primary badge-pill">{ genres[2].value } played</span>
+              </li>
+            </ul>
+        </div>
+      );
+    }
+  }
 
   //#endregion
 
@@ -186,43 +271,15 @@ export default function UserStats(user, pageId) {
           >
           <div key="1" data-grid={layout[0]}>
             <h3>Impact Score</h3>
-            <h3><span class={currBadge}>{badgeTitle}</span></h3>
+            <h3><span className={currBadge}>{badgeTitle}</span></h3>
             <h4 style={{'paddingTop':'6px'}}>{user.impact_score} / {nextGoal}</h4>
             <h4 style={{'paddingTop':'0'}}><progress style={{'width':'90%'}} value={progressVal} max='100'>{progressVal}%</progress></h4>
           </div>
           <div key="2" data-grid={layout[1]}>
-            <h3>Top 3 Artists</h3>
-            <ul class="list-group" style={{'color':'black'}}>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { artist1[0] }
-                <span class="badge badge-primary badge-pill">{ artist1[1] }</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { artist2[0] }
-                <span class="badge badge-primary badge-pill">{ artist2[1] }</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { artist3[0] }
-                <span class="badge badge-primary badge-pill">{ artist3[1] }</span>
-              </li>
-            </ul>
+            <ProfileArtists />
           </div>
           <div key="3" data-grid={layout[2]}>
-            <h3 style={{'paddingLeft':'10px'}}>Top Genres</h3>
-            <ul class="list-group" style={{'color':'black', 'paddingLeft':'10px'}}>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { genres[0].name }
-                <span class="badge badge-primary badge-pill">{ genres[0].value }</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { genres[1].name }
-                <span class="badge badge-primary badge-pill">{ genres[1].value }</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                { genres[2].name }
-                <span class="badge badge-primary badge-pill">{ genres[2].value }</span>
-              </li>
-            </ul>
+            <ProfileGenres />
           </div>
         </ReactGridLayout>
       </div>
@@ -253,7 +310,7 @@ export default function UserStats(user, pageId) {
           <div key="2" data-grid={layout[1]}>
             <h3>Top Artists</h3>
             <ResponsiveContainer width="80%" height="100%">
-              <Treemap isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" fill="#8884d8" />
+              <Treemap isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" />
             </ResponsiveContainer>
           </div>
           <div key="3" data-grid={layout[2]}>
@@ -270,7 +327,7 @@ export default function UserStats(user, pageId) {
                   cx="50%"
                   cy="50%"
                   innerRadius="40%"
-                  outerRadius="70%"
+                  outerRadius="65%"
                   fill="#8884d8"
                   label
                   >

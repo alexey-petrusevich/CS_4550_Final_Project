@@ -21,9 +21,9 @@ alias Server.AuthTokens.AuthToken
 pass_hash = Argon2.hash_pwd_salt("password")
 
 iain = Repo.insert!(%User{username: "Iain", name: "Iain Morrison", email: "morrison.i@northeastern.edu", password_hash: pass_hash, impact_score: 0})
-austin = Repo.insert!(%User{username: "Austin", name: "Austin Kim", email: "kim.a@northeastern.edu", password_hash: pass_hash, impact_score: 250})
+austin = Repo.insert!(%User{username: "Austin", name: "Austin Kim", email: "kim.a@northeastern.edu", password_hash: pass_hash, impact_score: 182})
 alex = Repo.insert!(%User{username: "Alex", name: "Alex Petrusevich", email: "petrusevich.a@northeastern.edu", password_hash: pass_hash, impact_score: 314})
-benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 25})
+benjamin = Repo.insert!(%User{username: "Ben", name: "Ben Ockert", email: "ockert.b@northeastern.edu", password_hash: pass_hash, impact_score: 82})
 partyMan = Repo.insert!(%User{username: "partyMan", name: "Party Man", email: "party@northeastern.edu", password_hash: pass_hash, impact_score: 600})
 sam = Repo.insert!(%User{username: "Sam", name: "Sam Smith", email: "sam@northeastern.edu", password_hash: pass_hash, impact_score: 3918})
 
