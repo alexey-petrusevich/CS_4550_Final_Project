@@ -12,11 +12,6 @@ defmodule ServerWeb.VoteController do
     render(conn, "index.json", votes: votes)
   end
 
-  # TODO: 1) test voting functionality -- if voters' and the requests's impact score gets incremented
-  # TODO: test when request gets added to the qeueu is updated properly (in progress)
-
-  # TODO: 2) find a way to store the most recent device id and pass it along with (specifically for playback controller)
-  # TODO: update DB to store device ID with the party
 
   # updates (creates) a vote for the given song
   def vote(conn, %{"vote" => vote}) do
