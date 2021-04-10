@@ -54,7 +54,7 @@ export default function PartiesNew() {
           <Form.Group>
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea"
-                          maxlength="30"
+                          maxlength="25"
                           rows={2}
                           onChange={updateDesc}
                           value={"" || party.description} />

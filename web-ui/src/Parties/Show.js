@@ -229,7 +229,9 @@ function ShowParty({session}) {
               }
             </div>
           </Jumbotron>
+          <div style={{'paddingBottom':'30px'}}>
           <PartyBody is_host={true} party={party} update={update} />
+          </div>
         </Col>
       </Row>
     );
@@ -247,7 +249,9 @@ function ShowParty({session}) {
               <p><b><i>This party has ended</i></b></p>
             }
           </Jumbotron>
+          <div style={{'paddingBottom':'30px'}}>
           <PartyBody is_host={false} party={party} update={update} user_id={session.user_id} />
+          </div>
         </Col>
       </Row>
     );

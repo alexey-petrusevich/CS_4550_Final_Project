@@ -95,9 +95,10 @@ defmodule Server.Requests do
     Repo.delete(request)
   end
 
-  def exists(track_uri) do
+  def exists(track_uri, party_id) do
     query = from r in "requests",
-                 where: r.track_uri == ^track_uri
+                 where: r.track_uri == ^track_uri,
+                 where: r.party_id == ^party_id
     Repo.exists?(query)
   end
 
