@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "prod") {
 }
 
 //TODO will need to be updated to just /socket when deploying to prod
-let socket = new Socket(URL, { params: { token: "" } });
+let socket = new Socket("ws://spotifyparty.morrisonineu.org/socket", { params: { token: "" } });
 socket.connect();
 
 let channel = null;

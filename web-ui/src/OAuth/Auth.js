@@ -25,7 +25,7 @@ function SpotifyAuth({callback}) {
         authorizationUrl="https://accounts.spotify.com/authorize"
         responseType="code"
         clientId="b6c7bd84e4724169b21570019ea15078"
-        redirectUri="http://localhost:4000/api/v1/auth/callback" // Needs to be changed manually
+        redirectUri="http://spotifyparty.morrisonineu.org/api/v1/auth/callback" // Needs to be changed manually
         scope="user-modify-playback-state playlist-read-private"
         state={id}
         className="auth-button"

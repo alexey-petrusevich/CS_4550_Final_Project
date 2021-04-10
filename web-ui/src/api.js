@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "prod") {
 
 //------------------------API----------------------------
 export async function api_get(path) {
-  let text = await fetch(URL + path, {});
+  let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, {});
   let resp = await text.json();
   return resp.data;
 }
@@ -20,7 +20,7 @@ export async function api_post(path, data) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data)
   };
-  let text = await fetch(URL + path, req);
+  let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, req);
   let resp = await text.json();
   return resp;
 }
@@ -31,7 +31,7 @@ export async function api_put(path, data) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    let text = await fetch(URL + path, req);
+    let text = await fetch("http://spotifyparty.morrisonineu.org/api/v1" + path, req);
     let resp = await text.json();
     return resp;
 }
