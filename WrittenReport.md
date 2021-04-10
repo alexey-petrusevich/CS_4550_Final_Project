@@ -32,6 +32,8 @@ will be the playlist for their party. The attendees at the party will
 then be able to vote for which songs from that playlist they want to
 hear next.
 
+### Realtime Behavior
+
 While using the app, users will be able to interact with the "DJ" in
 real time through voting and requesting songs. When the host starts a
 round of voting, the songs in that round will appear in the views of
@@ -44,6 +46,8 @@ view of the DJ/host, who will then be able to take action. The current
 song being played will also show up across all views, and will be
 updated automatically when a song is skipped or a song ends and a new
 song begins.
+
+### Playback and Requests
 
 At any point the "DJ", or host, can play, pause, or skip the currently
 playing song utilizing buttons on their view of the party. When a song
@@ -59,6 +63,16 @@ they want to make a playlist for their own hosted party. We are also
 storing what actions users took, either up-voting or down-voting and
 this will be used for the various stats we are visualizing.
 
+Voting for a song requires the attendees to look at the list of songs
+from the host's given playlist, each with an up-vote button and a
+down-vote button. The attendees can click these buttons to update the
+overall score of each song. This score value is what determines the
+order in which songs are added to the queue. This allows the attendees
+to choose what songs are going to be played next in a given party,
+based on the overall playlist that the host has chosen before the
+party began.
+
+### Complex Feature
 On any given user's "User Page" we are visualizing a variety of user
 statistics. These statistics are generated based on what votes the
 given user gives songs that come up in the queue during parties. These
