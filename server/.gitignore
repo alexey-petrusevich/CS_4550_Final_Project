@@ -30,6 +30,5 @@ server-*.tar
 gen-vars.sh
 .idea
 server.iml
-/config
 deploy.sh
 start.sh
