@@ -8,7 +8,7 @@ function RequestCard({request, party, update}) {
 
   return (
     <Col md="3">
-      <Card className="song-card">
+      <Card className="request-card-song">
         <Card.Title>{request.title}</Card.Title>
         <Card.Text>
           <p>By {request.artist} </p>
@@ -22,7 +22,7 @@ function RequestCard({request, party, update}) {
           </Button>
         }
         {!party.is_active &&
-          <h4 className="text-success">This request was played</h4>
+          <p className="request-success text-success"><strong><i>This request was played</i></strong></p>
         }
       </Card>
     </Col>

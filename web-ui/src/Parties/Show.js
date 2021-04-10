@@ -8,7 +8,6 @@ import ShowSongs from "../Songs/Show";
 import RequestsNew from "../Requests/New";
 import ShowRequests from "../Requests/Show";
 import { connect_cb, channel_join, get_playlists, set_songs, update_party_active } from "../socket";
-import RGL, { WidthProvider } from "react-grid-layout";
 
 //jumbotron image
 import concert from "../images/concert.jpg";
@@ -16,8 +15,6 @@ import concert from "../images/concert.jpg";
 import play from "../images/play.png";
 import pause from "../images/pause.png";
 import skip from "../images/skip.png";
-
-const ReactGridLayout = WidthProvider(RGL);
 
 //play, pause, skip playback controls
 function PlaybackControls({party_id, host_id}) {
@@ -77,11 +74,16 @@ function PlaylistControls({host_id, party_id}) {
   )
 }
 
-function SongsBody({is_host, party, update, user_id}) {
+function PartyBody({is_host, party, update, user_id}) {
+
   if (is_host) {
     if (party.is_active) {
       return (
         <div>
+          <h3>Requests</h3>
+          <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
+          <ShowRequests party={party} cb={update} />
+          <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>Songs from your selected playlist that attendees can vote on and you can add to your Spotify queue.</i></p>
           <ShowSongs party={party} cb={update} is_host={true}/>
@@ -99,6 +101,10 @@ function SongsBody({is_host, party, update, user_id}) {
           <h3>Played Songs</h3>
           <p><i>Here's what songs were played during your party.</i></p>
           <ShowSongs party={party} />
+          <div className="component-spacing"></div>
+          <h3>Requested Songs</h3>
+          <p><i>Here's what songs your attendees requested you play.</i></p>
+          <ShowRequests party={party} />
         </div>
       );
     }
@@ -106,6 +112,10 @@ function SongsBody({is_host, party, update, user_id}) {
     if (party.is_active) {
       return (
         <div>
+          <h3>Request A Song</h3>
+          <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
+          <RequestsNew party_id={party.id} party_code={party.roomcode}/>
+          <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
           <ShowSongs party={party} user_id={user_id} cb={update} is_host={is_host}/>
@@ -123,53 +133,7 @@ function SongsBody({is_host, party, update, user_id}) {
           <h3>Played Songs</h3>
           <p><i>Here's what songs the host played during this party.</i></p>
           <ShowSongs party={party} cb={update} />
-        </div>
-      );
-    }
-  }
-}
-
-function RequestsBody({is_host, party, update, user_id}) {
-  if (is_host) {
-    if (party.is_active) {
-      return (
-        <div>
-          <h3>Requests</h3>
-          <p><i>Song requests from your attendees that you can add to your Spotify queue.</i></p>
-          <ShowRequests party={party} cb={update} />
-        </div>
-      );
-    } else if (party.is_active == null) {
-      return (
-        <div>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h3>Requested Songs</h3>
-          <p><i>Here's what songs your attendees requested you play.</i></p>
-          <ShowRequests party={party} />
-        </div>
-      );
-    }
-  } else { //attendee
-    if (party.is_active) {
-      return (
-        <div>
-          <h3>Request A Song</h3>
-          <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
-          <RequestsNew party_id={party.id} party_code={party.roomcode}/>
-        </div>
-      )
-    } else if (party.is_active == null) {
-      return (
-        <div>
-        </div>
-      );
-    } else {
-      return (
-        <div>
+          <div className="component-spacing"></div>
           <h3>Your Requested Songs</h3>
           <p><i>Here's what songs you requested the host play.</i></p>
           <ShowRequests party={party} user_id={user_id} />
@@ -224,76 +188,52 @@ function ShowParty({session}) {
     }
   }
 
-  var layout = [
-    { x: 0, y: 0, w: 7.8, h: 2.5, static: true },
-    { x: 0, y: 3.5, w: 7.8, h: 0.2, static: true },
-    { x: 0, y: 3.8, w: 7.8, h: 2, static: true },
-    { x: 8, y: 0, w: 3.6, h: 0.2, static: true },
-    { x: 8, y: 0.2, w: 3.6, h: 4, static: true },
-  ];
-
   let username = session.username
   let hostname = party.host.username;
   if (username === hostname) {
     return (
-      <div>
-        <ReactGridLayout
-            rowHeight={100}
-            className="layout"
-            isDraggable={false}
-            isResizeable={false}
-        >
-          <div key="1" data-grid={layout[0]}>
-            <Jumbotron className="jumbotron">
-              <Image className="header-image" src={concert} rounded />
-              {party.is_active &&
-                <Button className="party-status" variant="danger" onClick={() =>
-                  toggle_active()}>
-                  End Party
-                </Button>
+      <Row>
+        <Col>
+          <Jumbotron className="jumbotron">
+            <Image className="header-image" src={concert} rounded />
+            {party.is_active &&
+              <Button className="party-status" variant="danger" onClick={() =>
+                toggle_active()}>
+                End Party
+              </Button>
+            }
+            <div className="party-info">
+              <h2>{party.name}</h2>
+              <p><b>Description: </b>{party.description}</p>
+              <p><b>Attendee access code: </b>{party.roomcode}</p>
+              <p><i>You are the host</i></p>
+              {party.is_active === false &&
+                <p><b><i>This party has ended</i></b></p>
               }
-              <div className="party-info">
-                <h2>{party.name}</h2>
-                <p><b>Description: </b>{party.description}</p>
-                <p><b>Attendee access code: </b>{party.roomcode}</p>
-                <p><i>You are the host</i></p>
-                {party.is_active === false &&
-                  <p><b><i>This party has ended</i></b></p>
-                }
-                {party.is_active === null &&
-                  <div>
-                    <SpotifyAuth callback={on_return}/>
-                    {authed  &&
-                      <div>
-                        <PlaylistControls host_id={party.host.id} party_id={party.id}/>
-                        <Button className="party-status" variant="success" onClick={() =>
-                          toggle_active()}>
-                          Start Party
-                        </Button>
-                      </div>
-                    }
-                  </div>
-                }
-                {party.is_active &&
-                  <PlaybackControls party_id={party.id} host_id={party.host.id}/>
-                }
-              </div>
-            </Jumbotron>
+              {party.is_active === null &&
+                <div>
+                  <SpotifyAuth u_id={party.host.id} callback={on_return}/>
+                  {authed  &&
+                    <div>
+                      <PlaylistControls host_id={party.host.id} party_id={party.id}/>
+                      <Button className="party-status" variant="success" onClick={() =>
+                        toggle_active()}>
+                        Start Party
+                      </Button>
+                    </div>
+                  }
+                </div>
+              }
+              {party.is_active &&
+                <PlaybackControls party_id={party.id} host_id={party.host.id}/>
+              }
+            </div>
+          </Jumbotron>
+          <div style={{'paddingBottom':'30px'}}>
+          <PartyBody is_host={true} party={party} update={update} />
           </div>
-          <div key="2" data-grid={layout[1]}>
-            <h3>Your Songs</h3>
-          </div>
-          <div className="card-container"  key="3" data-grid={layout[2]}>
-            <SongsBody is_host={true} party={party} update={update} />
-          </div>
-          <div key="4" data-grid={layout[3]}>
-            <h3>Your Requests</h3>
-          </div>
-          <div className="card-container" key="5" data-grid={layout[4]}>
-            <RequestsBody is_host={true} party={party} update={update} />
-          </div>
-        </ReactGridLayout>
-      </div>
+        </Col>
+      </Row>
     );
     //attendee
   } else {
@@ -309,8 +249,9 @@ function ShowParty({session}) {
               <p><b><i>This party has ended</i></b></p>
             }
           </Jumbotron>
-          <SongsBody is_host={true} party={party} update={update} user_id={session.user_id}/>
-          <RequestsBody is_host={true} party={party} update={update} user_id={session.user_id}/>
+          <div style={{'paddingBottom':'30px'}}>
+          <PartyBody is_host={false} party={party} update={update} user_id={session.user_id} />
+          </div>
         </Col>
       </Row>
     );

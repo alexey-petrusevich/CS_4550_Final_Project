@@ -310,7 +310,7 @@ export default function UserStats(user, pageId) {
           <div key="2" data-grid={layout[1]}>
             <h3>Top Artists</h3>
             <ResponsiveContainer width="80%" height="100%">
-              <Treemap isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" />
+              <Treemap aspectRatio={2} isAnimationActive={false} type="flat" colorPanel={artistColors} width={1000} height={200} data={user_artists} dataKey="size" ratio={4 / 3} stroke="#fff" />
             </ResponsiveContainer>
           </div>
           <div key="3" data-grid={layout[2]}>
