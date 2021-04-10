@@ -14,7 +14,7 @@ function PartyInfo({party}) {
   // var event_path = "/parties/" + party.id
   return (
     <Col md="6" style={{ 'paddingBottom':'20px', 'paddingRight':'30px', 'paddingTop':'0px'}}>
-      <Card className="song-card">
+      <Card className="song-card party-card2">
         <Card.Title><strong>{party.name}</strong></Card.Title>
         <Card.Text>
           <i>Hosted by {party.host.name}</i><br />
