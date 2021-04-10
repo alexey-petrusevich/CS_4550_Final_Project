@@ -141,6 +141,9 @@ defmodule Server.Parties do
     party = get_party!(party_id)
     {resp, msg} = get_device_id(party_id, status)
     if (resp == :ok) do
+
+      # reward host of the party with extra impact score
+      if (status), do: Users.update_host_score(party.host_id)
       party
       |> Ecto.Changeset.change(is_active: status)
       |> Ecto.Changeset.change(device_id: msg)
