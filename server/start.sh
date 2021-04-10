@@ -17,4 +17,4 @@ export REACT_APP_PROD_URL=spotifyparty.quickjohnny.art
 SECRET_KEY_BASE=$(cat "$CFGD/base")
 export SECRET_KEY_BASE
 
-_build/prod/rel/spotifyparty/bin/server start
+_build/prod/rel/server/bin/server start
