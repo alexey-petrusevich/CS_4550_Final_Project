@@ -2,7 +2,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { create_party, get_parties } from '../api';
-import { get_user_id } from '../store'
+import { get_user_id, store } from '../store'
 
 export default function PartiesNew() {
   let history = useHistory();
@@ -13,8 +13,12 @@ export default function PartiesNew() {
     //sets the host_id to the current user
     party.host_id = get_user_id();
     create_party(party).then((resp) => {
-      if (resp["errors"]) {
-        console.log("errors", resp.errors);
+      if (resp.errors) {
+        let action = {
+          type: 'error/set',
+          data: "Errors starting your party.",
+        }
+        store.dispatch(action);
       }
       else {
         get_parties();

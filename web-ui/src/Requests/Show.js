@@ -1,8 +1,5 @@
-import { Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { queue_track } from '../api.js';
-import { set_song_played, queue_song } from '../socket.js';
+import { Row, Col, Button, Card } from 'react-bootstrap';
+import { queue_song } from '../socket.js';
 
 function RequestCard({request, party, update}) {
 
@@ -19,9 +16,8 @@ function RequestCard({request, party, update}) {
         </Card.Text>
         {party.is_active &&
           <Button variant="primary" onClick={() => {
-            console.log("Queueing song ", request.track_uri);
-                queue_song(party.host.id, request, false, update);
-            }}>
+              queue_song(party.host.id, request, false, party.roomcode, update);
+          }}>
             Add To Queue
           </Button>
         }
@@ -39,7 +35,7 @@ export default function ShowRequests({party, user_id, cb}) {
   //determines what requests to show
   //if a user_id is given, only display their requests
   if (user_id) {
-    let filtered_requests = party.requests.filter((req) => req.user.id == user_id)
+    let filtered_requests = party.requests.filter((req) => req.user.id === user_id)
     request_cards = filtered_requests.map((request) => (
       <RequestCard request={request} party={party} key={request.id} />
     ));

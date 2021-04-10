@@ -12,13 +12,14 @@ import Landing from "./Landing";
 import PartiesNew from "./Parties/New";
 import ShowParty from "./Parties/Show";
 import NewUser from "./Users/New";
+import EditUser from "./Users/Edit";
+import UsersList from "./Users/List";
 import UserProfile from "./Users/Profile";
 import Dashboard from "./Dashboard";
 
 //displays any alerts returned by the server
 //dismissable and timeout after 3.2 seconds
 function AlertBanner({error, success}) {
-  let alert_banner = null;
 
  useEffect(() => {
    const alert_timer = setTimeout(() => {
@@ -82,8 +83,14 @@ function App({error, success}) {
         <Route path="/users/new" exact>
           <NewUser />
         </Route>
+        <Route path="/users/edit/:id" exact>
+          <EditUser />
+        </Route>
         <Route path="/users/:id" exact>
           <UserProfile />
+        </Route>
+        <Route path="/users" exact>
+          <UsersList />
         </Route>
         <Route path="/dashboard" exact>
           <Dashboard />

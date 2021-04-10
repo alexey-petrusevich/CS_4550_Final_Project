@@ -19,6 +19,7 @@ defmodule ServerWeb.VoteController do
     user_id = vote["user_id"]
     song_id = vote["song_id"]
     value = vote["value"]
+    roomcode = vote["party_code"]
     # check if entry already exists
     vote = Votes.get_vote_by_song_and_user(song_id, user_id)
     if (vote) do
@@ -38,6 +39,7 @@ defmodule ServerWeb.VoteController do
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(200, Jason.encode!(%{}))
     end
+    ServerWeb.Endpoint.broadcast!("party:" <> roomcode, "new_vote", %{body: roomcode})
   end
 
   # TODO this is for testing only; remove once tested
@@ -47,17 +49,15 @@ defmodule ServerWeb.VoteController do
     song_id = data["song_id"]
     value = data["value"]
     # check if entry already exists
-    vote = Votes.get_vote_by_song_id(song_id)
+    vote = Votes.get_vote_by_song_and_user(song_id, user_id)
     if (vote) do
-      vote = %{vote | value: value}
-      Votes.update_vote(vote)
+      Votes.update_vote(vote.id, value)
     else
       newVote = %{
         user_id: user_id,
         song_id: song_id,
         value: value
       }
-      IO.inspect("creating vote")
       Votes.create_vote(newVote)
     end
   end

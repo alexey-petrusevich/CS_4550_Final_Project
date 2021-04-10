@@ -7,11 +7,7 @@ defmodule Server.Parties do
   alias Server.Repo
 
   alias Server.Parties.Party
-  alias Server.Users.User
-  alias Server.AuthTokens
   alias Server.Users
-
-  import Ecto.Changeset
 
   @doc """
   Returns the list of parties.
@@ -46,6 +42,17 @@ defmodule Server.Parties do
     Repo.get!(Party, id)
     |> Repo.preload(:host)
     |> Repo.preload(:songs)
+  end
+
+  def exists(party_id) do
+    query = from p in "parties",
+                 where: p.id == ^party_id
+    Repo.exists?(query)
+  end
+
+  def get_device_id!(party_id) do
+    party = get_party!(party_id)
+    party.device_id
   end
 
   @doc """
@@ -151,7 +158,7 @@ defmodule Server.Parties do
   # required scope: user-read-playback-state
   def get_device_id(party_id, party_active) do
     if (party_active) do
-      # party is active
+      # party is active)
       user_id = get_user_id_by_party_id(party_id)
       token = Server.AuthTokens.get_auth_token_by_user_id(user_id)
       url = "https://api.spotify.com/v1/me/player/devices"
@@ -170,7 +177,7 @@ defmodule Server.Parties do
              |> Map.get("id")
         {:ok, id}
       else
-        {:error, "open spotify app!!"}
+        {:error, "Please open the Spotify app on your device and start playing a song."}
       end
     else
       # status is false

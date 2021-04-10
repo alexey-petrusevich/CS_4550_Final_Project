@@ -1,20 +1,23 @@
 defmodule ServerWeb.PlaybackController do
   use ServerWeb, :controller
   alias Server.AuthTokens
+  alias Server.Parties
 
   def interact(conn, data) do
     user_id = data["host_id"];
+    party_id = data["party_id"];
     action = data["action"];
     token = AuthTokens.get_auth_token_by_user_id(user_id).token
+    device_id = Parties.get_device_id!(party_id)
     case action do
       "play" ->
-        make_put("https://api.spotify.com/v1/me/player/play", token)
+        make_put("https://api.spotify.com/v1/me/player/play?device_id=#{device_id}", token)
         |> handle_response(conn, "Successfully played your active song.", "Failed to start playback. Playback may already be active.")
       "pause" ->
-        make_put("https://api.spotify.com/v1/me/player/pause", token)
+        make_put("https://api.spotify.com/v1/me/player/pause?device_id=#{device_id}", token)
         |> handle_response(conn, "Successfully paused your active song.", "Failed to pause playback. Playback may already be paused.")
       "skip" ->
-        make_post("https://api.spotify.com/v1/me/player/next", token)
+        make_post("https://api.spotify.com/v1/me/player/next?device_id=#{device_id}", token)
         |> handle_response(conn, "Successfully skipped playback to the next song.", "Failed to skip your active song.")
     end
   end
@@ -23,8 +26,6 @@ defmodule ServerWeb.PlaybackController do
   def queue(uri, host_id) do
       token = AuthTokens.get_auth_token_by_user_id(host_id).token
       resp = make_post("https://api.spotify.com/v1/me/player/queue?uri=" <> uri, token)
-      IO.inspect(resp)
-      IO.inspect(resp.status_code)
       resp.status_code
   end
 
@@ -33,13 +34,11 @@ defmodule ServerWeb.PlaybackController do
     message = if response.body !== "" do
       Map.get(Jason.decode!(response.body), "error") |> Map.get("message")
     end  # error msg if code is error
-    IO.inspect(message)
-    IO.inspect(response)
     case status_code do
       # success
       204 ->
         handle_ok(conn, success_msg)
-      # no device found TODO default device id?
+      # no device found
       404 ->
         handle_error(conn, message)
       # other failure
