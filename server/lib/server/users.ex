@@ -215,10 +215,19 @@ defmodule Server.Users do
 
   # update user impact score given user_id
   def update_impact_score(user_id) do
+    update_score(user_id, 1)
+  end
+
+  def update_host_score(user_id) do
+    update_score(user_id, 20)
+  end
+
+  def update_score(user_id, increment) do
     user = get_user(user_id)
-    newScore = user.impact_score + 1
+    newScore = user.impact_score + increment
     user = user
            |> Ecto.Changeset.change(impact_score: newScore)
            |> Repo.update()
   end
+
 end
