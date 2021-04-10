@@ -212,7 +212,7 @@ function ShowParty({session}) {
               }
               {party.is_active === null &&
                 <div>
-                  <SpotifyAuth callback={on_return}/>
+                  <SpotifyAuth u_id={party.host.id} callback={on_return}/>
                   {authed  &&
                     <div>
                       <PlaylistControls host_id={party.host.id} party_id={party.id}/>
