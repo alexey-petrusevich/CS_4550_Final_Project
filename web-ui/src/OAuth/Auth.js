@@ -8,7 +8,7 @@ import OAuth2Login from 'react-simple-oauth2-login';
 function SpotifyAuth({u_id, callback}) {
   let [msg, setMsg] = useState("");
 
-  const redirect_uri = "http://" + URL + "/api/v1/auth/callback"
+  //const redirect_uri = "http://" + URL + "/api/v1/auth/callback"
 
   return (
     <div>
