@@ -158,13 +158,7 @@ export function get_playlists(host_id) {
 export function playback(host_id, action) {
   api_post("/playback", {action, host_id}).then((resp) => {
     console.log(resp);
-    if (resp.success) {
-      let action = {
-        type: 'success/set',
-        data: resp.success,
-      }
-      store.dispatch(action);
-    } else if (resp.error) {
+    if (resp.error) {
       let action = {
         type: 'error/set',
         data: resp.error,

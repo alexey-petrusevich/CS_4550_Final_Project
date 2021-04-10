@@ -1,10 +1,9 @@
-import { Navbar, Nav, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import { NavLink, useHistory } from 'react-router-dom';
+import { Nav, Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState } from 'react';
 import { api_login } from './api';
 import { Link } from 'react-router-dom';
-import store from './store';
+import { useHistory } from 'react-router-dom';
 
 function LoginForm() {
     const history = useHistory();

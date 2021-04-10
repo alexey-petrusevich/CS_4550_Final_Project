@@ -17,7 +17,7 @@ function SpotifyAuth({callback}) {
         responseType="code"
         clientId="b6c7bd84e4724169b21570019ea15078"
         redirectUri="http://localhost:4000/api/v1/auth/callback"
-        scope="user-modify-playback-state playlist-read-private"
+        scope="user-read-playback-state user-modify-playback-state playlist-read-private"
         state={id}
         className="auth-button"
         buttonText="Link with Spotify"

@@ -1,8 +1,8 @@
-import { Row, Col, Form, Button, Dropdown, Jumbotron, Image } from 'react-bootstrap';
+import { Row, Col, Button, Dropdown, Jumbotron, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { useLocation, useHistory, useParams } from 'react-router-dom';
-import { get_party, get_parties, playback } from '../api';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { get_party, playback } from '../api';
 import SpotifyAuth from "../OAuth/Auth";
 import ShowSongs from "../Songs/Show";
 import RequestsNew from "../Requests/New";
@@ -46,7 +46,7 @@ function PlaylistControls({host_id, party_id}) {
   const [state, setState] = useState({playlists: []});
   useEffect(() => {
     connect_cb(setState);
-  });
+  },[]);
 
   //sends the selected playlist through the channel to populate
   //the party's songs
@@ -114,7 +114,7 @@ function PartyBody({is_host, party, update, user_id}) {
         <div>
           <h3>Request A Song</h3>
           <p><i>Submit a request to the host and they might add it to the party queue!</i></p>
-          <RequestsNew party_id={party.id}/>
+          <RequestsNew party_id={party.id} party_code={party.roomcode}/>
           <div className="component-spacing"></div>
           <h3>List of Songs</h3>
           <p><i>Songs from the host's selected playlist that you can vote on to help get them played!</i></p>
@@ -144,35 +144,38 @@ function PartyBody({is_host, party, update, user_id}) {
 }
 
 function ShowParty({session}) {
-  let history = useHistory();
   const [party, setParty] = useState({name: "", roomcode: "",
       description: "", songs: [], requests: [], is_active: false, host: {username: "N/A"}});
   const [authed, setAuthed] = useState(false);
 
-  //loads the party with the id given by the route path
-  let { id } = useParams();
+
+    //loads the party with the id given by the route path
+    let { id } = useParams();
+
+  // updates the party state
+  const update = useCallback(
+    () => {
+      get_party(id).then((p) => setParty(p));
+    },
+    [id],
+  );
+
   useEffect(() => {
     get_party(id).then((p) => {
-      console.log("USE EFFECT PARTY: ", p);
       setParty(p);
       channel_join(p.roomcode, update);
     });
     //join the channel for this party
 
-  },[id]);
-
-  // updates the party state
-  function update() {
-    get_party(id).then((p) => setParty(p));
-  }
+  },[id, update]);
 
   // switches a party between inactive and active; or sets it to
   // active if it is null
   function toggle_active() {
     if (party.is_active) {
-      update_party_active(party.id, false);
+      update_party_active(party.id, false, party.roomcode);
     } else {
-      update_party_active(party.id, true);
+      update_party_active(party.id, true, party.roomcode);
     }
     update();
   }
@@ -204,10 +207,10 @@ function ShowParty({session}) {
               <p><b>Description: </b>{party.description}</p>
               <p><b>Attendee access code: </b>{party.roomcode}</p>
               <p><i>You are the host</i></p>
-              {party.is_active == false &&
+              {party.is_active === false &&
                 <p><b><i>This party has ended</i></b></p>
               }
-              {party.is_active == null &&
+              {party.is_active === null &&
                 <div>
                   <SpotifyAuth callback={on_return}/>
                   {authed  &&
@@ -240,7 +243,7 @@ function ShowParty({session}) {
             <h2>{party.name}</h2>
             <p><b>Description: </b>{party.description}</p>
             <p><i>You are an attendee</i></p>
-            {party.is_active == false &&
+            {party.is_active === false &&
               <p><b><i>This party has ended</i></b></p>
             }
           </Jumbotron>

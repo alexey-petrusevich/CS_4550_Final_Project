@@ -2,8 +2,7 @@ import { Row, Col, Card, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { get_user, get_user_with_cb } from './api';
-import { useHistory } from 'react-router-dom';
+import { get_user } from './api';
 import UserStats from './UserStats';
 
 function PartyInfo({party}) {
@@ -26,7 +25,7 @@ function PartyInfo({party}) {
 
 function Dashboard({parties, session}) {
   const [user, setUser] = useState({danceability: "", energy: "", id: "", impact_score: "", loudness: "", password_hash: "", top_artists: [], top_genres: [], username: "", valence: ""});
-      
+
   let user_id = session.user_id;
 
   useEffect(() => {
@@ -34,9 +33,7 @@ function Dashboard({parties, session}) {
   },[user_id]);
 
   console.log(user);
-
-  let history = useHistory();
-
+  
   let hostedParties = parties.filter( (party) => session && session.user_id === party.host.id);
 
   let host_cards = hostedParties.map((party) => (

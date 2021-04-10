@@ -80,7 +80,7 @@ defmodule ServerWeb.RequestController do
 
 
   def request_exists(track_uri) do
-    Requests.exists?(track_uri)
+    Requests.exists(track_uri)
   end
 
 
@@ -92,17 +92,17 @@ defmodule ServerWeb.RequestController do
 
 
   def create(conn, %{"request" => request_params}) do
-    IO.inspect("Request params")
-    IO.inspect(request_params)
+    roomcode = request_params["party_code"]
     with {:ok, %Request{} = request} <- search(conn, request_params) do
       Users.update_impact_score(request_params["user_id"])
       success_msg = request.title <> " by " <> request.artist <> " was successfully requested."
-      IO.inspect(success_msg)
+      ServerWeb.Endpoint.broadcast!("party:" <> roomcode, "new_request", %{body: roomcode})
       conn
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:created, Jason.encode!(%{success: success_msg}))
     else
       {:error, error_msg} ->
+
         conn
         |> put_resp_header("content-type", "application/json; charset=UTF-8")
         |> send_resp(:not_acceptable, Jason.encode!(%{error: error_msg}))

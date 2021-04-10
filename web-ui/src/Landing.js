@@ -1,19 +1,14 @@
-import { Row, Col, Card, Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { get_parties } from './api.js';
 
 import PartiesNew from "./Parties/New";
 import JoinParty from "./Parties/Join";
 
 //landing page when users first access our site
 function Landing({session, parties}) {
-  const history = useHistory();
   const [joinform, setJoinform] = useState(false);
   const [startform, setStartform] = useState(false);
-  const [roomcode, setRoomcode] = useState("");
   const [no_session_msg, setMsg] = useState("");
 
   // clears forms for when the session is not active

@@ -7,11 +7,7 @@ defmodule Server.Parties do
   alias Server.Repo
 
   alias Server.Parties.Party
-  alias Server.Users.User
-  alias Server.AuthTokens
   alias Server.Users
-
-  import Ecto.Changeset
 
   @doc """
   Returns the list of parties.
@@ -46,6 +42,12 @@ defmodule Server.Parties do
     Repo.get!(Party, id)
     |> Repo.preload(:host)
     |> Repo.preload(:songs)
+  end
+
+  def exists(party_id) do
+    query = from p in "parties",
+                 where: p.id == ^party_id
+    Repo.exists?(query)
   end
 
   @doc """

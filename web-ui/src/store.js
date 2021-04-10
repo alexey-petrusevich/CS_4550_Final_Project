@@ -71,27 +71,6 @@ function parties(state = [], action) {
     }
 }
 
-
-//--------------------------VOTES--------------------------
-function votes(state = [], action) {
-    switch (action.type) {
-      case 'votes/set':
-        return action.data;
-      default:
-        return state;
-  }
-}
-
-//--------------------------REQUESTS--------------------------
-function requests(state = [], action) {
-    switch (action.type) {
-      case 'requests/set':
-        return action.data;
-      default:
-        return state;
-  }
-}
-
 //--------------------------ALERTS--------------------------
 //error handlers for server responses
 function error(state = null, action) {

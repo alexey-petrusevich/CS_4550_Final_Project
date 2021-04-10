@@ -41,16 +41,16 @@ defmodule ServerWeb.PartyChannel do
 
   # updates the active status of this party
   @impl true
-  def handle_in("update_active", %{"party_id" => id, "is_active" => active}, socket) do
+  def handle_in("update_active", %{"party_id" => id, "is_active" => active, "party_code" => roomcode}, socket) do
     case Parties.update_active(id, active) do
       {:ok, party} ->
         if active do
           IO.inspect("Sending party start message")
-          broadcast! socket, "party_start", %{body: id}
+          broadcast! socket, "party_start", %{body: roomcode}
           {:noreply, socket}
         else
           IO.inspect("Sending party end message")
-          broadcast! socket, "party_end", %{body: id}
+          broadcast! socket, "party_end", %{body: roomcode}
           {:noreply, socket}
         end
       {:error, cset} ->
@@ -60,24 +60,31 @@ defmodule ServerWeb.PartyChannel do
 
   # updates the given song to be played -> true
   @impl true
-  def handle_in("queue_song", %{"is_song" => song, "track_id" => id, "track_uri" => uri, "host_id" => host_id}, socket) do
-    song = Songs.get_song!(id)
+  def handle_in("queue_song", %{"is_song" => is_song, "track_id" => id, "track_uri" => uri, "host_id" => host_id, "party_code" => roomcode}, socket) do
     status = PlaybackController.queue(uri, host_id)
     # update song played only if a song_id is given (otherwise it is a request)
     # also only update if it was successfully added to the queue
-    IO.inspect(status)
-    case status do
-      # success
-      204 ->
-        if song do
+    if is_song do
+      song = Songs.get_song!(id)
+      case status do
+        # success
+        204 ->
           Songs.update_played(id)
-        else # request
+          broadcast! socket, "queued_song", %{body: roomcode, title: song.title, artist: song.artist}
+          {:noreply, socket}
+        _ ->
+          {:reply, {:error, "Unable to add " <> song.title <> " to your playback queue."}, socket}
+      end
+    else
+      req = Requests.get_request!(id)
+      case status do
+        204 ->
           Requests.update_played(id)
-        end
-        broadcast! socket, "queued_song", %{body: id}
-        {:noreply, socket}
-      _ ->
-        {:reply, {:error, "Unable to add " <> song.title <> " to your playback queue."}, socket}
+          broadcast! socket, "queued_song", %{body: roomcode, title: req.title, artist: req.artist}
+          {:noreply, socket}
+        _ ->
+          {:reply, {:error, "Unable to add " <> req.title <> " to your playback queue."}, socket}
+      end
     end
   end
 

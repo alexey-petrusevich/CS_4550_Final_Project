@@ -1,11 +1,9 @@
-import { Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Col, Form, Button, Card } from 'react-bootstrap';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { create_request, get_parties } from '../api';
+import { create_request } from '../api';
 import { get_user_id } from '../store'
 
-export default function RequestsNew({party_id}) {
-  let history = useHistory();
+export default function RequestsNew({party_id, party_code}) {
   let [request, setRequest] = useState({});
 
   function submit(ev) {
@@ -13,17 +11,8 @@ export default function RequestsNew({party_id}) {
     //sets the user_id of the request to the current user
     request.user_id = get_user_id();
     request.party_id = party_id;
+    request.party_code = party_code;
     create_request(request);
-    // .then((resp) => {
-    //   if (resp["errors"]) {
-    //     console.log("errors", resp.errors);
-    //   }
-    //   else {
-    //     console.log("Request response ", resp);
-    //     get_parties();
-    //     history.push("/parties/" + party_id);
-    //   }
-    // });
     setRequest({title: "", artist: ""});
   }
 
@@ -38,7 +27,6 @@ export default function RequestsNew({party_id}) {
     p1["artist"] = ev.target.value;
     setRequest(p1);
   }
-
 
   return (
       <Card className="request-card">

@@ -1,10 +1,10 @@
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import { Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import pick from 'lodash/pick';
 
-import { create_user, get_users } from '../api';
+import { create_user } from '../api';
 
 function NewUser() {
   let history = useHistory();
@@ -69,7 +69,7 @@ function NewUser() {
         </Form.Row>
 
         <Form.Group>
-          <Form.Label><p>Enter Your Email <i className="form-msg">{user.email_msg}</i></p></Form.Label>
+          <Form.Label><div>Enter Your Email <i className="form-msg">{user.email_msg}</i></div></Form.Label>
           <Form.Control type="text"
                         onChange={(ev) => update("email", ev)}
                         value={user.email || ""} />
@@ -83,7 +83,7 @@ function NewUser() {
 
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label><p>Confirm Password <i className="form-msg">{user.pass_msg}</i></p></Form.Label>
+            <Form.Label><div>Confirm Password <i className="form-msg">{user.pass_msg}</i></div></Form.Label>
             <Form.Control type="password"
                           onChange={(ev) => update("pass2", ev)}
                           value={user.pass2 || ""} />
