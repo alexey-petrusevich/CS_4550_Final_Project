@@ -69,7 +69,7 @@ function AlertBanner({error, success}) {
 //Our App Components
 function App({error, success}) {
   return (
-    <Container className="app-background">
+    <Container className="background">
       {(success || error) && <AlertBanner error={error} success={success}/>}
       <Nav />
       <Switch>
