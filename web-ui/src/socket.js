@@ -2,7 +2,7 @@ import { Socket } from "phoenix";
 import store from './store';
 
 //TODO will need to be updated to just /socket when deploying to prod
-let socket = new Socket("ws://localhost:4000/socket", { params: { token: "" } });
+let socket = new Socket("ws://spotifyparty.morrisonineu.org/socket", { params: { token: "" } });
 socket.connect();
 
 let channel = null;

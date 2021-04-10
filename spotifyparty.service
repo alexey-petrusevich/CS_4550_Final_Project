@@ -1,0 +1,18 @@
+[Unit]
+Description=Spotify Party Project
+
+[Service]
+Type=simple
+User=spotifyparty
+Group=spotifyparty
+Restart=on-failure
+Environment=MIX_ENV=prod
+Environment=PORT=4810
+Environment=PROD=true
+Environment=LANG=en_US.UTF-8
+
+WorkingDirectory=/home/spotifyparty/spotifyparty/server
+ExecStart=/bin/bash /home/spotifyparty/spotifyparty/server/start.sh
+
+[Install]
+WantedBy=multi-user.target
