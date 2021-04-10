@@ -14,12 +14,19 @@ that each member has done on the project is as follows:
 
 ### Aliaksei Petrusevich
 
+...
+
 ### Benjamin Ockert
+
+...
 
 ### Austin Kim
 
+...
+
 ### Iain Morrison
 
+...
 
 ## The App
 
@@ -47,14 +54,6 @@ song being played will also show up across all views, and will be
 updated automatically when a song is skipped or a song ends and a new
 song begins.
 
-### Playback and Requests
-
-At any point the "DJ", or host, can play, pause, or skip the currently
-playing song utilizing buttons on their view of the party. When a song
-is skipped, the next song in the queue is to be played. The queue is
-determined by the votes from the other, non-host, attendees of the
-party, with the song most-voted being first in the queue.
-
 In addition to storing users, we are storing event history. Attendees
 of a party session will be able to look back on their past events and
 see what songs were played, in what order they were played, and how
@@ -62,6 +61,14 @@ many votes each song had. This will be useful to all users if and when
 they want to make a playlist for their own hosted party. We are also
 storing what actions users took, either up-voting or down-voting and
 this will be used for the various stats we are visualizing.
+
+### Playback and Requests
+
+At any point the "DJ", or host, can play, pause, or skip the currently
+playing song utilizing buttons on their view of the party. When a song
+is skipped, the next song in the queue is to be played. The queue is
+determined by the votes from the other, non-host, attendees of the
+party, with the song most-voted being first in the queue.
 
 Voting for a song requires the attendees to look at the list of songs
 from the host's given playlist, each with an up-vote button and a
@@ -82,6 +89,12 @@ are top genres, top songs, an impact score based on how many up-voted
 songs by the user actually go through to the party, and other
 statistics that Spotify keeps track of, including "danceability",
 "valence", "energy", and "loudness".
+
+...
+
+### Significant Challenge
+
+...
 
 ### To-do list for write-up (remove before submission)
 - Individual group member's work (above)
