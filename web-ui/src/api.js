@@ -1,11 +1,11 @@
 import store from './store';
 
-export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
+//export const URL = process.env.NODE_ENV.trim() === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_SERVER_URL;
 
 //------------------------API----------------------------
 export async function api_get(path) {
   console.log(URL)
-  let text = await fetch("http://" + URL + "/api/v1/" + path, {});
+  let text = await fetch("http://spotifyparty.benockert.site/api/v1/" + path, {});
   let resp = await text.json();
   return resp.data;
 }
@@ -16,7 +16,7 @@ export async function api_post(path, data) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data)
   };
-  let text = await fetch("http://" + URL + "/api/v1/" + path, req);
+  let text = await fetch("http://spotifyparty.benockert.site/api/v1/" + path, req);
   let resp = await text.json();
   return resp;
 }
@@ -27,7 +27,7 @@ export async function api_put(path, data) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data)
   };
-  let text = await fetch("http://" + URL + "/api/v1/" + path, req);
+  let text = await fetch("http://spotifyparty.benockert.site/api/v1/" + path, req);
   let resp = await text.json();
   return resp;
 }
