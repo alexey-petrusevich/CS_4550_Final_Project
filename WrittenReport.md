@@ -45,6 +45,12 @@ song being played will also show up across all views, and will be
 updated automatically when a song is skipped or a song ends and a new
 song begins.
 
+At any point the "DJ", or host, can play, pause, or skip the currently
+playing song utilizing buttons on their view of the party. When a song
+is skipped, the next song in the queue is to be played. The queue is
+determined by the votes from the other, non-host, attendees of the
+party, with the song most-voted being first in the queue.
+
 In addition to storing users, we are storing event history. Attendees
 of a party session will be able to look back on their past events and
 see what songs were played, in what order they were played, and how
