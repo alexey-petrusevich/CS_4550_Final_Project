@@ -29,3 +29,6 @@ server-*.tar
 
 .idea
 server.iml
+/config
+deploy.sh
+start.sh
