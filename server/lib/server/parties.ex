@@ -140,8 +140,6 @@ defmodule Server.Parties do
   def update_active(party_id, status) do
     party = get_party!(party_id)
     {resp, msg} = get_device_id(party_id, status)
-    IO.inspect(resp)
-    IO.inspect("response")
     if (resp == :ok) do
       party
       |> Ecto.Changeset.change(is_active: status)
@@ -170,16 +168,18 @@ defmodule Server.Parties do
         "Authorization": "Bearer #{token.token}}",
       ]
       resp = HTTPoison.get!(url, headers)
+      IO.inspect(resp)
       data = Jason.decode!(resp.body)
       devices = data
                 |> Map.get("devices")
+      IO.inspect(devices)
       if (length(devices) > 0) do
         id = devices
              |> Enum.at(0)
              |> Map.get("id")
         {:ok, id}
       else
-        {:error, "open spotify app!!"}
+        {:error, "Please open the Spotify app on your device and start playing a song."}
       end
     else
       # status is false
