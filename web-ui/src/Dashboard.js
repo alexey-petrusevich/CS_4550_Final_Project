@@ -4,15 +4,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { get_user } from './api';
 import UserStats from './UserStats';
+import RGL, { WidthProvider } from "react-grid-layout";
+
+const ReactGridLayout = WidthProvider(RGL);
 
 function PartyInfo({party}) {
   // var event_path = "/parties/" + party.id
   return (
-    <Col md="3">
+    <Col md="6" style={{ 'paddingBottom':'20px' }}>
       <Card className="party-card">
-        <Card.Title>{party.name}</Card.Title>
+        <Card.Title><strong>{party.name}</strong></Card.Title>
         <Card.Text>
-          Hosted by {party.host.username}<br />
+          <i>Hosted by {party.host.name}</i><br />
           {party.description}
         </Card.Text>
         <Link to={{pathname: `/parties/` + party.id}}>
@@ -54,21 +57,32 @@ function Dashboard({parties, session}) {
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      <div>
-        <h3>Parties You've Hosted { new_party_link }</h3>
-        <Row>{host_cards}</Row>
-      </div>
-      <div className="component-spacing"></div>
-      <div>
-        <h3>Parties You've Attended</h3>
-        <Row>{party_cards}</Row>
-      </div>
-      <div className="component-spacing"></div>
-      <div>
-          <h3>User Stats</h3>
-          <div>{ UserStats(user) }</div>
-      </div>
+      <h2 style={{ 'paddingLeft':'10px', 'paddingTop':'15px'}}>Dashboard</h2>
+      <ReactGridLayout
+            rowHeight={200}
+            className="layout"
+            isDraggable={false}
+            isResizeable={false}
+        >
+        <div key="1" data-grid={{ x: 0, y: 0, w: 6.5, h: 0.2, static: true }}>
+          <h3>Parties You've Hosted{ new_party_link }</h3>
+        </div>
+        <div className="card-container" key="2" data-grid={{ x: 0, y: 0.2, w: 6.5, h: 1.1, static: true }}>
+          <div><Row>{host_cards}</Row></div>
+        </div>
+        <div style={{ 'paddingLeft':'8px' }} key="3" data-grid={{ x: 7, y: 0, w: 5, h: 0.2, static: true }}>
+          <h3>Your Stats</h3>
+        </div>
+        <div key="4" data-grid={{ x: 7, y: 0.2, w: 5, h: 4, static: true }}>
+          <div style={{ 'paddingLeft':'10px' }}>{ UserStats(user, 2) }</div>
+        </div>
+        <div key="5" data-grid={{ x: 0, y: 1.3, w: 6.5, h: 0.2, static: true }}>
+          <h3>Parties You've Attended</h3>
+        </div>
+        <div className="card-container" key="6" data-grid={{ x: 0, y: 1.5, w: 6.5, h: 1.1, static: true }}>
+          <Row>{party_cards}</Row>
+        </div>
+      </ReactGridLayout>
     </div>
   );
 }

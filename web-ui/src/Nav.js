@@ -1,9 +1,10 @@
-import { Nav, Row, Col, Form, Button } from 'react-bootstrap';
+import { Nav, Row, Col, Form, Button, Alert } from 'react-bootstrap';
+import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useState } from 'react';
 import { api_login } from './api';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import store from './store';
 
 function LoginForm() {
     const history = useHistory();
@@ -54,8 +55,8 @@ let SessionInfo = connect()(({session, dispatch}) => {
     return (
       <Col className="login" md={{ span: 4, offset: 4 }}>
         <p>
-        Logged in as {session.username} &nbsp;
-        <Button className="logout" onClick={logout}>Logout</Button>
+          Logged in as {session.username} &nbsp;
+          <Button className="logout" onClick={logout}>Logout</Button>
         </p>
       </Col>
     );
@@ -75,13 +76,17 @@ const LoginOrInfo = connect(({session}) => ({session}))(LOI);
 function AppNav({session}) {
   let dash_link = null;
   let prof_link = null;
+  let users_link = null;
 
   if (session) {
     dash_link = (
       <Link className="nav" to="/dashboard">Dashboard</Link>
     )
     prof_link = (
-      <Link to={{pathname: `/users/` + session.user_id}}>Profile</Link>
+      <Link className="nav"to={{pathname: `/users/` + session.user_id}}>My Profile</Link>
+    )
+    users_link = (
+      <Link className="nav" to="/users">Other Users</Link>
     )
   }
 
@@ -93,6 +98,7 @@ function AppNav({session}) {
           <Link className="nav" to="/">Home</Link>
           { dash_link }
           { prof_link }
+          { users_link }
         </Nav>
       </Col>
         <LoginOrInfo />

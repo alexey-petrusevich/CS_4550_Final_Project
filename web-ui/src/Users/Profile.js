@@ -12,25 +12,6 @@ function ArrayLength(array) {
     return array.length;
 }
 
-function PartyCard({party}) {
-    return (
-      <Col md="3" sm="6">
-        <Card className="profile-party-card">
-            <Card.Title>
-                <Link to={{pathname: `/parties/` + party.id}}>{party.name}</Link>
-            </Card.Title>
-            <Card.Text>
-                Hosted by: {party.host.username}<br/>
-                Attendees: { party.attendees.length }
-                <Link to={{pathname: `/parties/` + party.id}}>
-                    <Button variant="primary">View Party</Button>
-                </Link>
-            </Card.Text>
-        </Card>
-      </Col>
-    );
-}
-
 function UsersProfile({parties, session}) {
 
     const [user, setUser] = useState({danceability: "", energy: "", id: "", impact_score: "", loudness: "", password_hash: "", top_artists: [], top_genres: [], username: "", valence: ""});
@@ -41,11 +22,8 @@ function UsersProfile({parties, session}) {
         get_user(user_id).then((p) => setUser(p));
     },[user_id]);
 
-    let attendedParties = parties.filter( (party) => session && party.attendees && (party.attendees.includes(session.user_id) || party.host.id == session.user_id));
-
-    let party_cards = attendedParties.map((party) => (
-        <PartyCard party={party} key={party.id} />
-    ));
+    let hostedCount = parties.filter( (party) => session && party.host.id == session.user_id).length;
+    let attendedCount = parties.filter( (party) => session && party.attendees && party.attendees.includes(session.user_id)).length;
 
     let session_name = session.username;
     let profile_name = user.username;
@@ -53,25 +31,23 @@ function UsersProfile({parties, session}) {
     if (session_name === profile_name) {
         return (
             <div className="profile-page">
-                <h1>{user.username}'s Profile</h1>
-                <h3 style={{ 'paddingTop':'30px' }}>Recent Parties</h3>
-                <Row style={{ ' width':'150px' }}>{party_cards}</Row>
-                <h3 style={{ 'paddingTop':'30px' }}>Stats</h3> 
-                <div>{ UserStats(user) }</div>
+                <h1 style={{ 'paddingTop':'30px', 'paddingLeft':'1.5%', 'color':'#DFDFDF'}}><strong>Your Profile</strong></h1>
+                <h3 style={{ 'paddingTop':'5x', 'paddingLeft':'1.5%', 'color':'#AEDFB3' }}>UserTag: {user.username}</h3>
+                <h4 style={{ 'paddingTop':'20px', 'paddingLeft':'1.5%'}}>Hosted Parties: {hostedCount}</h4>
+                <h4 style={{ 'paddingTop':'5px', 'paddingLeft':'1.5%' }}>Attended Parties: {attendedCount}</h4>
+                <h2 style={{ 'paddingTop':'30px', 'paddingLeft':'1.5%', 'color':'#DFDFDF' }}><strong>Your Stats</strong></h2> 
+                <div style={{ 'paddingLeft':'0.7%' }}>{ UserStats(user, 1) }</div>
             </div>
         );
     } else {
         return (
             <div className="profile-page">
-                <ul>
-                    {/* <li><strong>{user.friends.length} Friends</strong></li> */}
-                    {/* <li><strong>{user.parties.length} Parties</strong></li> */}
-                </ul>
-
-                <h3 style={{ 'paddingTop':'40px' }}>Recent parties</h3>
-                <Row style={{ ' width':'150px' }}>{party_cards}</Row>
-
-                <div>{ UserStats(user) }</div>
+                <h1 style={{ 'paddingTop':'30px', 'paddingLeft':'1.5%', 'color':'#DFDFDF'}}><strong>{user.name}'s Profile</strong></h1>
+                <h3 style={{ 'paddingTop':'5x', 'paddingLeft':'1.5%', 'color':'#AEDFB3' }}>UserTag: {user.username}</h3>
+                <h4 style={{ 'paddingTop':'20px', 'paddingLeft':'1.5%'}}>Hosted Parties: {hostedCount}</h4>
+                <h4 style={{ 'paddingTop':'5px', 'paddingLeft':'1.5%' }}>Attended Parties: {attendedCount}</h4>
+                <h2 style={{ 'paddingTop':'30px', 'paddingLeft':'1.5%', 'color':'#DFDFDF' }}><strong>{user.name}'s Stats</strong></h2> 
+                <div style={{ 'paddingLeft':'0.7%' }}>{ UserStats(user, 1) }</div>
             </div>
         );
     }
