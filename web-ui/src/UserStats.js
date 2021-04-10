@@ -109,7 +109,7 @@ export default function UserStats(user, pageId) {
     }
   }
 
-  console.log(artistColors);
+  // console.log(artistColors);
   //#endregion
 
   //#region ------------------------GENRES--------------------------

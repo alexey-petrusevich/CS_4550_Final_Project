@@ -109,9 +109,12 @@ body {
 }
 
 .song-card {
-  background-color: #333333;
-  font-size: 13px;
-  padding: 5px;
+  // background-color: #333333;
+  // font-size: 13px;
+  // padding: 5px;
+
+  color: black;
+  padding: 15px;
 }
 
 .song-title {
@@ -225,11 +228,6 @@ body {
 
 .nav {
   margin-right: 3%;
-}
-
-.party-card {
-  color: black;
-  padding: 15px;
 }
 
 .profile-party-card {
