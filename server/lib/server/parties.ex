@@ -45,6 +45,7 @@ defmodule Server.Parties do
   end
 
   def exists(party_id) do
+    IO.inspect(party_id)
     query = from p in "parties",
                  where: p.id == ^party_id
     Repo.exists?(query)

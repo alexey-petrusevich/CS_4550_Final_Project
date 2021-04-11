@@ -26,7 +26,6 @@ function NewUser() {
     if (p1.length < 8) {
       return "Password is too short.";
     }
-
     return "";
   }
 
@@ -53,7 +52,7 @@ function NewUser() {
       <Form onSubmit={onSubmit}>
         <Form.Row>
           <Form.Group as={Col}>
-            <Form.Label>Enter Your Name</Form.Label>
+            <Form.Label>Enter Your First and Last Name</Form.Label>
             <Form.Control type="text"
                           onChange={(ev) => update("name", ev)}
                           value={user.name || ""} />

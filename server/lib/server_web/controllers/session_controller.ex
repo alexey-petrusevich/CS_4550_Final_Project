@@ -10,7 +10,7 @@ defmodule ServerWeb.SessionController do
     if user do
       # password is valid; form a session Object with a csrf token
       session = %{
-        user_id: user.id, username: user.username,
+        user_id: user.id, name: user.name, username: user.username,
         token: Phoenix.Token.sign(conn, "user_id", user.id)
       }
       # send the session object to the user

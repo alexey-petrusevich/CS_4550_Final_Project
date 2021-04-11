@@ -100,12 +100,26 @@ function success(state = null, action) {
     }
 }
 
+//success handles from server responses
+function info(state = null, action) {
+    switch(action.type) {
+      case 'clear/set':
+        return null;
+      case 'session/clear':
+        return null;
+      case 'info/set':
+        return action.data;
+      default:
+        return state;
+    }
+}
+
 function root_reducer(state, action) {
     let reducer = combineReducers({
-         users, parties, error, success, session
+         users, parties, error, success, session, info
     });
     let state1 = reducer(state, action);
-
+    console.log(state1)
     return state1;
 }
 

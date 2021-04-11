@@ -65,7 +65,7 @@ defmodule Server.Users do
   def get_user_data(id) do
     id_int = String.to_integer(id)
 
-    artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    artists = Ecto.Adapters.SQL.query(Repo, "SELECT artist from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
@@ -77,7 +77,7 @@ defmodule Server.Users do
     # |> Enum.map(fn x -> elem(x, 0) end)
 
     # TODO Filter by "none" for non-existing genres
-    genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    genres = Ecto.Adapters.SQL.query(Repo, "SELECT genre from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
@@ -88,25 +88,25 @@ defmodule Server.Users do
     |> Enum.map(fn x -> Tuple.to_list(x) end)
     # |> Enum.map(fn x -> elem(x, 0) end)
 
-    energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    energy_vals = Ecto.Adapters.SQL.query(Repo, "SELECT energy from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
     |> List.flatten
 
-    danceability_vals = Ecto.Adapters.SQL.query(Repo, "SELECT danceability from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    danceability_vals = Ecto.Adapters.SQL.query(Repo, "SELECT danceability from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
     |> List.flatten
 
-    loudness_vals = Ecto.Adapters.SQL.query(Repo, "SELECT loudness from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    loudness_vals = Ecto.Adapters.SQL.query(Repo, "SELECT loudness from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
     |> List.flatten
 
-    valence_vals = Ecto.Adapters.SQL.query(Repo, "SELECT valence from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2)", [id_int, [id_int]])
+    valence_vals = Ecto.Adapters.SQL.query(Repo, "SELECT valence from songs where party_id in (SELECT id from parties where host_id=$1::integer or attendees @> $2) and played = true", [id_int, [id_int]])
     |> elem(1)
     |> Map.fetch(:rows)
     |> elem(1)
