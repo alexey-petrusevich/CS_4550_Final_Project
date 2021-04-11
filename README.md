@@ -1,50 +1,7 @@
-## Features / To-do:
-- Landing page:
-  - Join a party
-  - Start a party
-- Party show page:
-  - Host view:
-    - Link with Spotify
-    - Load playlists (api request to the server to then request spotify)
-    - Host selects a playlist; Playlist songs are populated in the browser, Users can vote for their favorites
-    - When a song is selected to add to the queue, request to server
-      - Server sends request to Spotify
-      - Also adds the song to the DB and links it to the current party
-  - User view:
-    - can see all songs in the playlist that have yet to be played
-    - can up vote their favorites
-    - Votes are tied to a user and a song, songs have title, artist, and genre (can add more data as well)
-      - User stats are based on votes
-  - Dashboard page
-    - User stats
-    - List of parties they've been to
-    - Start/join button
 
-Party:
-- name
-- description
-- active/inactive flag
+Landing screen and party view images are (C) Weebly.
 
-Votes:
-- Integer
-- Associated with a user
-- Belongs to a Song (song has title, artist, genre, (playability, etc.))
-
-### Alex:
-
-Playlist Controller:
-  -- get 5 or 10 playlists (probably no parameters, but possibly host user_id to get access token)
-  -- get playlist songs (takes playlist uri and party id host id)
-      - creates DB Song entry with name, artist, genre, track uri, and links to party
-      - need host user_id to get access_token
-
-Playback Controller:
-get "/playback", PlaybackController, :playback
-- play
-- pause
-- skip
-- add to queue
-
+Playback and voting buttons were designed by Ben Ockert.
 
 ---
 
