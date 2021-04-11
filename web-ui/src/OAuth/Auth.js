@@ -15,8 +15,8 @@ function SpotifyAuth({u_id, callback}) {
       <OAuth2Login
         authorizationUrl="https://accounts.spotify.com/authorize"
         responseType="code"
-        clientId="b6c7bd84e4724169b21570019ea15078"
-        redirectUri="http://localhost:4000/api/v1/auth/callback"
+        clientId="16d93cc5896d4cc58a6f5fa4d0a946e8"
+        redirectUri={redirect_uri}
         scope="user-read-playback-state user-modify-playback-state playlist-read-private"
         state={u_id}
         className="auth-button"
