@@ -22,14 +22,14 @@ export async function api_post(path, data) {
 }
 
 export async function api_put(path, data) {
-  let req = {
-    method: 'PUT',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data)
-  };
-  let text = await fetch("http://" + URL + "/api/v1" + path, req);
-  let resp = await text.json();
-  return resp;
+    let req = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    let text = await fetch("http://" + URL + "/api/v1" + path, req);
+    let resp = await text.json();
+    return resp;
 }
 
 //------------------------PARTIES----------------------------
@@ -79,7 +79,7 @@ export function create_user(user) {
     } else {
       let action = {
         type: 'error/set',
-        data: "Unable to create your account. Please try again and make sure all fields are complete.",
+        data: "Unable to create your account. Please try again.",
       }
       store.dispatch(action);
     }
@@ -87,7 +87,7 @@ export function create_user(user) {
 }
 
 export function update_user(id) {
-  return api_put("/users/" + id)
+    return api_put("/users/" + id)
 }
 
 //------------------------SONGS----------------------------
