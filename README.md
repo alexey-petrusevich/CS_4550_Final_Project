@@ -1,4 +1,6 @@
 
+Our written report can be found in written_report.md
+
 Landing screen and party view images are (C) Weebly.
 
 Playback and voting buttons were designed by Ben Ockert.
