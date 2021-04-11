@@ -50,15 +50,21 @@ defmodule Server.AuthTokens do
   #---------------------OAUTH----------------------
 
   def token_for_code(code) do
-    IO.inspect(System.get_env("MIX_ENV"))
-    redirect_uri = cond do
-      System.get_env("MIX_ENV") == "prod" -> System.get_env("REACT_APP_PROD_URL")
-      true -> System.get_env("REACT_APP_DEV_SERVER_URL")
-    end
-    IO.inspect(redirect_uri)
+#    IO.inspect(System.get_env("MIX_ENV"))
+#    redirect_uri = cond do
+#      System.get_env("MIX_ENV") == "prod" -> System.get_env("REACT_APP_PROD_URL")
+#      true -> System.get_env("REACT_APP_DEV_SERVER_URL")
+#    end
+#    IO.inspect(redirect_uri)
 
-    client_id = System.get_env("SPOTIFY_CLIENT_ID")
-    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
+#    client_id = System.get_env("SPOTIFY_CLIENT_ID")
+#    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
+    client_id = "16d93cc5896d4cc58a6f5fa4d0a946e8"
+    client_secret = "4d5f059a1eea4ef8985c0eea24afffda"
+#    IO.inspect(client_id)
+#    IO.inspect(client_secret)
+
+    redirect_uri = "spotifyparty.quickjohnny.art"
     auth_payload = Base.encode64("#{client_id}:#{client_secret}")
 
     # Spotify API authentication endpoint requirements
@@ -69,17 +75,20 @@ defmodule Server.AuthTokens do
       {"Authorization", "Basic #{auth_payload}"}
     ]
 
-
     # sends the post request, decodes response data, and returns the auth token
     resp = HTTPoison.post!(url, body, headers)
     data = Jason.decode!(resp.body)
-    data["access_token"]
+    token = data["access_token"]
+    IO.inspect(token)
+    token
   end
 
   # returns public token with no scope
   def get_public_token() do
-    client_id = System.get_env("SPOTIFY_CLIENT_ID")
-    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
+#    client_id = System.get_env("SPOTIFY_CLIENT_ID")
+#    client_secret = System.get_env("SPOTIFY_CLIENT_SECRET")
+    client_id = "16d93cc5896d4cc58a6f5fa4d0a946e8"
+    client_secret = "4d5f059a1eea4ef8985c0eea24afffda"
     auth_payload = Base.encode64("#{client_id}:#{client_secret}")
     url = "https://accounts.spotify.com/api/token"
     body = "grant_type=client_credentials"

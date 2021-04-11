@@ -4,7 +4,7 @@ use Mix.Config
 config :server, Server.Repo,
   username: "spotify",
   password: "Sp0t!fY123",
-  database: "spotifyparty_dev",
+  database: "spotifyparty_prod",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
