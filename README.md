@@ -1,5 +1,5 @@
 
-Our written report can be found in written_report.md
+Our written report can be found in [WrittenReport.md](WrittenReport.md)
 
 Landing screen and party view images are (C) Weebly.
 
